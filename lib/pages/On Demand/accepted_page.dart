@@ -7,10 +7,14 @@ import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 
-
 class AcceptedPage extends StatefulWidget {
-
-  const AcceptedPage({Key? key, required this.reqDocId,required this.receiverId,this.requestList,this.providerData}) : super(key: key);
+  const AcceptedPage(
+      {Key? key,
+      required this.reqDocId,
+      required this.receiverId,
+      this.requestList,
+      this.providerData})
+      : super(key: key);
   final String reqDocId;
   final String receiverId;
   final DocumentSnapshot? requestList;
@@ -28,16 +32,21 @@ class _AcceptedPageState extends State<AcceptedPage> {
   }
 
   Future<void> _navigateToNavPage() async {
-    Future.delayed(const Duration(seconds: 5)).then((value) =>
-        Get.offAll(()=>OrderInformationPage(providerData : widget.providerData,reqDocId: widget.reqDocId ?? '',receiverId: widget.receiverId ?? '',activity: Variables.onDemandServiceActivity,serviceAddress: widget.requestList!.get("booking_address"),)));
+    Future.delayed(const Duration(seconds: 5))
+        .then((value) => Get.offAll(() => OrderInformationPage(
+              providerData: widget.providerData,
+              reqDocId: widget.reqDocId,
+              receiverId: widget.receiverId,
+              activity: Variables.onDemandServiceActivity,
+              serviceAddress: widget.requestList!.get("booking_address"),
+            )));
   }
-
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AllColor.themeColor,
+          backgroundColor: AllColor.themeColor,
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -48,7 +57,9 @@ class _AcceptedPageState extends State<AcceptedPage> {
                   // crossAxisAlignment:CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   Image.asset("assets/images/success.png",),
+                    Image.asset(
+                      "assets/images/success.png",
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -56,21 +67,29 @@ class _AcceptedPageState extends State<AcceptedPage> {
                 ),
                 CircleAvatar(
                   radius: 40,
-                  child: ClipOval(child:
-                  Image.asset("assets/images/imam.png"),
+                  child: ClipOval(
+                    child: Image.asset("assets/images/imam.png"),
                   ),
                 ),
                 SizedBox(
                   height: dynamicSize(0.1),
                 ),
-                Text("${ widget.requestList == null ? widget.providerData!.fullName ?? '' : widget.requestList!.get('receiver_name')}",style: TextStyle(
-                    fontFamily: 'Muli',
-                    fontWeight: FontWeight.w600,
-                    fontSize: dynamicSize(0.06),color: Colors.white),),
-                Text("is on the way to accept the service. ",style: TextStyle(
-                    fontFamily: 'Muli',
-                    fontWeight: FontWeight.w600,
-                    fontSize: dynamicSize(0.05),color: Colors.white),),
+                Text(
+                  "${widget.requestList == null ? widget.providerData!.fullName ?? '' : widget.requestList!.get('receiver_name')}",
+                  style: TextStyle(
+                      fontFamily: 'Muli',
+                      fontWeight: FontWeight.w600,
+                      fontSize: dynamicSize(0.06),
+                      color: Colors.white),
+                ),
+                Text(
+                  "is on the way to accept the service. ",
+                  style: TextStyle(
+                      fontFamily: 'Muli',
+                      fontWeight: FontWeight.w600,
+                      fontSize: dynamicSize(0.05),
+                      color: Colors.white),
+                ),
               ],
             ),
           )),

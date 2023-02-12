@@ -56,8 +56,10 @@ class _MapPageState extends State<MapPage> {
         children: [
           WillPopScope(
             onWillPop: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => OnDemandPage()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) => OnDemandPage(
+                        selectedCategory: '',
+                      )));
               return true;
             },
             child: Scaffold(
@@ -154,7 +156,6 @@ class _MapPageState extends State<MapPage> {
                                                   );
                                                 }
                                                 */
-
                                               },
                                               child: Text(
                                                 "Edit",
@@ -200,7 +201,10 @@ class _MapPageState extends State<MapPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(15.0),
-                          child: Text(providerList.isEmpty ? "No provider is available in your area at this moment. Please try again after some time  Or call at 01827370397 . Thank You." :"Choose One...",
+                          child: Text(
+                              providerList.isEmpty
+                                  ? "No provider is available in your area at this moment. Please try again after some time  Or call at 01827370397 . Thank You."
+                                  : "Choose One...",
                               textAlign: TextAlign.justify,
                               style: TextStyle(fontSize: dynamicSize(0.07))),
                         ),
@@ -210,8 +214,8 @@ class _MapPageState extends State<MapPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 18.0),
                             child: ListView(
-                              children: List.generate(providerList.isEmpty ? 0 :
-                                 providerList.length,
+                              children: List.generate(
+                                providerList.isEmpty ? 0 : providerList.length,
                                 (index) => Container(
                                   color: selected[index]
                                       ? AllColor.selected_color
@@ -256,7 +260,15 @@ class _MapPageState extends State<MapPage> {
                                                         height: 55,
                                                         width: 55,
                                                         fit: BoxFit.cover,
-                                                        imageUrl: providerList[index].profilePhoto == null ?  'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg' : providerList[index].profilePhoto!.toString(),
+                                                        imageUrl: providerList[
+                                                                        index]
+                                                                    .profilePhoto ==
+                                                                null
+                                                            ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+                                                            : providerList[
+                                                                    index]
+                                                                .profilePhoto!
+                                                                .toString(),
                                                         placeholder: (context,
                                                                 url) =>
                                                             Image.asset(
@@ -440,9 +452,15 @@ class _MapPageState extends State<MapPage> {
                                           providerList[requestIndex],
                                           widget.result);
 
-                                      (DataControllers.to.newRequestResponse.value.success!)
+                                      (DataControllers.to.newRequestResponse
+                                              .value.success!)
                                           ? await dc.createRequest(
-                                          DataControllers.to.newRequestResponse.value.data!.request_number,
+                                              DataControllers
+                                                  .to
+                                                  .newRequestResponse
+                                                  .value
+                                                  .data!
+                                                  .request_number,
                                               providerList[requestIndex],
                                               widget.result,
                                               requestIndex,
@@ -465,7 +483,6 @@ class _MapPageState extends State<MapPage> {
                                             context, StringConstant.systemError);
                                       }
                                       */
-
                                     },
                               color: AllColor.pink_button,
                               textColor: Colors.white,
@@ -490,15 +507,18 @@ class _MapPageState extends State<MapPage> {
   }
 
   void filter() {
-    DataControllers.to.getAvailableProviderList.value.data!.provider_data!.forEach((element) {
-      if (element.latitude != null && element.longitude != null && (Geolocator.distanceBetween(
-                      double.parse(element.latitude),
-                      double.parse(element.longitude),
-                      widget.result.geometry.location.lat,
-                      widget.result.geometry.location.lng) /
-                  1000)
-              .toInt() <
-          3) providerList.add(element);
+    DataControllers.to.getAvailableProviderList.value.data!.provider_data!
+        .forEach((element) {
+      if (element.latitude != null &&
+          element.longitude != null &&
+          (Geolocator.distanceBetween(
+                          double.parse(element.latitude),
+                          double.parse(element.longitude),
+                          widget.result.geometry.location.lat,
+                          widget.result.geometry.location.lng) /
+                      1000)
+                  .toInt() <
+              3) providerList.add(element);
     });
 
     // providerList.add()

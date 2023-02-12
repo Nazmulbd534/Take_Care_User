@@ -55,10 +55,9 @@ class DataControllers extends GetxController {
   ///
   Rx<SliderResponse> sliderResponse = SliderResponse().obs;
 
- /// Order Request
+  /// Order Request
   Rx<AppResponse> appResponse = AppResponse().obs;
   Rx<AppResponse> newRequestResponse = AppResponse().obs;
-
 
   /// Forget password
 
@@ -84,7 +83,7 @@ class DataControllers extends GetxController {
       AvailableProviderResponseNew().obs;
 
   /// Coupon
-    Rx<AppResponse> couponPrize = AppResponse().obs;
+  Rx<AppResponse> couponPrize = AppResponse().obs;
 
   Future getAllLongService(String type) async {
     isLoading(true);
@@ -120,18 +119,16 @@ class DataControllers extends GetxController {
     if (response != null) {
       getCategoriesResponse.value.success = response.success;
       getCategoriesResponse.value.message = response.message;
-      getCategoriesResponse.value.data =[];
+      getCategoriesResponse.value.data = [];
 
       getCategoriesResponse.value.data!.addAll(response.data!);
 
-
-      getLongCategoriesResponse.value.data =[];
+      getLongCategoriesResponse.value.data = [];
 
       response.data!.forEach((element) {
-        if(element.serviceType == 'long')
-          {
-            getLongCategoriesResponse.value.data!.add(element);
-          }
+        if (element.serviceType == 'long') {
+          getLongCategoriesResponse.value.data!.add(element);
+        }
       });
 
       // responseSuccess(true);
@@ -172,10 +169,12 @@ class DataControllers extends GetxController {
    *    Post Request
    */
 
-  Future getProviderList(String status, String available,String longitude,String lattitude) async {
+  Future getProviderList(String status, String available, String longitude,
+      String lattitude) async {
     isLoading(true);
     getAvailableProviderList = AvailableProviderResponseNew().obs;
-    var response = await ApiService.getAvailableProviderList(status, available,longitude,lattitude);
+    var response = await ApiService.getAvailableProviderList(
+        status, available, longitude, lattitude);
 
     if (response != null) {
       getAvailableProviderList.value = response;
@@ -189,11 +188,7 @@ class DataControllers extends GetxController {
     getAddCardLongServiceResponse = AddCardResponse().obs;
     var response = await ApiService.fetchCard(type);
 
-    if (response != null)
-    {
-
-
-
+    if (response != null) {
       // response.data?.forEach((element) {
       //   if(type == 'short' && element.service!.serviceType == 'short') {
       //     getAddCardShortServiceResponse.value.data!.add(element);
@@ -202,23 +197,23 @@ class DataControllers extends GetxController {
       //     }
       // });
 
-      if(type == 'short') {
-          // getAddCardShortServiceResponse.value.message = response.message;
-          // getAddCardShortServiceResponse.value.success = response.success;
+      if (type == 'short') {
+        // getAddCardShortServiceResponse.value.message = response.message;
+        // getAddCardShortServiceResponse.value.success = response.success;
         getAddCardShortServiceResponse.value = response;
-          return getAddCardShortServiceResponse.value;
-        }else {
-            // getAddCardLongServiceResponse.value.message = response.message;
-            // getAddCardLongServiceResponse.value.success = response.success;
+        return getAddCardShortServiceResponse.value;
+      } else {
+        // getAddCardLongServiceResponse.value.message = response.message;
+        // getAddCardLongServiceResponse.value.success = response.success;
         getAddCardLongServiceResponse.value = response;
-            return getAddCardLongServiceResponse.value;
-          }
+        return getAddCardLongServiceResponse.value;
+      }
     }
   }
 
   /// Forget password
 
- /* Future forgetPassMobileValidation(String number) async {
+  /* Future forgetPassMobileValidation(String number) async {
     isLoading(true);
     var response = await ApiService.forgetPassMobileValidation(number);
 
@@ -233,11 +228,10 @@ class DataControllers extends GetxController {
   }
 */
 
-
-  Future forgetPassMobileValidation( String number, String signature) async {
+  Future forgetPassMobileValidation(String number, String signature) async {
     isLoading(true);
     var response =
-    await ApiService.forgetPassMobileValidation(number,signature);
+        await ApiService.forgetPassMobileValidation(number, signature);
 
     if (response != null) {
       forgetPassMobileOtpResponse.value = response;
@@ -249,9 +243,8 @@ class DataControllers extends GetxController {
     return forgetPassMobileOtpResponse.value;
   }
 
-
-
-  Future forgetPassConfirmMethod(String number, String otp, String newPass) async {
+  Future forgetPassConfirmMethod(
+      String number, String otp, String newPass) async {
     isLoading(true);
     var response = await ApiService.forgetPassConfirm(number, otp, newPass);
 
@@ -279,10 +272,8 @@ class DataControllers extends GetxController {
     return addCardResponse.value;
   }
 
-  Future addFavAddress(
-      String name, String age, String contact_no,
-      String relationship, String gender
-      ) async {
+  Future addFavAddress(String name, String age, String contact_no,
+      String relationship, String gender) async {
     isLoading(true);
     var response = await ApiService.addFavAddress(
         name, age, contact_no, relationship, gender);
@@ -298,9 +289,10 @@ class DataControllers extends GetxController {
   }
 
   Future editFavAddress(String id, String name, String age, String contact_no,
-   String relationship, String gender) async {
+      String relationship, String gender) async {
     isLoading(true);
-    var response = await ApiService.editFavAddress(id, name, age, contact_no, gender, relationship);
+    var response = await ApiService.editFavAddress(
+        id, name, age, contact_no, gender, relationship);
 
     if (response != null) {
       addFavAddressResponse.value = response;
@@ -311,7 +303,6 @@ class DataControllers extends GetxController {
 
     return addFavAddressResponse.value;
   }
-
 
   Future getFavAddress() async {
     isLoading(true);
@@ -369,7 +360,8 @@ class DataControllers extends GetxController {
     return addServiceResponse.value;
   }
 
-  Future postRegister(String first_name, String phone_no, String password, String gender, String role, String image, String signature) async {
+  Future postRegister(String first_name, String phone_no, String password,
+      String gender, String role, String image, String signature) async {
     isLoading(true);
     var response = await ApiService.postRegister(
         first_name, phone_no, password, gender, role, image, signature);
@@ -388,10 +380,10 @@ class DataControllers extends GetxController {
     var response;
     userLoginResponse = UserLoginResponse().obs;
     // try {
-      // final result = await InternetAddress.lookup('google.com');
-      // if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    // final result = await InternetAddress.lookup('google.com');
+    // if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
 //          print('connected');
-        response = await ApiService.postLogin(phone_number, pass);
+    response = await ApiService.postLogin(phone_number, pass);
     //   }
     // } on SocketException catch (_) {
     //   isLoading(false);
@@ -422,7 +414,8 @@ class DataControllers extends GetxController {
     return userLoginResponse.value;
   }
 
-  Future postResendOTP(String phone_no, ValueChanged<bool> responseSuccess) async {
+  Future postResendOTP(
+      String phone_no, ValueChanged<bool> responseSuccess) async {
     isLoading(true);
     var response = await ApiService.postResendOTP(phone_no);
 
@@ -471,7 +464,6 @@ class DataControllers extends GetxController {
     return addServiceResponse.value;
   }
 
-
   /// Slider
 
   Future getSlider() async {
@@ -489,9 +481,10 @@ class DataControllers extends GetxController {
 
   //Order List
 
-  Future newRequest( ProviderData providerData,GeocodingResult result) async {
+  Future newRequest(ProviderData providerData, GeocodingResult result) async {
     isLoading(true);
-    var response = await ApiService.newRequest(providerData : providerData,result: result);
+    var response =
+        await ApiService.newRequest(providerData: providerData, result: result);
 
     if (response != null) {
       newRequestResponse.value = response;
@@ -502,10 +495,14 @@ class DataControllers extends GetxController {
     return newRequestResponse.value;
   }
 
-
-  Future pleaceOrder(String request_number, ProviderData? providerData,GeocodingResult result, String? coupon,String? order_note) async {
+  Future pleaceOrder(String request_number, ProviderData? providerData,
+      GeocodingResult result, String? coupon, String? order_note) async {
     isLoading(true);
-    var response = await ApiService.placeOrder(request_number,providerData : providerData,result: result,coupon_code: coupon!,order_note: order_note!);
+    var response = await ApiService.placeOrder(request_number,
+        providerData: providerData,
+        result: result,
+        coupon_code: coupon!,
+        order_note: order_note!);
 
     if (response != null) {
       appResponse.value = response;
@@ -516,8 +513,7 @@ class DataControllers extends GetxController {
     return appResponse.value;
   }
 
-
-  Future providerOrder( String id) async {
+  Future providerOrder(String id) async {
     isLoading(true);
     var response = await ApiService.providerOrder(id);
 
@@ -530,30 +526,31 @@ class DataControllers extends GetxController {
     return addServiceResponse.value;
   }
 
-
   Future getOrderItem(String invoice) async {
-
     isLoading(true);
     try {
       AppResponse? response = await ApiService.getOrderServiceItem(invoice);
-      if (response != null) {appResponse.value = response;}
+      if (response != null) {
+        appResponse.value = response;
+      }
       isLoading(false);
-    } catch (e) {isLoading(false);
+    } catch (e) {
+      isLoading(false);
     }
     return appResponse.value;
   }
 
-
-  Future checkoutDiscount(String coupon,String amount) async {
-
+  Future checkoutDiscount(String coupon, String amount) async {
     isLoading(true);
     try {
-      AppResponse response = await ApiService.checkoutDiscount(coupon,amount);
-      if (response != null) {couponPrize.value = response;}
+      AppResponse response = await ApiService.checkoutDiscount(coupon, amount);
+      if (response != null) {
+        couponPrize.value = response;
+      }
       isLoading(false);
-    } catch (e) {isLoading(false);
+    } catch (e) {
+      isLoading(false);
     }
     return appResponse.value;
   }
-
 }

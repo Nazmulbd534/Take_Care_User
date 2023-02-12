@@ -18,12 +18,16 @@ import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
+import '../../api_service/ApiService.dart';
 import 'feedback_page.dart';
 import 'map_page.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 
 class OnDemandPage extends StatefulWidget {
-  const OnDemandPage({Key? key}) : super(key: key);
+  final String selectedCategory;
+
+  const OnDemandPage({Key? key, required this.selectedCategory})
+      : super(key: key);
 
   @override
   _OnDemandPageState createState() => _OnDemandPageState();
@@ -63,6 +67,12 @@ class _OnDemandPageState extends State<OnDemandPage> {
       _isChecked = List<bool>.filled(
           DataControllers.to.getCategoriesResponse.value.data!.length, false);
     });
+    if (widget.selectedCategory != "") {
+      setState(() {
+        result.add(widget.selectedCategory);
+        _filterValue();
+      });
+    }
     showBottom = false;
     getAddCardData();
     setState(() {
@@ -119,7 +129,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                 width: 120,
                                 height: 110,
                                 imageUrl:
-                                    "https://takecare.ltd/${DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                                    "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
                                 errorWidget: (context, url, error) =>
                                     Image.asset(
                                   "assets/images/image.png",
@@ -308,7 +318,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   width: 120,
                                   height: 110,
                                   imageUrl:
-                                      "https://takecare.ltd/${DataControllers.to.getAddCardShortServiceResponse.value.data![index].service!.imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                                      "${ApiService.MainURL}${DataControllers.to.getAddCardShortServiceResponse.value.data![index].service!.imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
                                   errorWidget: (context, url, error) =>
                                       Image.asset(
                                     "assets/images/image.png",
@@ -824,6 +834,9 @@ class _OnDemandPageState extends State<OnDemandPage> {
               color: Colors.red,
             ),
             onTap: () {
+              setState(() {
+                result = [];
+              });
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const HomePage()),
@@ -1109,7 +1122,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     width: 120,
                                     height: 110,
                                     imageUrl:
-                                        "https://takecare.ltd/${_searchResult[index].imagePath}",
+                                        "${ApiService.MainURL}${_searchResult[index].imagePath}",
                                     errorWidget: (context, url, error) =>
                                         Image.asset(
                                       "assets/images/image.png",
@@ -1238,7 +1251,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     width: 120,
                                     height: 110,
                                     imageUrl:
-                                        "https://takecare.ltd/${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath : searchData[index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                                        "${ApiService.MainURL}${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath : searchData[index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
                                     errorWidget: (context, url, error) =>
                                         Image.asset(
                                       "assets/images/image.png",

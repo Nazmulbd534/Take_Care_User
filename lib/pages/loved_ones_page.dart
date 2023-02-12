@@ -16,16 +16,16 @@ class LovedOnesPage extends StatefulWidget {
   String? activity;
   String? serviceTime;
   String? serviceAddress;
-  LovedOnesPage({Key? key,this.activity,  this.serviceTime, this.serviceAddress}) : super(key: key);
+  LovedOnesPage(
+      {Key? key, this.activity, this.serviceTime, this.serviceAddress})
+      : super(key: key);
 
   @override
   _LovedOnesPageState createState() => _LovedOnesPageState();
 }
 
 class _LovedOnesPageState extends State<LovedOnesPage> {
-
   //bool editFather = false;
-
 
   //late FocusNode name;
 
@@ -33,12 +33,12 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
 
   int length = 0;
 
-
   @override
   void initState() {
     getFavAddressList();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,7 +47,8 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => HomePage()));
             },
             child: Icon(
               Icons.arrow_back,
@@ -65,214 +66,234 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
           ),
         ),
         body: ListView.builder(
-          itemCount: length,
-          itemBuilder: (context, index) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: (){
-                print(widget.activity);
-                if(widget.activity == Variables.onDemandServiceActivity)
-                  {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => OnDemandPage( )));
-
-                  }
-                else if(widget.activity == Variables.longTimeServiceActivity || widget.activity == Variables.orderInformationActivity)
-                    {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => OrderInformationPage( activity: Variables.lovedOnesActivity, serviceHolderInfo: addressResponse.data![index],
-                          serviceAddress: widget.serviceAddress,serviceTime: widget.serviceTime)));
-
-                    }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-
-                    borderRadius: BorderRadius.all(Radius.circular(10))
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0,right: 8,top: 10,bottom: 20),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${addressResponse.data![index].relationship}',
-                            style: TextStyle(
-                                fontFamily: 'Muli',
-                                fontWeight: FontWeight.w600,
-                              fontSize: dynamicSize(0.05)
-                            ),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(builder: (_) => LovedFormPage(edit: true,editValue: addressResponse.data![index],activity: widget.activity,)));
-                                });
-                              },
-                              child:
-                              (widget.activity == Variables.homeActivity ) ? Text(
-                                "Edit",
-                                style: TextStyle(
-                                    fontFamily: 'Muli',
-                                    fontWeight: FontWeight.w600,
-                                    color: AllColor.themeColor,
-                                    fontSize: dynamicSize(0.05)),
-                              )   : Container()
-
-                          )
-                        ],
-                      ),
-                      Container(
-                        height: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 40),
-                          child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
+            itemCount: length,
+            itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                    onTap: () {
+                      print(widget.activity);
+                      if (widget.activity ==
+                          Variables.onDemandServiceActivity) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => OnDemandPage(
+                                  selectedCategory: '',
+                                )));
+                      } else if (widget.activity ==
+                              Variables.longTimeServiceActivity ||
+                          widget.activity ==
+                              Variables.orderInformationActivity) {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (_) => OrderInformationPage(
+                                activity: Variables.lovedOnesActivity,
+                                serviceHolderInfo: addressResponse.data![index],
+                                serviceAddress: widget.serviceAddress,
+                                serviceTime: widget.serviceTime)));
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8, top: 10, bottom: 20),
+                        child: Column(
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Name ",
-                                    style: TextStyle(
-                                        fontFamily: 'Muli',
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: dynamicSize(0.04)),
-                                  ),
-                                  Text(
-                                    ": ",
-                                    style: TextStyle(fontSize: dynamicSize(0.05),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${addressResponse.data![index].relationship}',
+                                  style: TextStyle(
                                       fontFamily: 'Muli',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child:
-                              Padding(
-                                padding: const EdgeInsets.only(top: 3.0),
-                                child: Text(
-                                  '${addressResponse.data![index].name}',
-                                  style: TextStyle(fontSize: dynamicSize(0.04),
-                                    fontFamily: 'Muli',
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: dynamicSize(0.05)),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                        ),
-                      ),
-                      Container(
-                        height: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 40.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 2,
+                                TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        Navigator.of(context)
+                                            .pushReplacement(MaterialPageRoute(
+                                                builder: (_) => LovedFormPage(
+                                                      edit: true,
+                                                      editValue: addressResponse
+                                                          .data![index],
+                                                      activity: widget.activity,
+                                                    )));
+                                      });
+                                    },
+                                    child: (widget.activity ==
+                                            Variables.homeActivity)
+                                        ? Text(
+                                            "Edit",
+                                            style: TextStyle(
+                                                fontFamily: 'Muli',
+                                                fontWeight: FontWeight.w600,
+                                                color: AllColor.themeColor,
+                                                fontSize: dynamicSize(0.05)),
+                                          )
+                                        : Container())
+                              ],
+                            ),
+                            Container(
+                              height: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 40),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Age ",
-                                      style: TextStyle(
-                                          fontFamily: 'Muli',
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: dynamicSize(0.04)),
-                                    ),
-                                    Text(
-                                      ": ",
-                                      style: TextStyle(fontSize: dynamicSize(0.05),
-                                        fontFamily: 'Muli',
-                                        fontWeight: FontWeight.w700,
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Name ",
+                                            style: TextStyle(
+                                                fontFamily: 'Muli',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: dynamicSize(0.04)),
+                                          ),
+                                          Text(
+                                            ": ",
+                                            style: TextStyle(
+                                              fontSize: dynamicSize(0.05),
+                                              fontFamily: 'Muli',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                        child: Text(
+                                          '${addressResponse.data![index].name}',
+                                          style: TextStyle(
+                                            fontSize: dynamicSize(0.04),
+                                            fontFamily: 'Muli',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child:
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 3.0),
-                                  child: Text(
-                                    '${addressResponse.data![index].age} Year(s)',
-                                    style: TextStyle(fontSize: dynamicSize(0.04),fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 40.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-
-                              Expanded(
-                                flex:2,
+                            ),
+                            Container(
+                              height: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 40.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                        "Contact Number",style: TextStyle(fontSize: dynamicSize(0.04))
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Age ",
+                                            style: TextStyle(
+                                                fontFamily: 'Muli',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: dynamicSize(0.04)),
+                                          ),
+                                          Text(
+                                            ": ",
+                                            style: TextStyle(
+                                              fontSize: dynamicSize(0.05),
+                                              fontFamily: 'Muli',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Text(
-                                        ": ",style: TextStyle(fontSize: dynamicSize(0.05),fontWeight: FontWeight.bold)
-                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                        child: Text(
+                                          '${addressResponse.data![index].age} Year(s)',
+                                          style: TextStyle(
+                                              fontSize: dynamicSize(0.04),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                flex: 3,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 3.0),
-                                  child: Text(
-                                    '${addressResponse.data![index].contactNo}',
-                                    style: TextStyle(fontSize: dynamicSize(0.04),fontWeight: FontWeight.bold),
-                                  ),
+                            ),
+                            Container(
+                              height: 30,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 40.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Contact Number",
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.04))),
+                                          Text(": ",
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.05),
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 3.0),
+                                        child: Text(
+                                          '${addressResponse.data![index].contactNo}',
+                                          style: TextStyle(
+                                              fontSize: dynamicSize(0.04),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          )),
-
+                )),
         bottomNavigationBar: BottomAppBar(
           elevation: 0,
           //color: AllColor.themeColor,
           child: Padding(
-            padding: const EdgeInsets.only(left: 8.0,right: 8,bottom: 8,top: 20),
+            padding:
+                const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 20),
             child: InkWell(
-              onTap: (){
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => LovedFormPage(activity: widget.activity,)));
+              onTap: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (_) => LovedFormPage(
+                          activity: widget.activity,
+                        )));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -283,7 +304,8 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                 height: dynamicSize(0.15),
                 child: Text(
                   "Add New ",
-                  style: TextStyle(fontSize: dynamicSize(0.05), color: Colors.white),
+                  style: TextStyle(
+                      fontSize: dynamicSize(0.05), color: Colors.white),
                 ),
               ),
             ),
@@ -293,16 +315,14 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
     );
   }
 
-  void getFavAddressList()async {
-
+  void getFavAddressList() async {
     addressResponse = await DataControllers.to.getFavAddress();
 
-    if(addressResponse.success!)
-      {
-        setState(()  {
-          length = addressResponse.data!.length ;
-       //   addressResponse;
-        });
-      }
+    if (addressResponse.success!) {
+      setState(() {
+        length = addressResponse.data!.length;
+        //   addressResponse;
+      });
+    }
   }
 }

@@ -26,11 +26,10 @@ import 'package:takecare_user/model/provider/provider_response.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 
-
 class ApiService {
   static var client = http.Client();
-  static var BaseURL = 'https://takecare.ltd/api/v1/';
-  static var MainURL = 'https://takecare.ltd/';
+  static var BaseURL = 'https://api.takecare.ltd/api/v1/';
+  static var MainURL = 'https://api.takecare.ltd/';
 
   /**
    *    get Request
@@ -224,7 +223,8 @@ class ApiService {
     }
   }
 
-  static Future<UserLoginResponse> postVerifyOTP(String phone_number, String otp) async {
+  static Future<UserLoginResponse> postVerifyOTP(
+      String phone_number, String otp) async {
     final response = await http.post(
       Uri.parse(BaseURL + 'register/verify-otp'),
       headers: <String, String>{
@@ -380,7 +380,8 @@ class ApiService {
     }
   }
 
-  static Future<ErrorResponse?> addCard(String service_id, String booking_date) async {
+  static Future<ErrorResponse?> addCard(
+      String service_id, String booking_date) async {
     var response = await client.post(
       Uri.parse(BaseURL + 'user/cart/add-service-to-cart'),
       headers: <String, String>{
@@ -408,22 +409,21 @@ class ApiService {
     }
   }
 
-
-  static Future<AppResponse?> newRequest({String coupon_code='',ProviderData? providerData,GeocodingResult? result}) async {
-
-     DateTime now = DateTime. now();
-     DateFormat formatter = DateFormat('yyyy-MM-dd');
-    final String formatted = formatter. format(now);
+  static Future<AppResponse?> newRequest(
+      {String coupon_code = '',
+      ProviderData? providerData,
+      GeocodingResult? result}) async {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final String formatted = formatter.format(now);
 
     var Json = <String, String>{
-       "coupon_code": coupon_code,
-       "booking_date": formatted,
-       "provider_id": providerData!.id.toString(),
-       "latitude": result!.geometry.location.lat.toString(),
-       "longitude": result.geometry.location.lng.toString()
-     };
-
-
+      "coupon_code": coupon_code,
+      "booking_date": formatted,
+      "provider_id": providerData!.id.toString(),
+      "latitude": result!.geometry.location.lat.toString(),
+      "longitude": result.geometry.location.lng.toString()
+    };
 
     var response = await client.post(
       Uri.parse(BaseURL + 'user/request/new-request'),
@@ -437,26 +437,28 @@ class ApiService {
     print("Api Response : ${response.body}");
     // List<String> stringList = (jsonDecode(response.body) as List<dynamic>).cast<String>();
 
-
-     if (response.statusCode == 200) {
-
+    if (response.statusCode == 200) {
       //  var jsonString = response.body;
 
       return AppResponse.fromJson(jsonDecode(response.body));
     } else {
       DataControllers.to.appResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.appResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }
 
-  /// Order 
-  static Future<AppResponse?> placeOrder(String request_number, {String coupon_code='',String order_note = '',ProviderData? providerData,GeocodingResult? result}) async {
-
+  /// Order
+  static Future<AppResponse?> placeOrder(String request_number,
+      {String coupon_code = '',
+      String order_note = '',
+      ProviderData? providerData,
+      GeocodingResult? result}) async {
     Map<String, String> jsonData = <String, String>{
-      'user_id': DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
+      'user_id':
+          DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
       "request_number": request_number,
       "coupon_code": coupon_code,
       "order_note": order_note,
@@ -480,15 +482,14 @@ class ApiService {
     );
     print("Api Response : ${response.body}");
     if (response.statusCode == 200) {
-
-    //  var jsonString = response.body;
+      //  var jsonString = response.body;
 
       return AppResponse.fromJson(jsonDecode(response.body));
     } else {
       DataControllers.to.appResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.appResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }
@@ -503,16 +504,17 @@ class ApiService {
       },
       body: jsonEncode(<String, String>{
         'provider_id': id,
-      }),);
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
@@ -526,17 +528,19 @@ class ApiService {
         'Authorization': bearerToken,
       },
       body: jsonEncode(<String, String>{
-        "seeker_id": DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
-      }),);
+        "seeker_id":
+            DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
@@ -549,18 +553,17 @@ class ApiService {
         'Accept': 'application/json',
         'Authorization': bearerToken,
       },
-      body: jsonEncode(<String, String>{
-        "invoice_number": invoice_number
-      }),);
+      body: jsonEncode(<String, String>{"invoice_number": invoice_number}),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       // var jsonString = response.body;
       return AppResponse.fromJson(jsonDecode(response.body));
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }
@@ -574,17 +577,19 @@ class ApiService {
         'Authorization': bearerToken,
       },
       body: jsonEncode(<String, String>{
-        "get-order-service-items": DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
-      }),);
+        "get-order-service-items":
+            DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
@@ -598,17 +603,19 @@ class ApiService {
         'Authorization': bearerToken,
       },
       body: jsonEncode(<String, String>{
-        "get-order-service-items": DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
-      }),);
+        "get-order-service-items":
+            DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
@@ -622,17 +629,19 @@ class ApiService {
         'Authorization': bearerToken,
       },
       body: jsonEncode(<String, String>{
-        "id": DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
-      }),);
+        "id":
+            DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
@@ -646,22 +655,23 @@ class ApiService {
         'Authorization': bearerToken,
       },
       body: jsonEncode(<String, String>{
-        "id": DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
+        "id": DataControllers.to.userLoginResponse.value.data!.user!.id
+            .toString(),
         "status": "7"
-      }),);
+      }),
+    );
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {
       DataControllers.to.userServiceResponse.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.userServiceResponse.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return null;
     }
   }
-
 
   /// Service
 
@@ -1118,9 +1128,9 @@ class ApiService {
     }
   }
 
-
   /// checkout-discount
-  static Future<AppResponse> checkoutDiscount(String coupon,String amount) async {
+  static Future<AppResponse> checkoutDiscount(
+      String coupon, String amount) async {
     final response = await http.post(
       Uri.parse(BaseURL + 'discount/checkout-discount'),
       headers: <String, String>{
@@ -1128,23 +1138,19 @@ class ApiService {
         'Accept': 'application/json',
         'Authorization': bearerToken,
       },
-      body: jsonEncode(<String, String>{
-        'coupon_code': coupon,
-        'amount':amount
-      }),
+      body:
+          jsonEncode(<String, String>{'coupon_code': coupon, 'amount': amount}),
     );
-
 
     print("Api Response -->> Coupon : ${response.body}");
 
     if (response.statusCode == 200) {
-
       return AppResponse.fromJson(jsonDecode(response.body));
     } else {
       DataControllers.to.couponPrize.value.success =
-      json.decode(response.body)["success"];
+          json.decode(response.body)["success"];
       DataControllers.to.couponPrize.value.message =
-      json.decode(response.body)["message"];
+          json.decode(response.body)["message"];
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }

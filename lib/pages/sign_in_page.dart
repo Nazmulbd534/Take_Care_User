@@ -54,6 +54,7 @@ class _SignInPageState extends State<SignInPage> {
     sharePreferences(context);
     super.initState();
   }
+
   Widget _bodyUI(Size size, DataControllers dataControllers) => SafeArea(
         child: GetBuilder<LanguageController>(builder: (lg) {
           return SafeArea(
@@ -179,9 +180,9 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   SizedBox(height: dynamicSize(0.1)),
                   TextFieldBuilder(
-                      controller: _mobileNumber,
-                      hintText: lng.mobileNumber.value,
-                      textInputType: TextInputType.number,
+                    controller: _mobileNumber,
+                    hintText: lng.mobileNumber.value,
+                    textInputType: TextInputType.number,
                   ),
                   SizedBox(height: dynamicSize(0.02)),
                   Padding(
@@ -373,6 +374,7 @@ class _SignInPageState extends State<SignInPage> {
       showToast('Image not selected');
     }
   }
+
   void sharePreferences(BuildContext context) async {
     await Common.init();
 
@@ -390,6 +392,7 @@ class _SignInPageState extends State<SignInPage> {
       }
     } catch (e) {}
   }
+
   void loginClass(String user, String pass) async {
     onProgressBar(true);
 
@@ -415,7 +418,7 @@ class _SignInPageState extends State<SignInPage> {
       onProgressBar(false);
     } else {
       onProgressBar(false);
-      showToast(DataControllers.to.userLoginResponse.value.message!);
+      showToast(DataControllers.to.userLoginResponse.value.message.toString());
     }
   }
 

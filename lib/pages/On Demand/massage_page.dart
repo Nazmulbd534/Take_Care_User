@@ -27,20 +27,29 @@ class _MassagePageState extends State<MassagePage> {
               elevation: 2,
               child: Row(
                 children: [
-                  IconButton(onPressed: (){
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => OnDemandPage()));
-                  }, icon: Icon(Icons.arrow_back)),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => OnDemandPage(
+                                  selectedCategory: '',
+                                )));
+                      },
+                      icon: Icon(Icons.arrow_back)),
                   CircleAvatar(
                     backgroundColor: AllColor.button_color,
                     radius: 19,
-                    child: Icon(Icons.person,color: Colors.white,size: dynamicSize(.09)),
+                    child: Icon(Icons.person,
+                        color: Colors.white, size: dynamicSize(.09)),
                   ),
                   SizedBox(width: dynamicSize(.03)),
-                  Text('Mr. Ashik',style: TextStyle(
-                      fontFamily: 'Muli',
-                      fontWeight: FontWeight.w600,
-                      color: AllColor.black,fontSize: dynamicSize(.045)),)
+                  Text(
+                    'Mr. Ashik',
+                    style: TextStyle(
+                        fontFamily: 'Muli',
+                        fontWeight: FontWeight.w600,
+                        color: AllColor.black,
+                        fontSize: dynamicSize(.045)),
+                  )
                 ],
               ),
             ),
@@ -49,36 +58,38 @@ class _MassagePageState extends State<MassagePage> {
             Expanded(
               child: ListView.builder(
                 itemCount: 4,
-                itemBuilder: (context,index)=>Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 15.0),
+                itemBuilder: (context, index) => Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
                   child: Row(
-                    mainAxisAlignment: index%2==0
-                        ?MainAxisAlignment.start
-                        :MainAxisAlignment.end,
-                    crossAxisAlignment:CrossAxisAlignment.start,
+                    mainAxisAlignment: index % 2 == 0
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      index%2==0
-                          ?CircleAvatar(
-                        radius: dynamicSize(.04),
-                        child: Icon(Icons.person_sharp,color: Colors.white),
-                      ):Container(),
+                      index % 2 == 0
+                          ? CircleAvatar(
+                              radius: dynamicSize(.04),
+                              child:
+                                  Icon(Icons.person_sharp, color: Colors.white),
+                            )
+                          : Container(),
                       SizedBox(width: 10),
-
                       Container(
-                          width: MediaQuery.of(context).size.width*.6,
+                          width: MediaQuery.of(context).size.width * .6,
                           child: Text(
                             'Block G/1, 05/12, Mohammadpur, Mirpur-13, Dhaka 1216',
-                            textAlign: index%2==0
-                                ?TextAlign.start:TextAlign.end,
+                            textAlign: index % 2 == 0
+                                ? TextAlign.start
+                                : TextAlign.end,
                           )),
-
                       SizedBox(width: 10),
-                      index%2==0
-                          ?Container()
-                          :CircleAvatar(
-                        radius: dynamicSize(.04),
-                        child: Icon(Icons.person,color: Colors.white),
-                      ),
+                      index % 2 == 0
+                          ? Container()
+                          : CircleAvatar(
+                              radius: dynamicSize(.04),
+                              child: Icon(Icons.person, color: Colors.white),
+                            ),
                     ],
                   ),
                 ),
@@ -87,7 +98,7 @@ class _MassagePageState extends State<MassagePage> {
 
             ///Message box
             Padding(
-              padding: const EdgeInsets.only(bottom: 5,left: 10,right: 10),
+              padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -96,7 +107,7 @@ class _MassagePageState extends State<MassagePage> {
                       maxLines: 5,
                       minLines: 1,
                       decoration: InputDecoration(
-                          fillColor:AllColor.textFieldColor,
+                          fillColor: AllColor.textFieldColor,
                           filled: true,
                           contentPadding: EdgeInsets.all(5),
                           isDense: true,
@@ -106,17 +117,17 @@ class _MassagePageState extends State<MassagePage> {
                           hintText: 'Write Message...',
                           border: OutlineInputBorder(
                               borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.all(Radius.circular(50))
-                          )
-                      ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)))),
                     ),
                   ),
                   SizedBox(width: 3),
 
                   ///New Message
                   IconButton(
-                      onPressed: (){},
-                      icon: Icon(Icons.send,color: AllColor.button_color,size: dynamicSize(.1)),
+                      onPressed: () {},
+                      icon: Icon(Icons.send,
+                          color: AllColor.button_color, size: dynamicSize(.1)),
                       splashRadius: dynamicSize(.07))
                 ],
               ),
