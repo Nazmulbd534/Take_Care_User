@@ -72,6 +72,17 @@ class _OnDemandPageState extends State<OnDemandPage> {
         result.add(widget.selectedCategory);
         _filterValue();
       });
+      for (int i = 0;
+          i < DataControllers.to.getCategoriesResponse.value.data!.length;
+          i++) {
+        if (DataControllers
+                .to.getCategoriesResponse.value.data![i].categoryName ==
+            widget.selectedCategory) {
+          setState(() {
+            _isChecked[i] = true;
+          });
+        }
+      }
     }
     showBottom = false;
     getAddCardData();
@@ -836,6 +847,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
             onTap: () {
               setState(() {
                 result = [];
+                _filterValue();
               });
               Navigator.pushReplacement(
                 context,
