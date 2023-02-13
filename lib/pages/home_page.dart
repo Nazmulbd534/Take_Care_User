@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,9 @@ import '../model/CategoriesResponse.dart';
 import 'On Demand/accepted_page.dart';
 import 'loved_ones_page.dart';
 import 'order_history/order_history_page.dart';
+import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
+import 'package:firebase_remote_config/firebase_remote_config.dart'
+    show FirebaseRemoteConfig, RemoteConfigSettings;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,10 +42,39 @@ var isLoading = false;
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
+  String currentVersion = '';
+  String enforcedVersion = '';
+  String storeVersion = '';
   @override
   void initState() {
     super.initState();
     getAllService();
+  }
+
+  static Future<String> get _enforcedVersion async {
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: Duration.zero,
+      ),
+    );
+    await remoteConfig.fetch();
+    await remoteConfig.activate();
+    return remoteConfig.getString("enforced_version"); // 'enforced_version'
+  }
+
+  static Future<String> get _storeVersion async {
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: Duration.zero,
+      ),
+    );
+    await remoteConfig.fetch();
+    await remoteConfig.activate();
+    return remoteConfig.getString("store_version"); // 'enforced_version'
   }
 
   onProgressBar(bool progress) {
@@ -48,6 +82,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllService() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      currentVersion = packageInfo.version;
+    });
+
+    String enforced = await _enforcedVersion;
+    String store = await _storeVersion;
+    setState(() {
+      enforcedVersion = enforced;
+      storeVersion = store;
+    });
+
+    log("Current version === $currentVersion \n\n\n store version == $storeVersion\n");
+    // double a = double.parse(enforcedVersion);
+
+    // int enforcedInt = int.parse(enforcedVersion.numericOnly());
+    // int storeInt = int.parse(storeVersion.numericOnly());
+
+    // log("test = $enforcedInt", name: "RMCONGIF");
     DataControllers.to.getCategoriesResponse.value.data!.forEach((element) {
       if (element.serviceType == "short") {
         dataResponse.add(element);
@@ -114,8 +167,23 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Wifi"),
+              content: Text("Wifi not detected. Please activate it."),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (storeVersion != '' && currentVersion != '') {
+      if (int.parse(currentVersion.numericOnly()) <
+          int.parse(storeVersion.numericOnly())) {
+        _showAlert(context);
+      }
+    }
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: GetBuilder<LanguageController>(builder: (lc) {
@@ -334,7 +402,8 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         SizedBox(height: dynamicSize(0)),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 2.0),
+                          padding:
+                              const EdgeInsets.only(bottom: 10.0, top: 10.0),
                           child: Container(
                             alignment: Alignment.center,
                             child: Text(
@@ -509,42 +578,38 @@ class _HomePageState extends State<HomePage> {
                         // cut here
                         Padding(
                           padding: const EdgeInsets.only(
-                            right: 12.0,
+                            right: 0.0,
                             left: 12.0,
                           ),
                           child: Container(
                             color: Colors.white,
-                            height: size.height * 0.31,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 6,
-                                mainAxisSpacing: 0,
-                                childAspectRatio: 0.85,
-                              ),
-                              itemCount: dataResponse.length + 4,
+                            height: size.height * 0.22,
+                            child: ListView.builder(
+                              itemCount: dataResponse.length + 1,
+                              scrollDirection: Axis.horizontal,
                               itemBuilder: ((context, index) {
                                 if (index == 0) {
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          onProgressBar(true);
-                                          await DataControllers.to
-                                              .getAllShortService("short");
-                                          onProgressBar(false);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (_) => OnDemandPage(
-                                                selectedCategory: '',
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            onProgressBar(true);
+                                            await DataControllers.to
+                                                .getAllShortService("short");
+                                            onProgressBar(false);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) => OnDemandPage(
+                                                  selectedCategory: '',
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                            height: size.height * 0.12,
-                                            width: dynamicSize(0.29),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: size.height * 0.14,
+                                            width: dynamicSize(0.35),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(5),
@@ -559,87 +624,91 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ],
                                             ),
-                                            child: const SizedBox(
-                                                height: 20,
-                                                width: 20,
-                                                child: Icon(
-                                                  Icons.all_inclusive,
-                                                ))),
+                                            child: SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: Image.asset(
+                                                'assets/images/all_service_icon.png',
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: dynamicSize(0.02),
+                                        ),
+                                        const Text(
+                                          "All Services",
+                                          style: TextStyle(
+                                            fontFamily: "Muli",
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          maxLines: 2,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          onProgressBar(true);
+                                          await DataControllers.to
+                                              .getAllShortService("short");
+                                          onProgressBar(false);
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (_) => OnDemandPage(
+                                                selectedCategory:
+                                                    dataResponse[index - 1]
+                                                        .categoryName!,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: size.height * 0.14,
+                                          width: dynamicSize(0.35),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color.fromRGBO(
+                                                    0, 173, 229, 0.16),
+                                                blurRadius: 2,
+                                                offset: Offset(
+                                                    0, 3), // Shadow position
+                                              ),
+                                            ],
+                                          ),
+                                          child: SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: Image.network(
+                                              ApiService.MainURL +
+                                                  dataResponse[index - 1]
+                                                      .serviceImage!,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       SizedBox(
                                         height: dynamicSize(0.02),
                                       ),
-                                      const Text(
-                                        "All Services",
-                                        style: TextStyle(
+                                      Text(
+                                        dataResponse[index - 1].categoryName!,
+                                        style: const TextStyle(
                                           fontFamily: "Muli",
                                           fontWeight: FontWeight.w600,
                                         ),
                                         maxLines: 2,
-                                      )
+                                      ),
                                     ],
-                                  );
-                                } else if (index >= dataResponse.length + 1) {
-                                  return const SizedBox();
-                                }
-                                return Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () async {
-                                        onProgressBar(true);
-                                        await DataControllers.to
-                                            .getAllShortService("short");
-                                        onProgressBar(false);
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (_) => OnDemandPage(
-                                              selectedCategory:
-                                                  dataResponse[index - 1]
-                                                      .categoryName!,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        height: size.height * 0.12,
-                                        width: dynamicSize(0.29),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.white,
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Color.fromRGBO(
-                                                  0, 173, 229, 0.16),
-                                              blurRadius: 2,
-                                              offset: Offset(
-                                                  0, 3), // Shadow position
-                                            ),
-                                          ],
-                                        ),
-                                        child: SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: Image.network(
-                                            ApiService.MainURL +
-                                                dataResponse[index - 1]
-                                                    .serviceImage!,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: dynamicSize(0.02),
-                                    ),
-                                    Text(
-                                      dataResponse[index - 1].categoryName!,
-                                      style: const TextStyle(
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      maxLines: 2,
-                                    ),
-                                  ],
+                                  ),
                                 );
                               }),
                             ),
@@ -651,13 +720,6 @@ class _HomePageState extends State<HomePage> {
                                 topLeft: Radius.circular(5),
                                 topRight: Radius.circular(5)),
                             color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 1,
-                                offset: Offset(0, -4), // Shadow position
-                              ),
-                            ],
                           ),
                           height: size.height * 0.27,
                           child: Column(
@@ -696,7 +758,8 @@ class _HomePageState extends State<HomePage> {
                                         await DataControllers.to
                                             .getAllLongService("long");
                                         onProgressBar(false);
-                                        Navigator.of(context).push(MaterialPageRoute(
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
                                             builder: (_) => LongTimeServicesPage(
                                                 selectedType: (DataControllers
                                                             .to
@@ -712,7 +775,9 @@ class _HomePageState extends State<HomePage> {
                                                         .data![index]
                                                         .categoryName!
                                                         .toString()
-                                                    : "")));
+                                                    : ""),
+                                          ),
+                                        );
                                       },
                                       child: Container(
                                         width: size.width / 2.42,

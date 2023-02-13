@@ -1,4 +1,4 @@
-package com.spontit.takecareuser;
+package user.takecare.ltd;
 
 import io.flutter.embedding.android.FlutterActivity;
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
 
   @override
   void initState() {
+    log(widget.selectedType.toString());
     super.initState();
     setState(() {
       _isChecked = List<bool>.filled(
@@ -68,8 +71,20 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
       });
     } else {
       setState(() {
-        searchValue = true;
+        result.add(widget.selectedType);
+        _filterValue();
       });
+      for (int i = 0;
+          i < DataControllers.to.getLongCategoriesResponse.value.data!.length;
+          i++) {
+        if (DataControllers
+                .to.getLongCategoriesResponse.value.data![i].categoryName ==
+            widget.selectedType) {
+          setState(() {
+            _isChecked[i] = true;
+          });
+        }
+      }
     }
   }
 
@@ -231,7 +246,8 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                         (service.addedInMyCart == null)
                                             ? "Order Now "
                                             : " added ",
-                                        style: TextStyle(color: Colors.white),
+                                        style: const TextStyle(
+                                            color: Colors.white),
                                       )
                                     ],
                                   ),

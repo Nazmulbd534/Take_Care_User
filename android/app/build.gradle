@@ -40,7 +40,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.spontit.takecareuser"
+        applicationId "user.takecare.ltd"
         minSdkVersion 20
         compileSdkVersion 33
         targetSdkVersion flutter.targetSdkVersion
