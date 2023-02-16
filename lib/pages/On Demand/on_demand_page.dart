@@ -24,7 +24,7 @@ import 'map_page.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
 
 class OnDemandPage extends StatefulWidget {
-  final String selectedCategory;
+  final List<String> selectedCategory;
 
   const OnDemandPage({Key? key, required this.selectedCategory})
       : super(key: key);
@@ -67,22 +67,24 @@ class _OnDemandPageState extends State<OnDemandPage> {
       _isChecked = List<bool>.filled(
           DataControllers.to.getCategoriesResponse.value.data!.length, false);
     });
-    if (widget.selectedCategory != "") {
-      setState(() {
-        result.add(widget.selectedCategory);
-        _filterValue();
-      });
-      for (int i = 0;
-          i < DataControllers.to.getCategoriesResponse.value.data!.length;
-          i++) {
-        if (DataControllers
-                .to.getCategoriesResponse.value.data![i].categoryName ==
-            widget.selectedCategory) {
-          setState(() {
-            _isChecked[i] = true;
-          });
-        }
+    if (widget.selectedCategory[0] != "") {
+      for (int i = 0; i < widget.selectedCategory.length; i++) {
+        setState(() {
+          result.add(widget.selectedCategory[i]);
+          _filterValue();
+        });
       }
+      // for (int i = 0;
+      //     i < DataControllers.to.getCategoriesResponse.value.data!.length;
+      //     i++) {
+      //   if (DataControllers
+      //           .to.getCategoriesResponse.value.data![i].categoryName ==
+      //       widget.selectedCategory[i]) {
+      //     setState(() {
+      //       _isChecked[i] = true;
+      //     });
+      //   }
+      // }
     }
     showBottom = false;
     getAddCardData();

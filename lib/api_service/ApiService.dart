@@ -56,7 +56,7 @@ class ApiService {
     var response = await client
         .get(Uri.parse(BaseURL + 'service/all'), headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Accept': 'application/json',
+      'Accept': 'application/json', 
       'Authorization': bearerToken,
     });
     if (response.statusCode == 200) {

@@ -29,12 +29,15 @@ class _MassagePageState extends State<MassagePage> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => OnDemandPage(
-                                  selectedCategory: '',
-                                )));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const OnDemandPage(
+                              selectedCategory: [''],
+                            ),
+                          ),
+                        );
                       },
-                      icon: Icon(Icons.arrow_back)),
+                      icon: const Icon(Icons.arrow_back)),
                   CircleAvatar(
                     backgroundColor: AllColor.button_color,
                     radius: 19,

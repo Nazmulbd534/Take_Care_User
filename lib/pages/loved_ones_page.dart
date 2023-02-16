@@ -48,16 +48,16 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
           leading: InkWell(
             onTap: () {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => HomePage()));
+                  MaterialPageRoute(builder: (_) => const HomePage()));
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
               color: AllColor.themeColor,
             ),
           ),
           backgroundColor: Colors.white,
           elevation: 0,
-          title: Text(
+          title: const Text(
             "Loved One's",
             style: TextStyle(
                 fontFamily: 'Muli',
@@ -75,8 +75,8 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                       if (widget.activity ==
                           Variables.onDemandServiceActivity) {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => OnDemandPage(
-                                  selectedCategory: '',
+                            builder: (_) => const OnDemandPage(
+                                  selectedCategory: [''],
                                 )));
                       } else if (widget.activity ==
                               Variables.longTimeServiceActivity ||
@@ -91,7 +91,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                       }
                     },
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: Padding(

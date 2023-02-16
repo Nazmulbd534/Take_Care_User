@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'dart:io';
+import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +24,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
 import 'package:takecare_user/widgets/loading_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../model/CategoriesResponse.dart';
 import 'On Demand/accepted_page.dart';
 import 'loved_ones_page.dart';
@@ -94,6 +97,13 @@ class _HomePageState extends State<HomePage> {
       storeVersion = store;
     });
 
+    if (int.parse(enforcedVersion.numericOnly()) >
+        int.parse(currentVersion.numericOnly())) {
+      _showForceUpdateAlert(context);
+    } else if (int.parse(currentVersion.numericOnly()) <
+        int.parse(storeVersion.numericOnly())) {
+      _showUpdateAlert(context);
+    }
     log("Current version === $currentVersion \n\n\n store version == $storeVersion\n");
     // double a = double.parse(enforcedVersion);
 
@@ -167,23 +177,68 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showAlert(BuildContext context) {
+  void _showUpdateAlert(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Wifi"),
-              content: Text("Wifi not detected. Please activate it."),
-            ));
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          "Update Available !",
+          style: TextStyle(fontFamily: "Muli"),
+        ),
+        content: const Text(
+            "A new version of TakeCare is available to download. Please download it to get the latest version.",
+            style: TextStyle(fontFamily: "Muli")),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Okay"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _showForceUpdateAlert(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          "Urgent Update Available !",
+          style: TextStyle(fontFamily: "Muli"),
+        ),
+        content: const Text(
+            "A new version of TakeCare is available to download. This version has breaking changes and it is mandatory to download this version. Please upgrade to keep using TakeCare.",
+            style: TextStyle(fontFamily: "Muli")),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (Platform.isAndroid || Platform.isIOS) {
+                final appId = Platform.isAndroid
+                    ? 'com.spontit.takecareuser'
+                    : 'YOUR_IOS_APP_ID';
+                final url = Uri.parse(
+                  Platform.isAndroid
+                      ? "market://details?id=$appId"
+                      : "https://apps.apple.com/app/id$appId",
+                );
+                launchUrl(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
+            child: const Text("Upgrade"),
+          )
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    if (storeVersion != '' && currentVersion != '') {
-      if (int.parse(currentVersion.numericOnly()) <
-          int.parse(storeVersion.numericOnly())) {
-        _showAlert(context);
-      }
-    }
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: GetBuilder<LanguageController>(builder: (lc) {
@@ -204,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           color: AllColor.themeColor,
                         ),
-                        height: size.height * 0.2,
+                        height: size.height * 0.22,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(12),
@@ -232,7 +287,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Container(
                                       margin: const EdgeInsets.only(
-                                          left: 10, top: 15),
+                                          left: 10, top: 25),
                                       child: Text(
                                         messageDisplay(lc),
                                         style: TextStyle(
@@ -283,7 +338,7 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         children: [
                           SizedBox(
-                            height: size.height * 0.12,
+                            height: size.height * 0.14,
                           ),
                           Row(
                             children: [
@@ -365,6 +420,9 @@ class _HomePageState extends State<HomePage> {
                                   )),
                             ],
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: DataControllers
@@ -403,7 +461,7 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(height: dynamicSize(0)),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 10.0, top: 10.0),
+                              const EdgeInsets.only(bottom: 15.0, top: 15.0),
                           child: Container(
                             alignment: Alignment.center,
                             child: Text(
@@ -601,15 +659,16 @@ class _HomePageState extends State<HomePage> {
                                             onProgressBar(false);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
-                                                builder: (_) => OnDemandPage(
-                                                  selectedCategory: '',
+                                                builder: (_) =>
+                                                    const OnDemandPage(
+                                                  selectedCategory: [''],
                                                 ),
                                               ),
                                             );
                                           },
                                           child: Container(
-                                            height: size.height * 0.14,
-                                            width: dynamicSize(0.35),
+                                            height: size.height * 0.11,
+                                            width: dynamicSize(0.27),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(5),
@@ -661,16 +720,17 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (_) => OnDemandPage(
-                                                selectedCategory:
-                                                    dataResponse[index - 1]
-                                                        .categoryName!,
+                                                selectedCategory: [
+                                                  dataResponse[index - 1]
+                                                      .categoryName!
+                                                ],
                                               ),
                                             ),
                                           );
                                         },
                                         child: Container(
-                                          height: size.height * 0.14,
-                                          width: dynamicSize(0.35),
+                                          height: size.height * 0.11,
+                                          width: dynamicSize(0.27),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
