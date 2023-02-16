@@ -237,6 +237,23 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  bool showServiceCheckBox = false;
+  List<String> selectedCategory = [];
+
+  bool _getIsSelected(String categoryName) {
+    if (!showServiceCheckBox) return false;
+    if (selectedCategory.contains(categoryName)) return true;
+    return false;
+  }
+
+  void _addOrRemoveSelectedCategory(String categoryName) {
+    if (!selectedCategory.contains(categoryName)) {
+      selectedCategory.add(categoryName);
+    } else {
+      selectedCategory.remove(categoryName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -247,6 +264,34 @@ class _HomePageState extends State<HomePage> {
             Scaffold(
               key: _scaffoldKey,
               // appBar: AppBar(title: Text('Goog Morning'),),
+              bottomNavigationBar: showServiceCheckBox
+                  ? Container(
+                      height: 70,
+                      padding: EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AllColor.blue_light,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => OnDemandPage(
+                                selectedCategory: selectedCategory,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: const [
+                              Text("Continue"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(Icons.arrow_forward)
+                            ]),
+                      ))
+                  : null,
               body: Column(
                 children: [
                   Stack(
@@ -712,49 +757,155 @@ class _HomePageState extends State<HomePage> {
                                   child: Column(
                                     children: [
                                       InkWell(
-                                        onTap: () async {
-                                          onProgressBar(true);
-                                          await DataControllers.to
-                                              .getAllShortService("short");
-                                          onProgressBar(false);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (_) => OnDemandPage(
-                                                selectedCategory: [
-                                                  dataResponse[index - 1]
-                                                      .categoryName!
-                                                ],
-                                              ),
-                                            ),
-                                          );
+                                        onLongPress: () {
+                                          setState(() {
+                                            // if (!showServiceCheckBox) {
+                                            //   _addOrRemoveSelectedCategory(
+                                            //       dataResponse[index - 1]
+                                            //           .categoryName!);
+                                            // }
+                                            _addOrRemoveSelectedCategory(
+                                                dataResponse[index - 1]
+                                                    .categoryName!);
+                                            showServiceCheckBox =
+                                                !showServiceCheckBox;
+                                            if (!showServiceCheckBox) {
+                                              selectedCategory.clear();
+                                            }
+                                          });
                                         },
-                                        child: Container(
-                                          height: size.height * 0.11,
-                                          width: dynamicSize(0.27),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.white,
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    0, 173, 229, 0.16),
-                                                blurRadius: 2,
-                                                offset: Offset(
-                                                    0, 3), // Shadow position
+                                        onTap: () async {
+                                          if (showServiceCheckBox) {
+                                            _addOrRemoveSelectedCategory(
+                                                dataResponse[index - 1]
+                                                    .categoryName!);
+                                            if (selectedCategory.isEmpty) {
+                                              setState(() {
+                                                showServiceCheckBox = false;
+                                              });
+                                            }
+                                          } else {
+                                            if (selectedCategory.isEmpty) {
+                                              setState(() {
+                                                showServiceCheckBox = false;
+                                              });
+                                            }
+                                            onProgressBar(true);
+                                            await DataControllers.to
+                                                .getAllShortService("short");
+                                            onProgressBar(false);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (_) => OnDemandPage(
+                                                  selectedCategory: [
+                                                    dataResponse[index - 1]
+                                                        .categoryName!
+                                                  ],
+                                                ),
                                               ),
-                                            ],
-                                          ),
-                                          child: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: Image.network(
-                                              ApiService.MainURL +
-                                                  dataResponse[index - 1]
-                                                      .serviceImage!,
-                                            ),
-                                          ),
-                                        ),
+                                            );
+                                          }
+                                        },
+                                        child: _getIsSelected(
+                                                    dataResponse[index - 1]
+                                                        .categoryName!) ==
+                                                true
+                                            ? Stack(
+                                                children: [
+                                                  Container(
+                                                    height: size.height * 0.11,
+                                                    width: dynamicSize(0.27),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color: _getIsSelected(
+                                                              dataResponse[
+                                                                      index - 1]
+                                                                  .categoryName!)
+                                                          ? AllColor.pinkShadow
+                                                          : Colors.white,
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                          color: Color.fromRGBO(
+                                                              0,
+                                                              173,
+                                                              229,
+                                                              0.16),
+                                                          blurRadius: 2,
+                                                          offset: Offset(0,
+                                                              3), // Shadow position
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: SizedBox(
+                                                      height: 20,
+                                                      width: 20,
+                                                      child: Image.network(
+                                                        ApiService.MainURL +
+                                                            dataResponse[
+                                                                    index - 1]
+                                                                .serviceImage!,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    top: size.height * 0.02,
+                                                    right: size.width * 0.06,
+                                                    child: const ClipOval(
+                                                      child: Material(
+                                                        color: Colors
+                                                            .white, // Button color
+                                                        child: InkWell(
+                                                          // Splash color
+
+                                                          child: SizedBox(
+                                                            width: 56,
+                                                            height: 56,
+                                                            child: Icon(
+                                                              Icons.check,
+                                                              color:
+                                                                  AllColor.blue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : Container(
+                                                height: size.height * 0.11,
+                                                width: dynamicSize(0.27),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: _getIsSelected(
+                                                          dataResponse[
+                                                                  index - 1]
+                                                              .categoryName!)
+                                                      ? AllColor.pinkShadow
+                                                      : Colors.white,
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color: Color.fromRGBO(
+                                                          0, 173, 229, 0.16),
+                                                      blurRadius: 2,
+                                                      offset: Offset(0,
+                                                          3), // Shadow position
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child: Image.network(
+                                                    ApiService.MainURL +
+                                                        dataResponse[index - 1]
+                                                            .serviceImage!,
+                                                  ),
+                                                ),
+                                              ),
                                       ),
                                       SizedBox(
                                         height: dynamicSize(0.02),

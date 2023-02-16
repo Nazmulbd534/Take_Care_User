@@ -95,6 +95,8 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
     result.forEach((element) {
       DataControllers.to.longServiceResponse.value.data!.data!.forEach((value) {
         value.serviceCats!.forEach((categories) {
+          //  log("Data is ## ${categories.serviceCategory!.categoryName!} \n\n\n}",
+          //     name: "test");
           bool _search = false;
           if (element == categories.serviceCategory!.categoryName) {
             searchData.forEach((searchingValue) {

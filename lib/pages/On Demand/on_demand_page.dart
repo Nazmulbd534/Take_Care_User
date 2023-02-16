@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -37,7 +38,6 @@ var addedservice = false;
 var showBottom = false;
 var addedlist = false;
 var searchValue = false;
-late List<bool> _isChecked;
 List<String> result = [];
 List<AllServiceData> searchData = [];
 
@@ -63,10 +63,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _isChecked = List<bool>.filled(
-          DataControllers.to.getCategoriesResponse.value.data!.length, false);
-    });
+    log(widget.selectedCategory.toString());
     if (widget.selectedCategory[0] != "") {
       for (int i = 0; i < widget.selectedCategory.length; i++) {
         setState(() {
@@ -416,27 +413,27 @@ class _OnDemandPageState extends State<OnDemandPage> {
                               fontSize: dynamicSize(0.07),
                               fontWeight: FontWeight.bold),
                         ),
-                        InkWell(
-                            onTap: () {
-                              setSt(() {
-                                _isChecked = List<bool>.filled(
-                                    DataControllers.to.getCategoriesResponse
-                                        .value.data!.length,
-                                    false);
-                              });
+                        // InkWell(
+                        //     // onTap: () {
+                        //     //   setSt(() {
+                        //     //     _isChecked = List<bool>.filled(
+                        //     //         DataControllers.to.getCategoriesResponse
+                        //     //             .value.data!.length,
+                        //     //         false);
+                        //     //   });
 
-                              searchData = [];
-                              result = [];
-                              searchValue = false;
-                              setState(() {});
-                              //Navigator.pop(context);
-                            },
-                            child: _isChecked.contains(true)
-                                ? Text("Deselect All",
-                                    style: TextStyle(
-                                        fontSize: dynamicSize(0.05),
-                                        color: Colors.purple))
-                                : Container()),
+                        //     //   searchData = [];
+                        //     //   result = [];
+                        //     //   searchValue = false;
+                        //     //   setState(() {});
+                        //     //   //Navigator.pop(context);
+                        //     // },
+                        //     child: widget.selectedCategory.contains(true)
+                        //         ? Text("Deselect All",
+                        //             style: TextStyle(
+                        //                 fontSize: dynamicSize(0.05),
+                        //                 color: Colors.purple))
+                        //         : Container()),
                       ],
                     ),
                     Flexible(
@@ -450,7 +447,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                 (index) => CheckboxListTile(
                                       title: Text(
                                           dataResponse[index].categoryName!),
-                                      value: _isChecked[index],
+                                      value: widget.selectedCategory.contains(
+                                          dataResponse[index].categoryName!),
                                       onChanged: (val) {
                                         if (val!) {
                                           result.add(dataResponse[index]
@@ -463,9 +461,21 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                                       .categoryName!);
                                           result.remove(value);
                                         }
+                                        // setSt(() {
+                                        //   _isChecked[index] = val;
+                                        // });
                                         setSt(() {
-                                          _isChecked[index] = val;
+                                          if (val) {
+                                            widget.selectedCategory.add(
+                                                dataResponse[index]
+                                                    .categoryName!);
+                                          } else {
+                                            widget.selectedCategory.remove(
+                                                dataResponse[index]
+                                                    .categoryName!);
+                                          }
                                         });
+
                                         setState(() {});
                                       },
                                     )),
@@ -473,34 +483,39 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         ),
                       ),
                     ),
-                    _isChecked.contains(true)
-                        ? Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: dynamicSize(0.08)),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                Navigator.pop(context);
-                                _filterValue();
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text('Show Listing',
-                                        style: TextStyle(
-                                            fontSize: dynamicSize(0.045))),
-                                  )
-                                ],
-                              ),
-                            ))
-                        : Container(),
+                    // _isChecked.contains(true)
+                    //     ? Padding(
+                    //         padding: EdgeInsets.symmetric(
+                    //             horizontal: dynamicSize(0.08)),
+                    //         child: ElevatedButton(
+                    //           onPressed: () async {
+                    //             Navigator.pop(context);
+                    //             _filterValue();
+                    //           },
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: [
+                    //               Padding(
+                    //                 padding: const EdgeInsets.all(10.0),
+                    //                 child: Text('Show Listing',
+                    //                     style: TextStyle(
+                    //                         fontSize: dynamicSize(0.045))),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ))
+                    //     : Container(),
                   ],
                 ),
               ),
             );
           });
-        });
+        }).whenComplete(() {
+      log("done");
+      setState(() {
+        _filterValue();
+      });
+    });
   }
 
   void getAddCardData() async {
