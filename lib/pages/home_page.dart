@@ -103,11 +103,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllService() async {
-    DataControllers.to.getCategoriesResponse.value.data!.forEach((element) {
-      if (element.serviceType == "short") {
-        dataResponse.add(element);
-      }
-    });
+    if (dataResponse.isEmpty) {
+      DataControllers.to.getCategoriesResponse.value.data!.forEach((element) {
+        if (element.serviceType == "short") {
+          dataResponse.add(element);
+        }
+      });
+    }
+
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       currentVersion = packageInfo.version;
@@ -255,6 +258,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit TakeCare?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -262,248 +286,263 @@ class _HomePageState extends State<HomePage> {
       child: GetBuilder<LanguageController>(builder: (lc) {
         return Stack(
           children: [
-            Scaffold(
-              key: _scaffoldKey,
-              // appBar: AppBar(title: Text('Goog Morning'),),
-              bottomNavigationBar: showServiceCheckBox
-                  ? Container(
-                      height: 70,
-                      padding: EdgeInsets.all(10),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => OnDemandPage(
-                                selectedCategory: selectedCategory,
+            WillPopScope(
+              onWillPop: _onWillPop,
+              child: Scaffold(
+                key: _scaffoldKey,
+                // appBar: AppBar(title: Text('Goog Morning'),),
+                bottomNavigationBar: showServiceCheckBox
+                    ? Container(
+                        height: 70,
+                        padding: EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                          onPressed: () {
+                            log("selected catagory == \n\n ${selectedCategory.toString()}");
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => OnDemandPage(
+                                  selectedCategory: selectedCategory,
+                                ),
                               ),
+                            );
+                            setState(() {
+                              showServiceCheckBox = false;
+                              selectedCategory = [];
+                            });
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: const [
+                                Text("Continue"),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(Icons.arrow_forward)
+                              ]),
+                        ))
+                    : null,
+                body: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(18.0),
+                              bottomRight: Radius.circular(18.0),
                             ),
-                          );
-                        },
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text("Continue"),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(Icons.arrow_forward)
-                            ]),
-                      ))
-                  : null,
-              body: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(18.0),
-                            bottomRight: Radius.circular(18.0),
+                            color: AllColor.themeColor,
                           ),
-                          color: AllColor.themeColor,
+                          height: size.height * 0.22,
                         ),
-                        height: size.height * 0.22,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          children: [
-                            // Image.asset("assets/images/baby.png"),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(15),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              // Image.asset("assets/images/baby.png"),
+                              ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                                child: CachedNetworkImage(
+                                  height: 55,
+                                  width: 55,
+                                  fit: BoxFit.cover,
+                                  imageUrl:
+                                      '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset('assets/images/baby.png'),
+                                ),
                               ),
-                              child: CachedNetworkImage(
-                                height: 55,
-                                width: 55,
-                                fit: BoxFit.cover,
-                                imageUrl:
-                                    '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
-                                errorWidget: (context, url, error) =>
-                                    Image.asset('assets/images/baby.png'),
-                              ),
-                            ),
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        margin: const EdgeInsets.only(
+                                            left: 10, top: 25),
+                                        child: Text(
+                                          messageDisplay(lc),
+                                          style: TextStyle(
+                                              fontSize: dynamicSize(0.04),
+                                              color: Colors.white,
+                                              fontFamily: 'Muli'),
+                                        )),
+                                    Container(
                                       margin: const EdgeInsets.only(
-                                          left: 10, top: 25),
+                                          left: 10, bottom: 10, top: 0),
                                       child: Text(
-                                        messageDisplay(lc),
-                                        style: TextStyle(
-                                            fontSize: dynamicSize(0.04),
-                                            color: Colors.white,
-                                            fontFamily: 'Muli'),
-                                      )),
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 10, bottom: 10, top: 0),
-                                    child: Text(
-                                      (DataControllers
-                                              .to
-                                              .userLoginResponse
-                                              .value
-                                              .data!
-                                              .user!
-                                              .fullName!
-                                              .isEmpty
-                                          ? " "
-                                          : DataControllers.to.userLoginResponse
-                                              .value.data!.user!.fullName
-                                              .toString()),
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                _scaffoldKey.currentState!.openEndDrawer();
-                              },
-                              icon: const Icon(
-                                Icons.menu,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.14,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 4,
-                                  child: CarouselSlider.builder(
-                                    carouselController:
-                                        buttonCarouselController,
-                                    itemCount: DataControllers
-                                        .to.sliderResponse.value.data!.length,
-                                    itemBuilder: (BuildContext context,
-                                            int itemIndex, int pageViewIndex) =>
-                                        Container(
-                                      //color: Colors.pinkAccent,
-                                      height: dynamicSize(0.38),
-                                      width: dynamicSize(0.96),
-                                      // width: MediaQuery.of(context).size.width/2,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.pinkAccent,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
-                                          fit: BoxFit.cover,
+                                        (DataControllers
+                                                .to
+                                                .userLoginResponse
+                                                .value
+                                                .data!
+                                                .user!
+                                                .fullName!
+                                                .isEmpty
+                                            ? " "
+                                            : DataControllers
+                                                .to
+                                                .userLoginResponse
+                                                .value
+                                                .data!
+                                                .user!
+                                                .fullName
+                                                .toString()),
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontFamily: "Muli",
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  _scaffoldKey.currentState!.openEndDrawer();
+                                },
+                                icon: const Icon(
+                                  Icons.menu,
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.14,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: CarouselSlider.builder(
+                                      carouselController:
+                                          buttonCarouselController,
+                                      itemCount: DataControllers
+                                          .to.sliderResponse.value.data!.length,
+                                      itemBuilder: (BuildContext context,
+                                              int itemIndex,
+                                              int pageViewIndex) =>
                                           Container(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, bottom: 10),
-                                              child: Text(
-                                                "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        dynamicSize(0.075),
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
+                                        //color: Colors.pinkAccent,
+                                        height: dynamicSize(0.38),
+                                        width: dynamicSize(0.96),
+                                        // width: MediaQuery.of(context).size.width/2,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.pinkAccent,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
+                                            fit: BoxFit.cover,
                                           ),
-                                          Container(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0, bottom: 15),
-                                              child: Text(
-                                                "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
-                                                style: TextStyle(
-                                                  fontSize: dynamicSize(0.045),
-                                                  color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10, bottom: 10),
+                                                child: Text(
+                                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          dynamicSize(0.075),
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              alignment: Alignment.bottomLeft,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0, bottom: 15),
+                                                child: Text(
+                                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        dynamicSize(0.045),
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    options: CarouselOptions(
-                                        autoPlay: true,
-                                        enlargeCenterPage: false,
-                                        viewportFraction: 1.0,
-                                        aspectRatio: 2.8,
-                                        initialPage: 0,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            _current = index;
-                                          });
-                                        }),
-                                  )),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: DataControllers
-                                .to.sliderResponse.value.data!
-                                .asMap()
-                                .entries
-                                .map((entry) {
-                              return GestureDetector(
-                                onTap: () => buttonCarouselController
-                                    .animateToPage(entry.key),
-                                child: Container(
-                                  width: 10.0,
-                                  height: 10.0,
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 4.0),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: (Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? AllColor.blue_light
-                                              : AllColor.blue)
-                                          .withOpacity(_current == entry.key
-                                              ? 0.9
-                                              : 0.4)),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ), //appbar design
-                  ServiceCategoryListWidget(lc: lc, size: size),
-                ],
+                                      options: CarouselOptions(
+                                          autoPlay: true,
+                                          enlargeCenterPage: false,
+                                          viewportFraction: 1.0,
+                                          aspectRatio: 2.8,
+                                          initialPage: 0,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _current = index;
+                                            });
+                                          }),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: DataControllers
+                                  .to.sliderResponse.value.data!
+                                  .asMap()
+                                  .entries
+                                  .map((entry) {
+                                return GestureDetector(
+                                  onTap: () => buttonCarouselController
+                                      .animateToPage(entry.key),
+                                  child: Container(
+                                    width: 10.0,
+                                    height: 10.0,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 4.0),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: (Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? AllColor.blue_light
+                                                : AllColor.blue)
+                                            .withOpacity(_current == entry.key
+                                                ? 0.9
+                                                : 0.4)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ), //appbar design
+                    ServiceCategoryListWidget(lc: lc, size: size),
+                  ],
+                ),
+                endDrawer: _drawer(),
               ),
-              endDrawer: _drawer(),
             ),
             isLoading ? const LoadingWidget() : Container()
           ],
