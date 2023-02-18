@@ -75,7 +75,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                       if (widget.activity ==
                           Variables.onDemandServiceActivity) {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const OnDemandPage(
+                            builder: (_) => OnDemandPage(
                                   selectedCategory: [''],
                                 )));
                       } else if (widget.activity ==

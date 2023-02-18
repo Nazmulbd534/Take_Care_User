@@ -57,7 +57,7 @@ class _MapPageState extends State<MapPage> {
           WillPopScope(
             onWillPop: () async {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (_) => const OnDemandPage(
+                  builder: (_) => OnDemandPage(
                         selectedCategory: [''],
                       )));
               return true;
