@@ -35,6 +35,7 @@ late List<bool> _isChecked;
 bool searchValue = false;
 List<String> result = [];
 List<AllServiceData> searchData = [];
+bool scheduleSelected = false;
 
 class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   Icon cusIcon = Icon(Icons.search, color: Colors.black);
@@ -573,7 +574,8 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
     }
   }
 
-  void addressSelected(BuildContext context) {
+  void serviceReceiverSheet(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -587,34 +589,103 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                     topLeft: Radius.circular(15.0),
                   ),
                 ),
-                height: dynamicSize(0.75),
+                height: dynamicSize(0.87),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.cancel,
-                              color: Colors.black38,
-                              size: 35,
-                            ))),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.black38,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                    const Center(
                       child: Text(
-                        'Service for Whome?',
-                        textAlign: TextAlign.left,
+                        "Book For",
                         style: TextStyle(
-                            fontSize: dynamicSize(0.05),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                            color: AllColor.boldTextColor,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            scheduleSelected = !scheduleSelected;
+                          });
+                          log("schedule select is now  $scheduleSelected");
+                        },
+                        child: Container(
+                          width: size.width * 0.4,
+                          height: size.height * 0.04,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: scheduleSelected
+                                ? AllColor.pink_button
+                                : Colors.grey[400],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    scheduleSelected = !scheduleSelected;
+                                  });
+                                },
+                                child: Container(
+                                  width: size.width * 0.2,
+                                  height: size.height * 0.04,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: scheduleSelected
+                                        ? Colors.grey[400]
+                                        : AllColor.pink_button,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      "Now",
+                                      style: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 10.0),
+                                child: Text(
+                                  "Schedule",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10),
+                      padding: EdgeInsets.only(left: 10, right: 10, top: 15.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -900,7 +971,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                         flex: 2,
                         child: InkWell(
                           onTap: () {
-                            addressSelected(context);
+                            serviceReceiverSheet(context);
                           },
                           child: Container(
                             decoration: const BoxDecoration(

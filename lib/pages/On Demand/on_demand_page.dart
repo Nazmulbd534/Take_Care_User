@@ -20,6 +20,7 @@ import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
 import '../../api_service/ApiService.dart';
+import '../long_time_services/service_request_form_page.dart';
 import 'feedback_page.dart';
 import 'map_page.dart';
 import 'package:blurrycontainer/blurrycontainer.dart';
@@ -32,13 +33,6 @@ class OnDemandPage extends StatefulWidget {
   @override
   _OnDemandPageState createState() => _OnDemandPageState();
 }
-
-var addedservice = false;
-var showBottom = false;
-var addedlist = false;
-var searchValue = false;
-List<String> result = [];
-List<AllServiceData> searchData = [];
 
 class _OnDemandPageState extends State<OnDemandPage> {
   Icon cusIcon = const Icon(Icons.search, color: Colors.black);
@@ -59,16 +53,25 @@ class _OnDemandPageState extends State<OnDemandPage> {
 
   late GeocodingResult resultGeo;
 
+  var addedservice = false;
+  var showBottom = false;
+  var addedlist = false;
+  var searchValue = false;
+  List<String> result = [];
+  List<AllServiceData> searchData = [];
+  bool selectMyself = true;
+  bool scheduleLaterSelected = false;
   @override
   void initState() {
     super.initState();
-    log(widget.selectedCategory.toString());
+    log(widget.selectedCategory.toString(), name: "selectedCategory");
     if (widget.selectedCategory[0] != "") {
       for (int i = 0; i < widget.selectedCategory.length; i++) {
         setState(() {
           result.add(widget.selectedCategory[i]);
-          _filterValue();
         });
+
+        _filterValue();
       }
       // for (int i = 0;
       //     i < DataControllers.to.getCategoriesResponse.value.data!.length;
@@ -567,10 +570,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
 
-    await DataControllers.to.addCard(
-        DataControllers.to.shortServiceResponse.value.data!.data![index].id
-            .toString(),
-        formattedDate);
+    await DataControllers.to
+        .addCard(searchData[index].id.toString(), formattedDate);
 
     if (DataControllers.to.addCardResponse.value.success!) {
       Common.storeSharedPreferences.setString("service", "short");
@@ -783,54 +784,57 @@ class _OnDemandPageState extends State<OnDemandPage> {
                           flex: 2,
                           child: InkWell(
                             onTap: () async {
-                              await DataControllers.to.getProviderList(
-                                  "1",
-                                  "1",
-                                  Variables.currentPostion.longitude.toString(),
-                                  Variables.currentPostion.latitude.toString());
-                              resultGeo = (await Navigator.push(
-                                context,
-                                MaterialPageRoute<GeocodingResult>(
-                                  builder: (cx) {
-                                    return MapLocationPicker(
-                                        topCardColor: Colors.white70,
-                                        bottomCardColor: Colors.pinkAccent,
-                                        origin: Location(
-                                            lat: Variables
-                                                .currentPostion.latitude,
-                                            lng: Variables
-                                                .currentPostion.longitude),
-                                        desiredAccuracy: LocationAccuracy.high,
-                                        location: Location(
-                                            lat: Variables
-                                                .currentPostion.latitude,
-                                            lng: Variables
-                                                .currentPostion.longitude),
-                                        apiKey:
-                                            "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                        canPopOnNextButtonTaped: true,
-                                        onNext: (GeocodingResult? result) {
-                                          if (result != null) {
-                                            setState(() {
-                                              resultGeo = result;
-                                              Navigator.pop(cx, resultGeo);
-                                            });
-                                          } else {
-                                            resultGeo = result!;
-                                          }
-                                        });
-                                  },
-                                ),
-                              ))!;
-                              if (resultGeo != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (cp) => MapPage(
-                                            result: resultGeo,
-                                          )),
-                                );
-                              }
+                              // TODO : move these logic accordingly
+
+                              serviceReceiverSheetOnDemand(context);
+                              // await DataControllers.to.getProviderList(
+                              //     "1",
+                              //     "1",
+                              //     Variables.currentPostion.longitude.toString(),
+                              //     Variables.currentPostion.latitude.toString());
+                              // resultGeo = (await Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute<GeocodingResult>(
+                              //     builder: (cx) {
+                              //       return MapLocationPicker(
+                              //           topCardColor: Colors.white70,
+                              //           bottomCardColor: Colors.pinkAccent,
+                              //           origin: Location(
+                              //               lat: Variables
+                              //                   .currentPostion.latitude,
+                              //               lng: Variables
+                              //                   .currentPostion.longitude),
+                              //           desiredAccuracy: LocationAccuracy.high,
+                              //           location: Location(
+                              //               lat: Variables
+                              //                   .currentPostion.latitude,
+                              //               lng: Variables
+                              //                   .currentPostion.longitude),
+                              //           apiKey:
+                              //               "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                              //           canPopOnNextButtonTaped: true,
+                              //           onNext: (GeocodingResult? result) {
+                              //             if (result != null) {
+                              //               setState(() {
+                              //                 resultGeo = result;
+                              //                 Navigator.pop(cx, resultGeo);
+                              //               });
+                              //             } else {
+                              //               resultGeo = result!;
+                              //             }
+                              //           });
+                              //     },
+                              //   ),
+                              // ))!;
+                              // if (resultGeo != null) {
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (cp) => MapPage(
+                              //               result: resultGeo,
+                              //             )),
+                              //   );
+                              // }
                             },
                             child: Container(
                               decoration: const BoxDecoration(
@@ -1398,5 +1402,285 @@ class _OnDemandPageState extends State<OnDemandPage> {
         ),
       );
     });
+  }
+
+  void serviceReceiverSheetOnDemand(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: AllColor.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.0),
+                    topLeft: Radius.circular(15.0),
+                  ),
+                ),
+                height: dynamicSize(0.87),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.black38,
+                          size: 25,
+                        ),
+                      ),
+                    ),
+                    const Center(
+                      child: Text(
+                        "Book For",
+                        style: TextStyle(
+                            color: AllColor.boldTextColor,
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            scheduleLaterSelected = !scheduleLaterSelected;
+                          });
+                        },
+                        child: Container(
+                          width: size.width * 0.4,
+                          height: size.height * 0.04,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: scheduleLaterSelected
+                                ? AllColor.pink_button
+                                : Colors.grey[400],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    scheduleLaterSelected =
+                                        !scheduleLaterSelected;
+                                  });
+                                },
+                                child: Container(
+                                  width: size.width * 0.2,
+                                  height: size.height * 0.04,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: scheduleLaterSelected
+                                        ? Colors.grey[400]
+                                        : AllColor.pink_button,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      "Now",
+                                      style: TextStyle(
+                                        fontFamily: "Muli",
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 10.0),
+                                child: Text(
+                                  "Schedule",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10, top: 15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectMyself = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: dynamicSize(0.35),
+                                    child: Card(
+                                      color: selectMyself
+                                          ? AllColor.blue_light
+                                          : AllColor.white_light,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 15,
+                                                bottom: 10,
+                                                left: 10,
+                                                right: 10),
+                                            child: Text(
+                                              'Myself',
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.05),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: selectMyself
+                                                      ? AllColor.white
+                                                      : Colors.black),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 10, left: 10, right: 10),
+                                            child: Text(
+                                              'Book Service for you',
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.04),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: selectMyself
+                                                      ? AllColor.white
+                                                      : Colors.black38),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: dynamicSize(0.35),
+                                margin: EdgeInsets.all(10),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Or',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: dynamicSize(0.05),
+                                      fontWeight: FontWeight.bold,
+                                      color: AllColor.blue),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      selectMyself = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    height: dynamicSize(0.35),
+                                    child: Card(
+                                      color: selectMyself
+                                          ? AllColor.white_light
+                                          : AllColor.blue_light,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 15,
+                                                bottom: 10,
+                                                left: 10,
+                                                right: 10),
+                                            child: Text(
+                                              'Loved Ones',
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.05),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: selectMyself
+                                                      ? Colors.black
+                                                      : AllColor.white),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 10, left: 10, right: 10),
+                                            child: Text(
+                                              'Book Service for Your loved One\'s',
+                                              style: TextStyle(
+                                                  fontSize: dynamicSize(0.04),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: selectMyself
+                                                      ? Colors.black38
+                                                      : AllColor.white),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (selectMyself) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ServiceRequestFormPage(
+                                            mySelf: 'mySelf',
+                                          )),
+                                );
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                      fontSize: dynamicSize(0.04),
+                                      color: AllColor.blue_light),
+                                ),
+                                Icon(Icons.arrow_right_alt,
+                                    color: AllColor.blue_light)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 }

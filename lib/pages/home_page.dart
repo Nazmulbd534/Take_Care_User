@@ -27,6 +27,7 @@ import 'package:takecare_user/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/CategoriesResponse.dart';
 import 'On Demand/accepted_page.dart';
+import 'long_time_services/service_request_form_page.dart';
 import 'loved_ones_page.dart';
 import 'order_history/order_history_page.dart';
 import 'package:package_info_plus/package_info_plus.dart' show PackageInfo;
@@ -66,6 +67,7 @@ class _HomePageState extends State<HomePage> {
   String currentVersion = '';
   String enforcedVersion = '';
   String storeVersion = '';
+  bool scheduleLaterSelected = false;
   @override
   void initState() {
     super.initState();
@@ -279,9 +281,14 @@ class _HomePageState extends State<HomePage> {
         false;
   }
 
+  refresh() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: GetBuilder<LanguageController>(builder: (lc) {
         return Stack(
@@ -298,8 +305,15 @@ class _HomePageState extends State<HomePage> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue),
-                          onPressed: () {
-                            log("selected catagory == \n\n ${selectedCategory.toString()}");
+                          onPressed: () async {
+                            // TODO : move these logic accordingly
+
+                            log(selectedCategory.toString(),
+                                name: "home_page selcatagry");
+                            onProgressBar(true);
+                            await DataControllers.to
+                                .getAllShortService("short");
+                            onProgressBar(false);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => OnDemandPage(
@@ -309,7 +323,6 @@ class _HomePageState extends State<HomePage> {
                             );
                             setState(() {
                               showServiceCheckBox = false;
-                              selectedCategory = [];
                             });
                           },
                           child: Row(
@@ -538,7 +551,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ), //appbar design
-                    ServiceCategoryListWidget(lc: lc, size: size),
+                    ServiceCategoryListWidget(
+                      lc: lc,
+                      size: size,
+                      refresh: refresh,
+                    ),
                   ],
                 ),
                 endDrawer: _drawer(),
@@ -1065,7 +1082,9 @@ void logOutMethod(BuildContext context) {
 class ServiceCategoryListWidget extends StatefulWidget {
   LanguageController lc;
   Size size;
-  ServiceCategoryListWidget({Key? key, required this.lc, required this.size})
+  final Function() refresh;
+  ServiceCategoryListWidget(
+      {Key? key, required this.lc, required this.size, required this.refresh})
       : super(key: key);
 
   @override
@@ -1186,15 +1205,20 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                         //       dataResponse[index - 1]
                                         //           .categoryName!);
                                         // }
-                                        _addOrRemoveSelectedCategory(
-                                            dataResponse[index - 1]
-                                                .categoryName!);
-                                        showServiceCheckBox =
-                                            !showServiceCheckBox;
-                                        if (!showServiceCheckBox) {
+                                        setState(() {
                                           selectedCategory.clear();
-                                        }
+                                          showServiceCheckBox =
+                                              !showServiceCheckBox;
+                                          _addOrRemoveSelectedCategory(
+                                              dataResponse[index - 1]
+                                                  .categoryName!);
+                                        });
                                       });
+
+                                      if (!showServiceCheckBox) {
+                                        selectedCategory.clear();
+                                      }
+                                      widget.refresh();
                                     },
                                     onTap: () async {
                                       log("clicked");
@@ -1224,6 +1248,8 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                           ),
                                         );
                                       }
+
+                                      widget.refresh();
                                     },
                                     child: Container(
                                       height: widget.size.height * 0.11,
@@ -1301,6 +1327,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                             ),
                                           );
                                         }
+                                        widget.refresh();
                                       },
                                       child: const SizedBox(
                                         width: 56,
@@ -1320,6 +1347,8 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                             children: [
                               InkWell(
                                 onLongPress: () {
+                                  showServiceCheckBox = true;
+                                  widget.refresh();
                                   setState(() {
                                     // if (!showServiceCheckBox) {
                                     //   _addOrRemoveSelectedCategory(
@@ -1328,7 +1357,6 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                     // }
                                     _addOrRemoveSelectedCategory(
                                         dataResponse[index - 1].categoryName!);
-                                    showServiceCheckBox = !showServiceCheckBox;
                                     if (!showServiceCheckBox) {
                                       selectedCategory.clear();
                                     }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class AllColor {
   static const Color pinkShadow = Color.fromRGBO(224, 21, 120, 0.4);
+  static const Color boldTextColor = Color.fromRGBO(75, 75, 68, 1);
   static const Color themeColor = Color(0xffE01578);
   static const Color blue = Color(0xff028ac9);
   static const Color blue_light = Color(0xff39BFFE);
