@@ -6,16 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:intl/intl.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/model/AllServiceResponse.dart';
 import 'package:takecare_user/model/CategoriesResponse.dart';
+import 'package:takecare_user/model/LovedOnesResponse.dart';
+import 'package:takecare_user/pages/On%20Demand/map_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/long_time_services/service_request_form_page.dart';
+import 'package:takecare_user/pages/loved_form_page.dart';
+import 'package:takecare_user/pages/loved_ones_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
+import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
 
 class LongTimeServicesPage extends StatefulWidget {
@@ -48,6 +54,8 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   TextEditingController searchController = TextEditingController();
   List<CategoriesData> dataResponse = [];
   bool focus = false;
+
+  late GeocodingResult resultGeo;
 
   @override
   void initState() {
@@ -817,16 +825,68 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                             ],
                           ),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
                               if (selectMyself) {
-                                Navigator.push(
+                                await DataControllers.to.getProviderList(
+                                    "1",
+                                    "1",
+                                    Variables.currentPostion.longitude
+                                        .toString(),
+                                    Variables.currentPostion.latitude
+                                        .toString());
+                                resultGeo = (await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ServiceRequestFormPage(
-                                            mySelf: 'mySelf',
-                                          )),
-                                );
+                                  MaterialPageRoute<GeocodingResult>(
+                                    builder: (cx) {
+                                      return MapLocationPicker(
+                                          topCardColor: Colors.white70,
+                                          bottomCardColor: Colors.pinkAccent,
+                                          currentLatLng:
+                                              Variables.currentPostion,
+                                          desiredAccuracy:
+                                              LocationAccuracy.high,
+                                          apiKey:
+                                              "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                          canPopOnNextButtonTaped: true,
+                                          onNext: (GeocodingResult? result) {
+                                            if (result != null) {
+                                              setState(() {
+                                                resultGeo = result;
+                                                Navigator.pop(cx, resultGeo);
+                                              });
+                                            } else {
+                                              resultGeo = result!;
+                                            }
+                                          });
+                                    },
+                                  ),
+                                ))!;
+                                if (resultGeo != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (cp) => MapPage(
+                                              result: resultGeo,
+                                            )),
+                                  );
+                                }
+                              } else {
+                                LovedOnesResponse lovedOnes =
+                                    await ApiService.getFavAddress();
+                                if (!lovedOnes.success!) {
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                          builder: (_) => LovedFormPage(
+                                                activity: Variables
+                                                    .orderInformationActivity,
+                                              )));
+                                } else {
+                                  log("not empty");
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (_) => LovedOnesPage(
+                                              activity: "SelectAndGotoMap")));
+                                }
                               }
                             },
                             child: Row(

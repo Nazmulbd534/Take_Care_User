@@ -651,7 +651,7 @@
     },
     {
       "name": "map_location_picker",
-      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/map_location_picker-1.0.1",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/map_location_picker-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -670,12 +670,6 @@
     {
       "name": "meta",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.8.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
-      "name": "nested",
-      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -798,12 +792,6 @@
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
-    },
-    {
-      "name": "provider",
-      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.3",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
     },
     {
       "name": "rxdart",
@@ -1088,7 +1076,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2023-02-19T09:47:52.731085Z",
+  "generated": "2023-02-20T14:15:16.483622Z",
   "generator": "pub",
   "generatorVersion": "2.18.6"
 }

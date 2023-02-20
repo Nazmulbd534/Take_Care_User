@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:takecare_user/controller/data_controller.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/model/SaveAddressResponse.dart';
+import 'package:takecare_user/pages/On%20Demand/map_page.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
 import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
 import 'package:takecare_user/public_variables/variables.dart';
@@ -32,6 +36,8 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
   LovedOnesResponse addressResponse = new LovedOnesResponse();
 
   int length = 0;
+
+  GeocodingResult? resultGeo;
 
   @override
   void initState() {
@@ -70,7 +76,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
             itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       print(widget.activity);
                       if (widget.activity ==
                           Variables.onDemandServiceActivity) {
@@ -84,10 +90,52 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               Variables.orderInformationActivity) {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (_) => OrderInformationPage(
-                                activity: Variables.lovedOnesActivity,
-                                serviceHolderInfo: addressResponse.data![index],
-                                serviceAddress: widget.serviceAddress,
-                                serviceTime: widget.serviceTime)));
+                                  activity: Variables.lovedOnesActivity,
+                                  serviceHolderInfo:
+                                      addressResponse.data![index],
+                                  serviceAddress: "test",
+                                  serviceTime: "test1",
+                                )));
+                      } else if (widget.activity == "SelectAndGotoMap") {
+                        await DataControllers.to.getProviderList(
+                            "1",
+                            "1",
+                            Variables.currentPostion.longitude.toString(),
+                            Variables.currentPostion.latitude.toString());
+                        resultGeo = (await Navigator.push(
+                          context,
+                          MaterialPageRoute<GeocodingResult>(
+                            builder: (cx) {
+                              return MapLocationPicker(
+                                  topCardColor: Colors.white70,
+                                  bottomCardColor: Colors.pinkAccent,
+                                  currentLatLng: Variables.currentPostion,
+                                  desiredAccuracy: LocationAccuracy.high,
+                                  apiKey:
+                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                  canPopOnNextButtonTaped: true,
+                                  onNext: (GeocodingResult? result) {
+                                    if (result != null) {
+                                      setState(() {
+                                        resultGeo = result;
+                                        Navigator.pop(cx, resultGeo);
+                                      });
+                                    } else {
+                                      resultGeo = result!;
+                                    }
+                                  });
+                            },
+                          ),
+                        ))!;
+                        if (resultGeo != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (cp) => MapPage(
+                                      result: resultGeo!,
+                                    )),
+                          );
+                        }
                       }
                     },
                     child: Container(

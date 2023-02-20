@@ -12,8 +12,11 @@ import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/model/AllServiceResponse.dart';
 import 'package:takecare_user/model/CategoriesResponse.dart';
+import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:intl/intl.dart';
+import 'package:takecare_user/pages/loved_form_page.dart';
+import 'package:takecare_user/pages/loved_ones_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
@@ -1647,16 +1650,68 @@ class _OnDemandPageState extends State<OnDemandPage> {
                             ],
                           ),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
                               if (selectMyself) {
-                                Navigator.push(
+                                await DataControllers.to.getProviderList(
+                                    "1",
+                                    "1",
+                                    Variables.currentPostion.longitude
+                                        .toString(),
+                                    Variables.currentPostion.latitude
+                                        .toString());
+                                resultGeo = (await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ServiceRequestFormPage(
-                                            mySelf: 'mySelf',
-                                          )),
-                                );
+                                  MaterialPageRoute<GeocodingResult>(
+                                    builder: (cx) {
+                                      return MapLocationPicker(
+                                          topCardColor: Colors.white70,
+                                          bottomCardColor: Colors.pinkAccent,
+                                          currentLatLng:
+                                              Variables.currentPostion,
+                                          desiredAccuracy:
+                                              LocationAccuracy.high,
+                                          apiKey:
+                                              "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                          canPopOnNextButtonTaped: true,
+                                          onNext: (GeocodingResult? result) {
+                                            if (result != null) {
+                                              setState(() {
+                                                resultGeo = result;
+                                                Navigator.pop(cx, resultGeo);
+                                              });
+                                            } else {
+                                              resultGeo = result!;
+                                            }
+                                          });
+                                    },
+                                  ),
+                                ))!;
+                                if (resultGeo != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (cp) => MapPage(
+                                              result: resultGeo,
+                                            )),
+                                  );
+                                }
+                              } else {
+                                LovedOnesResponse lovedOnes =
+                                    await ApiService.getFavAddress();
+                                if (!lovedOnes.success!) {
+                                  Navigator.of(context)
+                                      .pushReplacement(MaterialPageRoute(
+                                          builder: (_) => LovedFormPage(
+                                                activity: Variables
+                                                    .orderInformationActivity,
+                                              )));
+                                } else {
+                                  log("not empty");
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (_) => LovedOnesPage(
+                                              activity: "SelectAndGotoMap")));
+                                }
                               }
                             },
                             child: Row(
