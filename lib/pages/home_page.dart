@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_close_app/flutter_close_app.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
@@ -272,7 +273,9 @@ class _HomePageState extends State<HomePage> {
                 child: const Text('No'),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () {
+                  FlutterCloseApp.close();
+                },
                 child: const Text('Yes'),
               ),
             ],
