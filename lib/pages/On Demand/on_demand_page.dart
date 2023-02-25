@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -35,6 +36,17 @@ class OnDemandPage extends StatefulWidget {
 
   @override
   _OnDemandPageState createState() => _OnDemandPageState();
+}
+
+void click() async {
+  await Future.delayed(Duration(seconds: 2));
+  GestureBinding.instance!.handlePointerEvent(PointerDownEvent(
+    position: Offset(200, 300),
+  ));
+  await Future.delayed(Duration(seconds: 2));
+  GestureBinding.instance!.handlePointerEvent(PointerUpEvent(
+    position: Offset(200, 300),
+  ));
 }
 
 class _OnDemandPageState extends State<OnDemandPage> {
