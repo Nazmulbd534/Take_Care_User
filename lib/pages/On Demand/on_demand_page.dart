@@ -1671,6 +1671,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                         .toString(),
                                     Variables.currentPostion.latitude
                                         .toString());
+                                // ignore: use_build_context_synchronously
                                 resultGeo = (await Navigator.push(
                                   context,
                                   MaterialPageRoute<GeocodingResult>(
@@ -1699,6 +1700,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   ),
                                 ))!;
                                 if (resultGeo != null) {
+                                  // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

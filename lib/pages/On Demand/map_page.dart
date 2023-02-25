@@ -15,6 +15,8 @@ import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/string_constant.dart';
+import 'dart:developer';
+import '../../public_variables/variables.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key, required this.result}) : super(key: key);
@@ -76,11 +78,12 @@ class _MapPageState extends State<MapPage> {
                           GoogleMap(
                             mapType: MapType.normal,
                             initialCameraPosition: _kLake = CameraPosition(
-                                bearing: 192.8334901395799,
-                                target:
-                                    LatLng(192.83349013957, 192.83349013957),
-                                tilt: 59.440717697143555,
-                                zoom: 15.151926040649414),
+                              bearing: 192.8334901395799,
+                              target: LatLng(Variables.currentPostion.latitude,
+                                  Variables.currentPostion.longitude),
+                              tilt: 59.440717697143555,
+                              zoom: 15.151926040649414,
+                            ),
                             onMapCreated: (GoogleMapController controller) {
                               _controller.complete(controller);
                             },
@@ -107,21 +110,22 @@ class _MapPageState extends State<MapPage> {
                                           ),
                                           TextButton(
                                               onPressed: () async {
-                                                /*
                                                 late GeocodingResult resultGeo;
-                                                resultGeo = (await Navigator.push(
+                                                resultGeo =
+                                                    (await Navigator.push(
                                                   context,
                                                   MaterialPageRoute<
                                                       GeocodingResult>(
                                                     builder: (cx) {
                                                       return MapLocationPicker(
                                                           location: Location(
-                                                              lat: Variables
-                                                                  .currentPostion
-                                                                  .latitude,
-                                                              lng: Variables
-                                                                  .currentPostion
-                                                                  .longitude),
+                                                            lat: Variables
+                                                                .currentPostion
+                                                                .latitude,
+                                                            lng: Variables
+                                                                .currentPostion
+                                                                .longitude,
+                                                          ),
                                                           apiKey:
                                                               "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
                                                           canPopOnNextButtonTaped:
@@ -146,6 +150,7 @@ class _MapPageState extends State<MapPage> {
                                                   ),
                                                 ))!;
                                                 if (resultGeo != null) {
+                                                  // ignore: use_build_context_synchronously
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -155,7 +160,6 @@ class _MapPageState extends State<MapPage> {
                                                             )),
                                                   );
                                                 }
-                                                */
                                               },
                                               child: Text(
                                                 "Edit",
@@ -216,199 +220,209 @@ class _MapPageState extends State<MapPage> {
                             child: ListView(
                               children: List.generate(
                                 providerList.isEmpty ? 0 : providerList.length,
-                                (index) => Container(
-                                  color: selected[index]
-                                      ? AllColor.selected_color
-                                      : Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        left: 8,
-                                        bottom: 15,
-                                        right: 8),
-                                    child: InkWell(
-                                      onTap: () {
-                                        rqbutton = true;
-                                        setState(() {
-                                          selected = providerList
-                                              .map<bool>((v) => false)
-                                              .toList();
-                                          selected[index] = !selected[index];
-                                          requestIndex = index;
+                                (index) {
+                                  log(" ${providerList[index].fullName} ${providerList[index].profilePhoto}",
+                                      name: "Test");
 
-                                          // Get.offAll(()=> RequestPage());
-                                        });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Stack(
-                                                alignment: Alignment.center,
-                                                clipBehavior: Clip.none,
-                                                children: [
-                                                  Positioned(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              Radius.circular(
-                                                                  30)),
-                                                      child: CachedNetworkImage(
-                                                        height: 55,
-                                                        width: 55,
-                                                        fit: BoxFit.cover,
-                                                        imageUrl: providerList[
-                                                                        index]
-                                                                    .profilePhoto ==
-                                                                null
-                                                            ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
-                                                            : providerList[
-                                                                    index]
-                                                                .profilePhoto!
-                                                                .toString(),
-                                                        placeholder: (context,
-                                                                url) =>
-                                                            Image.asset(
-                                                                'assets/images/baby.png'),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Image.asset(
-                                                                'assets/images/baby.png'),
+                                  return Container(
+                                    color: selected[index]
+                                        ? AllColor.selected_color
+                                        : Colors.white,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0,
+                                          left: 8,
+                                          bottom: 15,
+                                          right: 8),
+                                      child: InkWell(
+                                        onTap: () {
+                                          rqbutton = true;
+                                          setState(() {
+                                            selected = providerList
+                                                .map<bool>((v) => false)
+                                                .toList();
+                                            selected[index] = !selected[index];
+                                            requestIndex = index;
+
+                                            // Get.offAll(()=> RequestPage());
+                                          });
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Stack(
+                                                  alignment: Alignment.center,
+                                                  clipBehavior: Clip.none,
+                                                  children: [
+                                                    Positioned(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                    .all(
+                                                                Radius.circular(
+                                                                    30)),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          height: 55,
+                                                          width: 55,
+                                                          fit: BoxFit.cover,
+                                                          imageUrl: providerList[
+                                                                          index]
+                                                                      .profilePhoto ==
+                                                                  null
+                                                              ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+                                                              : providerList[
+                                                                      index]
+                                                                  .profilePhoto!
+                                                                  .toString(),
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              Image.asset(
+                                                                  'assets/images/baby.png'),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Image.asset(
+                                                                  'assets/images/baby.png'),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned(
-                                                    bottom: -8.0,
-                                                    child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        height:
-                                                            dynamicSize(.06),
-                                                        width:
-                                                            dynamicSize(0.15),
-                                                        //color: Colors.red,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: AllColor
-                                                              .white_yeo,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                        ),
-                                                        child: Text(
-                                                          "${providerList[index].latitude == null ? (0).toString() : (Geolocator.distanceBetween(double.parse(providerList[index].latitude), double.parse(providerList[index].longitude), widget.result.geometry.location.lat, widget.result.geometry.location.lng) / 1000).toStringAsFixed(1)} km",
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 12,
-                                                                  color: Colors
-                                                                      .green),
-                                                        )),
-                                                  ),
-                                                ],
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ProviderProfilePage(
-                                                                providerdata:
-                                                                    providerList[
-                                                                        index])),
-                                                  );
-                                                  // showToast("Provider Profile");
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "${providerList[index].fullName ?? ''}",
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                dynamicSize(
-                                                                    0.05),
+                                                    Positioned(
+                                                      bottom: -8.0,
+                                                      child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          height:
+                                                              dynamicSize(.06),
+                                                          width:
+                                                              dynamicSize(0.15),
+                                                          //color: Colors.red,
+                                                          decoration:
+                                                              BoxDecoration(
                                                             color: AllColor
-                                                                .themeColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: Row(
-                                                          children: [
-                                                            /*●*/
-                                                            Text(
-                                                                "${providerList[index].speciality!.specialityName}"),
-                                                            Text(
-                                                                " • ${providerList[index].providerNumberOfGivenServiceCount ?? 0} Patient Served"),
-                                                          ],
+                                                                .white_yeo,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30),
+                                                          ),
+                                                          child: Text(
+                                                            "${providerList[index].latitude == null ? (0).toString() : (Geolocator.distanceBetween(double.parse(providerList[index].latitude), double.parse(providerList[index].longitude), widget.result.geometry.location.lat, widget.result.geometry.location.lng) / 1000).toStringAsFixed(1)} km",
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .green),
+                                                          )),
+                                                    ),
+                                                  ],
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProviderProfilePage(
+                                                                  providerdata:
+                                                                      providerList[
+                                                                          index])),
+                                                    );
+                                                    // showToast("Provider Profile");
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "${providerList[index].fullName ?? ''}",
+                                                          style: TextStyle(
+                                                              fontSize:
+                                                                  dynamicSize(
+                                                                      0.05),
+                                                              color: AllColor
+                                                                  .themeColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3.0),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                                "Service Cost: "),
-                                                            Text(
-                                                              "${providerList[index].provider_service_total_price!.toString()}/-",
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .green),
-                                                            ),
-                                                          ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: Row(
+                                                            children: [
+                                                              /*●*/
+                                                              Text(
+                                                                  "${providerList[index].speciality!.specialityName}"),
+                                                              Text(
+                                                                  " • ${providerList[index].providerNumberOfGivenServiceCount ?? 0} Patient Served"),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                  "Total Service Cost: "),
+                                                              Text(
+                                                                "${providerList[index].provider_service_total_price!.toString()}/-",
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .green),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          InkWell(
-                                            child: Container(
-                                              decoration: ShapeDecoration(
-                                                  shape: CircleBorder(
-                                                      side: BorderSide(
-                                                          width: 2,
-                                                          color: selected[index]
-                                                              ? AllColor
-                                                                  .blue_light
-                                                              : Colors
-                                                                  .black38))),
-                                              child: Container(
-                                                  margin:
-                                                      const EdgeInsets.all(3),
-                                                  width: 15,
-                                                  height: 15,
-                                                  decoration: ShapeDecoration(
-                                                      color: selected[index]
-                                                          ? AllColor.blue_light
-                                                          : Colors.white,
-                                                      shape:
-                                                          const CircleBorder())),
+                                              ],
                                             ),
-                                          )
-                                        ],
+                                            InkWell(
+                                              child: Container(
+                                                decoration: ShapeDecoration(
+                                                    shape: CircleBorder(
+                                                        side: BorderSide(
+                                                            width: 2,
+                                                            color: selected[
+                                                                    index]
+                                                                ? AllColor
+                                                                    .blue_light
+                                                                : Colors
+                                                                    .black38))),
+                                                child: Container(
+                                                    margin:
+                                                        const EdgeInsets.all(3),
+                                                    width: 15,
+                                                    height: 15,
+                                                    decoration: ShapeDecoration(
+                                                        color: selected[index]
+                                                            ? AllColor
+                                                                .blue_light
+                                                            : Colors.white,
+                                                        shape:
+                                                            const CircleBorder())),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
                             ),
                           ),
