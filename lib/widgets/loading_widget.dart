@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takecare_user/public_variables/all_colors.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -10,8 +11,8 @@ class LoadingWidget extends StatelessWidget {
       height: size.height,
       width: size.width,
       alignment: Alignment.center,
-      color: Colors.black45,
-      child: const CircularProgressIndicator(color: Colors.white),
+      color: Colors.white,
+      child: const CircularProgressIndicator(color: AllColor.themeColor),
     );
   }
 }

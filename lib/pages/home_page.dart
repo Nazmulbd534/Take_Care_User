@@ -154,9 +154,6 @@ class _HomePageState extends State<HomePage> {
     //  await DataControllers.to.postUserServiceResponse(DataControllers.to.userLoginResponse.value.data!.user!.id.toString());
   }
 
-  CarouselController buttonCarouselController = CarouselController();
-  int _current = 0;
-
   // DataControllers.to.getCategoriesResponse.value.data!.forEach((element) => _setData(element)).toList();
 
   Future<void> checkEngaged() async {
@@ -288,287 +285,137 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  final ScrollController homepageScrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return SafeArea(
-      child: GetBuilder<LanguageController>(builder: (lc) {
-        return Stack(
-          children: [
-            WillPopScope(
-              onWillPop: _onWillPop,
-              child: Scaffold(
-                key: _scaffoldKey,
-                // appBar: AppBar(title: Text('Goog Morning'),),
-                bottomNavigationBar: showServiceCheckBox
-                    ? Container(
-                        height: 70,
-                        padding: EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue),
-                          onPressed: () async {
-                            // TODO : move these logic accordingly
-
-                            log(selectedCategory.toString(),
-                                name: "home_page selcatagry");
-                            onProgressBar(true);
-                            await DataControllers.to
-                                .getAllShortService("short");
-                            onProgressBar(false);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => OnDemandPage(
-                                  selectedCategory: selectedCategory,
-                                ),
-                              ),
-                            );
-                            setState(() {
-                              showServiceCheckBox = false;
-                            });
-                          },
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: const [
-                                Text("Continue"),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(Icons.arrow_forward)
-                              ]),
-                        ))
-                    : null,
-                body: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(18.0),
-                              bottomRight: Radius.circular(18.0),
-                            ),
-                            color: AllColor.themeColor,
-                          ),
-                          height: size.height * 0.22,
+    return GetBuilder<LanguageController>(builder: (lc) {
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(65),
+            child: AppBar(
+              flexibleSpace: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      // Image.asset("assets/images/baby.png"),
+                      ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(15),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              // Image.asset("assets/images/baby.png"),
-                              ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(15),
-                                ),
-                                child: CachedNetworkImage(
-                                  height: 55,
-                                  width: 55,
-                                  fit: BoxFit.cover,
-                                  imageUrl:
-                                      '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset('assets/images/baby.png'),
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 10, top: 25),
-                                        child: Text(
-                                          messageDisplay(lc),
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.04),
-                                              color: Colors.white,
-                                              fontFamily: 'Muli'),
-                                        )),
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 10, bottom: 10, top: 0),
-                                      child: Text(
-                                        (DataControllers
-                                                .to
-                                                .userLoginResponse
-                                                .value
-                                                .data!
-                                                .user!
-                                                .fullName!
-                                                .isEmpty
-                                            ? " "
-                                            : DataControllers
-                                                .to
-                                                .userLoginResponse
-                                                .value
-                                                .data!
-                                                .user!
-                                                .fullName
-                                                .toString()),
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontFamily: "Muli",
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                onPressed: () {
-                                  _scaffoldKey.currentState!.openEndDrawer();
-                                },
-                                icon: const Icon(
-                                  Icons.menu,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ),
+                        child: CachedNetworkImage(
+                          height: 55,
+                          width: 55,
+                          fit: BoxFit.cover,
+                          imageUrl:
+                              '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
+                          errorWidget: (context, url, error) =>
+                              Image.asset('assets/images/baby.png'),
                         ),
-                        Column(
+                      ),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: size.height * 0.14,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 4,
-                                    child: CarouselSlider.builder(
-                                      carouselController:
-                                          buttonCarouselController,
-                                      itemCount: DataControllers
-                                          .to.sliderResponse.value.data!.length,
-                                      itemBuilder: (BuildContext context,
-                                              int itemIndex,
-                                              int pageViewIndex) =>
-                                          Container(
-                                        //color: Colors.pinkAccent,
-                                        height: dynamicSize(0.38),
-                                        width: dynamicSize(0.96),
-                                        // width: MediaQuery.of(context).size.width/2,
-                                        decoration: BoxDecoration(
-                                          // color: Colors.pinkAccent,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10, bottom: 10),
-                                                child: Text(
-                                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
-                                                  style: TextStyle(
-                                                      fontSize:
-                                                          dynamicSize(0.075),
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              alignment: Alignment.bottomLeft,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10.0, bottom: 15),
-                                                child: Text(
-                                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        dynamicSize(0.045),
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      options: CarouselOptions(
-                                          autoPlay: true,
-                                          enlargeCenterPage: false,
-                                          viewportFraction: 1.0,
-                                          aspectRatio: 2.8,
-                                          initialPage: 0,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _current = index;
-                                            });
-                                          }),
-                                    )),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: DataControllers
-                                  .to.sliderResponse.value.data!
-                                  .asMap()
-                                  .entries
-                                  .map((entry) {
-                                return GestureDetector(
-                                  onTap: () => buttonCarouselController
-                                      .animateToPage(entry.key),
-                                  child: Container(
-                                    width: 10.0,
-                                    height: 10.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 8.0, horizontal: 4.0),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? AllColor.blue_light
-                                                : AllColor.blue)
-                                            .withOpacity(_current == entry.key
-                                                ? 0.9
-                                                : 0.4)),
-                                  ),
-                                );
-                              }).toList(),
+                            Container(
+                                margin: const EdgeInsets.only(left: 10, top: 0),
+                                child: Text(
+                                  messageDisplay(lc),
+                                  style: TextStyle(
+                                      fontSize: dynamicSize(0.035),
+                                      color: Colors.white,
+                                      fontFamily: 'Muli'),
+                                )),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  left: 10, bottom: 5, top: 0),
+                              child: Text(
+                                (DataControllers.to.userLoginResponse.value
+                                        .data!.user!.fullName!.isEmpty
+                                    ? " "
+                                    : DataControllers.to.userLoginResponse.value
+                                        .data!.user!.fullName
+                                        .toString()),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontFamily: "Muli",
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ],
-                    ), //appbar design
-                    ServiceCategoryListWidget(
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          bottomNavigationBar: showServiceCheckBox
+              ? Container(
+                  height: 70,
+                  padding: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                    onPressed: () async {
+                      // TODO : move these logic accordingly
+
+                      log(selectedCategory.toString(),
+                          name: "home_page selcatagry");
+                      onProgressBar(true);
+                      await DataControllers.to.getAllShortService("short");
+                      onProgressBar(false);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => OnDemandPage(
+                            selectedCategory: selectedCategory,
+                          ),
+                        ),
+                      );
+                      setState(() {
+                        showServiceCheckBox = false;
+                      });
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          Text("Continue"),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.arrow_forward)
+                        ]),
+                  ))
+              : null,
+          body: isLoading
+              ? const LoadingWidget()
+              : SingleChildScrollView(
+                  controller: homepageScrollController,
+                  child: Container(
+                    // height: size.height * 2,
+                    color: Colors.white,
+                    child: ServiceCategoryListWidget(
                       lc: lc,
                       size: size,
                       refresh: refresh,
+                      fixedScrollController: homepageScrollController,
                     ),
-                  ],
+                  ),
                 ),
-                endDrawer: _drawer(),
-              ),
-            ),
-            isLoading ? const LoadingWidget() : Container()
-          ],
-        );
-      }),
-    );
+          endDrawer: _drawer(),
+        ),
+      );
+    });
   }
 
   Widget _drawer() => Drawer(
@@ -1086,8 +933,13 @@ class ServiceCategoryListWidget extends StatefulWidget {
   LanguageController lc;
   Size size;
   final Function() refresh;
+  final ScrollController fixedScrollController;
   ServiceCategoryListWidget(
-      {Key? key, required this.lc, required this.size, required this.refresh})
+      {Key? key,
+      required this.lc,
+      required this.size,
+      required this.refresh,
+      required this.fixedScrollController})
       : super(key: key);
 
   @override
@@ -1100,129 +952,214 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
     setState(() => isLoading = progress);
   }
 
+  int _current = 0;
+  CarouselController buttonCarouselController = CarouselController();
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Column(
-        children: [
-          SizedBox(height: dynamicSize(0)),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15.0, top: 15.0),
-            child: Container(
-              alignment: Alignment.center,
-              child: Text(
-                widget.lc.onDemandService.value,
-                style: TextStyle(
-                    fontSize: dynamicSize(0.056),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Muli"),
-              ),
+    return Column(
+      children: [
+        SizedBox(height: dynamicSize(0)),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 0.0, top: 10.0),
+          child: Container(
+            alignment: Alignment.center,
+            child: Text(
+              widget.lc.onDemandService.value,
+              style: TextStyle(
+                  fontSize: dynamicSize(0.056),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Muli"),
             ),
           ),
-          SizedBox(
-            height: dynamicSize(0.02),
-          ),
+        ),
+        SizedBox(
+          height: dynamicSize(0.02),
+        ),
 
-          // cut here
-          Padding(
-            padding: const EdgeInsets.only(
-              right: 0.0,
-              left: 12.0,
-            ),
-            child: Container(
-              color: Colors.white,
-              height: widget.size.height * 0.22,
-              child: ListView.builder(
-                itemCount: dataResponse.length + 1,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: ((context, index) {
-                  if (index == 0) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              onProgressBar(true);
-                              await DataControllers.to
-                                  .getAllShortService("short");
-                              onProgressBar(false);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => OnDemandPage(
-                                    selectedCategory: [''],
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: widget.size.height * 0.11,
-                              width: dynamicSize(0.27),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color.fromRGBO(0, 173, 229, 0.20),
-                                    blurRadius: 2,
-                                    offset: Offset(0, 3), // Shadow position
-                                  ),
-                                ],
-                              ),
-                              child: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: Image.asset(
-                                  'assets/images/all_service_icon.png',
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: dynamicSize(0.02),
-                          ),
-                          const Text(
-                            "All Services",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 2,
-                          )
-                        ],
-                      ),
-                    );
-                  }
+        // cut here
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 10.0,
+            left: 15.0,
+          ),
+          child: Container(
+            color: Colors.white,
+            // height: widget.size.height * 0.22,
+            child: GridView.builder(
+              shrinkWrap: true,
+              controller: widget.fixedScrollController,
+              //  physics: NeverScrollableScrollPhysics(),
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+              itemCount: dataResponse.length + 1,
+              scrollDirection: Axis.vertical,
+              itemBuilder: ((context, index) {
+                if (index == 0) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 10.0),
-                    child: _getIsSelected(dataResponse[index - 1].categoryName!)
-                        ? Stack(
-                            children: [
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onLongPress: () {
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            onProgressBar(true);
+                            await DataControllers.to
+                                .getAllShortService("short");
+                            onProgressBar(false);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => OnDemandPage(
+                                  selectedCategory: [''],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: widget.size.height * 0.11,
+                            width: dynamicSize(0.27),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(0, 173, 229, 0.20),
+                                  blurRadius: 2,
+                                  offset: Offset(0, 3), // Shadow position
+                                ),
+                              ],
+                            ),
+                            child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Image.asset(
+                                'assets/images/all_service_icon.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: dynamicSize(0.02),
+                        ),
+                        const Text(
+                          "All Services",
+                          style: TextStyle(
+                            fontFamily: "Muli",
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 2,
+                        )
+                      ],
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: _getIsSelected(dataResponse[index - 1].categoryName!)
+                      ? Stack(
+                          children: [
+                            Column(
+                              children: [
+                                InkWell(
+                                  onLongPress: () {
+                                    setState(() {
+                                      // if (!showServiceCheckBox) {
+                                      //   _addOrRemoveSelectedCategory(
+                                      //       dataResponse[index - 1]
+                                      //           .categoryName!);
+                                      // }
                                       setState(() {
-                                        // if (!showServiceCheckBox) {
-                                        //   _addOrRemoveSelectedCategory(
-                                        //       dataResponse[index - 1]
-                                        //           .categoryName!);
-                                        // }
-                                        setState(() {
-                                          selectedCategory.clear();
-                                          showServiceCheckBox =
-                                              !showServiceCheckBox;
-                                          _addOrRemoveSelectedCategory(
-                                              dataResponse[index - 1]
-                                                  .categoryName!);
-                                        });
-                                      });
-
-                                      if (!showServiceCheckBox) {
                                         selectedCategory.clear();
+                                        showServiceCheckBox =
+                                            !showServiceCheckBox;
+                                        _addOrRemoveSelectedCategory(
+                                            dataResponse[index - 1]
+                                                .categoryName!);
+                                      });
+                                    });
+
+                                    if (!showServiceCheckBox) {
+                                      selectedCategory.clear();
+                                    }
+                                    widget.refresh();
+                                  },
+                                  onTap: () async {
+                                    log("clicked");
+                                    if (showServiceCheckBox) {
+                                      log("clicked1");
+                                      setState(() {
+                                        _addOrRemoveSelectedCategory(
+                                            dataResponse[index - 1]
+                                                .categoryName!);
+                                      });
+                                      if (selectedCategory.isEmpty) {
+                                        showServiceCheckBox = false;
                                       }
-                                      widget.refresh();
-                                    },
+                                    } else {
+                                      onProgressBar(true);
+                                      await DataControllers.to
+                                          .getAllShortService("short");
+                                      onProgressBar(false);
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (_) => OnDemandPage(
+                                            selectedCategory: [
+                                              dataResponse[index - 1]
+                                                  .categoryName!
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    widget.refresh();
+                                  },
+                                  child: Container(
+                                    height: widget.size.height * 0.11,
+                                    width: dynamicSize(0.27),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AllColor.pinkShadow,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color:
+                                              Color.fromRGBO(0, 173, 229, 0.16),
+                                          blurRadius: 2,
+                                          offset:
+                                              Offset(0, 3), // Shadow position
+                                        ),
+                                      ],
+                                    ),
+                                    child: SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: Image.network(
+                                        ApiService.MainURL +
+                                            dataResponse[index - 1]
+                                                .serviceImage!,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: dynamicSize(0.02),
+                                ),
+                                Text(
+                                  dataResponse[index - 1].categoryName!,
+                                  style: const TextStyle(
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              top: widget.size.height * 0.02,
+                              right: widget.size.width * 0.06,
+                              child: ClipOval(
+                                child: Material(
+                                  color: Colors.white, // Button color
+                                  child: InkWell(
+                                    // Splash color
                                     onTap: () async {
                                       log("clicked");
                                       if (showServiceCheckBox) {
@@ -1251,417 +1188,391 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                           ),
                                         );
                                       }
-
                                       widget.refresh();
                                     },
-                                    child: Container(
-                                      height: widget.size.height * 0.11,
-                                      width: dynamicSize(0.27),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: AllColor.pinkShadow,
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Color.fromRGBO(
-                                                0, 173, 229, 0.16),
-                                            blurRadius: 2,
-                                            offset:
-                                                Offset(0, 3), // Shadow position
-                                          ),
-                                        ],
-                                      ),
-                                      child: SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.network(
-                                          ApiService.MainURL +
-                                              dataResponse[index - 1]
-                                                  .serviceImage!,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: dynamicSize(0.02),
-                                  ),
-                                  Text(
-                                    dataResponse[index - 1].categoryName!,
-                                    style: const TextStyle(
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                    maxLines: 2,
-                                  ),
-                                ],
-                              ),
-                              Positioned(
-                                top: widget.size.height * 0.02,
-                                right: widget.size.width * 0.06,
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Colors.white, // Button color
-                                    child: InkWell(
-                                      // Splash color
-                                      onTap: () async {
-                                        log("clicked");
-                                        if (showServiceCheckBox) {
-                                          log("clicked1");
-                                          setState(() {
-                                            _addOrRemoveSelectedCategory(
-                                                dataResponse[index - 1]
-                                                    .categoryName!);
-                                          });
-                                          if (selectedCategory.isEmpty) {
-                                            showServiceCheckBox = false;
-                                          }
-                                        } else {
-                                          onProgressBar(true);
-                                          await DataControllers.to
-                                              .getAllShortService("short");
-                                          onProgressBar(false);
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (_) => OnDemandPage(
-                                                selectedCategory: [
-                                                  dataResponse[index - 1]
-                                                      .categoryName!
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        widget.refresh();
-                                      },
-                                      child: const SizedBox(
-                                        width: 56,
-                                        height: 56,
-                                        child: Icon(
-                                          Icons.check,
-                                          color: AllColor.blue,
-                                        ),
+                                    child: const SizedBox(
+                                      width: 56,
+                                      height: 56,
+                                      child: Icon(
+                                        Icons.check,
+                                        color: AllColor.blue,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              InkWell(
-                                onLongPress: () {
-                                  showServiceCheckBox = true;
-                                  widget.refresh();
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            InkWell(
+                              onLongPress: () {
+                                showServiceCheckBox = true;
+                                widget.refresh();
+                                setState(() {
+                                  // if (!showServiceCheckBox) {
+                                  //   _addOrRemoveSelectedCategory(
+                                  //       dataResponse[index - 1]
+                                  //           .categoryName!);
+                                  // }
+                                  _addOrRemoveSelectedCategory(
+                                      dataResponse[index - 1].categoryName!);
+                                  if (!showServiceCheckBox) {
+                                    selectedCategory.clear();
+                                  }
+                                });
+                              },
+                              onTap: () async {
+                                log("clicked");
+                                if (showServiceCheckBox) {
+                                  log("clicked1");
                                   setState(() {
-                                    // if (!showServiceCheckBox) {
-                                    //   _addOrRemoveSelectedCategory(
-                                    //       dataResponse[index - 1]
-                                    //           .categoryName!);
-                                    // }
                                     _addOrRemoveSelectedCategory(
                                         dataResponse[index - 1].categoryName!);
-                                    if (!showServiceCheckBox) {
-                                      selectedCategory.clear();
-                                    }
                                   });
-                                },
-                                onTap: () async {
-                                  log("clicked");
-                                  if (showServiceCheckBox) {
-                                    log("clicked1");
-                                    setState(() {
-                                      _addOrRemoveSelectedCategory(
-                                          dataResponse[index - 1]
-                                              .categoryName!);
-                                    });
-                                    if (selectedCategory.isEmpty) {
-                                      showServiceCheckBox = false;
-                                    }
-                                  } else {
-                                    onProgressBar(true);
-                                    await DataControllers.to
-                                        .getAllShortService("short");
-                                    onProgressBar(false);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => OnDemandPage(
-                                          selectedCategory: [
-                                            dataResponse[index - 1]
-                                                .categoryName!
-                                          ],
-                                        ),
-                                      ),
-                                    );
+                                  if (selectedCategory.isEmpty) {
+                                    showServiceCheckBox = false;
                                   }
-                                },
-                                child: Container(
-                                  height: widget.size.height * 0.11,
-                                  width: dynamicSize(0.27),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: _getIsSelected(
-                                            dataResponse[index - 1]
-                                                .categoryName!)
-                                        ? Colors.red
-                                        : Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color:
-                                            Color.fromRGBO(0, 173, 229, 0.16),
-                                        blurRadius: 2,
-                                        offset: Offset(0, 3), // Shadow position
+                                } else {
+                                  onProgressBar(true);
+                                  await DataControllers.to
+                                      .getAllShortService("short");
+                                  onProgressBar(false);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => OnDemandPage(
+                                        selectedCategory: [
+                                          dataResponse[index - 1].categoryName!
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: Image.network(
-                                      ApiService.MainURL +
-                                          dataResponse[index - 1].serviceImage!,
                                     ),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                height: widget.size.height * 0.11,
+                                width: dynamicSize(0.27),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: _getIsSelected(
+                                          dataResponse[index - 1].categoryName!)
+                                      ? Colors.red
+                                      : Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 173, 229, 0.16),
+                                      blurRadius: 2,
+                                      offset: Offset(0, 3), // Shadow position
+                                    ),
+                                  ],
+                                ),
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Image.network(
+                                    ApiService.MainURL +
+                                        dataResponse[index - 1].serviceImage!,
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: dynamicSize(0.02),
+                            ),
+                            SizedBox(
+                              height: dynamicSize(0.02),
+                            ),
+                            Text(
+                              dataResponse[index - 1].categoryName!,
+                              style: const TextStyle(
+                                fontFamily: "Muli",
+                                fontWeight: FontWeight.w600,
                               ),
-                              Text(
-                                dataResponse[index - 1].categoryName!,
-                                style: const TextStyle(
-                                  fontFamily: "Muli",
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 2,
-                              ),
-                            ],
-                          ),
-                  );
-                }),
-              ),
+                              maxLines: 2,
+                            ),
+                          ],
+                        ),
+                );
+              }),
             ),
           ),
-          Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-              color: Colors.white,
-            ),
-            height: widget.size.height * 0.27,
-            child: Column(
+        ),
+        SizedBox(
+          height: dynamicSize(0.03),
+        ),
+
+        Column(
+          children: [
+            Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 2, bottom: 2),
-                  child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.lc.longTimeService.value,
-                        style: TextStyle(
-                            fontSize: dynamicSize(0.059),
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Muli"),
-                      )),
-                ),
-                Container(
-                  height: widget.size.height * 0.22,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    // padding: EdgeInsets.zero,
-                    itemCount: DataControllers
-                            .to.getLongCategoriesResponse.value.data!.length +
-                        1,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6.0, vertical: 8.0),
-                      child: InkWell(
-                        onTap: () async {
-                          onProgressBar(true);
-                          await DataControllers.to.getAllLongService("long");
-                          onProgressBar(false);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => LongTimeServicesPage(
-                                  selectedType: (DataControllers
-                                              .to
-                                              .getLongCategoriesResponse
-                                              .value
-                                              .data!
-                                              .length >
-                                          index)
-                                      ? DataControllers
-                                          .to
-                                          .getLongCategoriesResponse
-                                          .value
-                                          .data![index]
-                                          .categoryName!
-                                          .toString()
-                                      : ""),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: widget.size.width / 2.42,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(4, 4), // Shadow position
-                              ),
-                            ],
+                Expanded(
+                    flex: 4,
+                    child: CarouselSlider.builder(
+                      carouselController: buttonCarouselController,
+                      itemCount:
+                          DataControllers.to.sliderResponse.value.data!.length,
+                      itemBuilder: (BuildContext context, int itemIndex,
+                              int pageViewIndex) =>
+                          Container(
+                        //color: Colors.pinkAccent,
+                        height: dynamicSize(0.38),
+                        width: dynamicSize(1),
+                        // width: MediaQuery.of(context).size.width/2,
+                        decoration: BoxDecoration(
+                          // color: Colors.pinkAccent,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
+                            fit: BoxFit.cover,
                           ),
-                          child: Column(
-                            children: [
-                              Container(
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, bottom: 10),
+                                child: Text(
+                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
+                                  style: TextStyle(
+                                      fontSize: dynamicSize(0.075),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10.0, bottom: 15),
+                                child: Text(
+                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
+                                  style: TextStyle(
+                                    fontSize: dynamicSize(0.045),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      options: CarouselOptions(
+                          autoPlay: true,
+                          enlargeCenterPage: false,
+                          viewportFraction: 1.0,
+                          aspectRatio: 2.8,
+                          initialPage: 0,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _current = index;
+                            });
+                          }),
+                    )),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: DataControllers.to.sliderResponse.value.data!
+                  .asMap()
+                  .entries
+                  .map((entry) {
+                return GestureDetector(
+                  onTap: () =>
+                      buttonCarouselController.animateToPage(entry.key),
+                  child: Container(
+                    width: 10.0,
+                    height: 10.0,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? AllColor.blue_light
+                                : AllColor.blue)
+                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+
+        SizedBox(
+          height: dynamicSize(0.03),
+        ),
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2, bottom: 2),
+              child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    widget.lc.longTimeService.value,
+                    style: TextStyle(
+                        fontSize: dynamicSize(0.059),
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Muli"),
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 10.0,
+                left: 15.0,
+              ),
+              child: Container(
+                //  height: widget.size.height * 0.22,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  shrinkWrap: true,
+                  controller: widget.fixedScrollController,
+                  scrollDirection: Axis.vertical,
+                  // padding: EdgeInsets.zero,
+                  itemCount: DataControllers
+                          .to.getLongCategoriesResponse.value.data!.length +
+                      1,
+
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10.0,
+                        ),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                onProgressBar(true);
+                                await DataControllers.to
+                                    .getAllLongService("long");
+                                onProgressBar(false);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const LongTimeServicesPage(
+                                      selectedType: "",
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: widget.size.height * 0.11,
+                                width: dynamicSize(0.27),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(0, 173, 229, 0.20),
+                                      blurRadius: 2,
+                                      offset: Offset(0, 3), // Shadow position
+                                    ),
+                                  ],
                                 ),
-                                height: dynamicSize(0.27),
-                                width: MediaQuery.of(context).size.width,
-                                child: (DataControllers
-                                            .to
-                                            .getLongCategoriesResponse
-                                            .value
-                                            .data!
-                                            .length >
-                                        index)
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.fill,
-                                          imageUrl:
-                                              "${ApiService.MainURL + DataControllers.to.getLongCategoriesResponse.value.data![index].serviceImage! /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                                          errorWidget: (context, url, error) =>
-                                              Image.asset(
-                                            "assets/images/pet.png",
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        height: widget.size.height * 0.1,
-                                        width: dynamicSize(0.12),
-                                        child: Card(
-                                          color: AllColor
-                                              .colorDashboardOnDemand_blue,
-                                          margin: const EdgeInsets.only(
-                                              left: 0, right: 0),
-                                          semanticContainer: true,
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(),
-                                          ),
-                                          elevation: 6,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                  MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const LongTimeServicesPage(
-                                                            selectedType: ""),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Icon(
-                                                Icons.arrow_forward,
-                                                color: Colors.white,
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                shape: const CircleBorder(),
-                                                padding: EdgeInsets.all(
-                                                    widget.size.width * .002),
-                                                primary: Colors.pinkAccent,
-                                                onPrimary: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                              Container(
-                                  alignment: (DataControllers
-                                              .to
-                                              .getLongCategoriesResponse
-                                              .value
-                                              .data!
-                                              .length >
-                                          index)
-                                      ? Alignment.topLeft
-                                      : Alignment.center,
-                                  margin:
-                                      const EdgeInsets.only(left: 4, top: 8),
-                                  child: (DataControllers
-                                              .to
-                                              .getLongCategoriesResponse
-                                              .value
-                                              .data!
-                                              .length >
-                                          index)
-                                      ? Text(
-                                          DataControllers
-                                                  .to
-                                                  .getLongCategoriesResponse
-                                                  .value
-                                                  .data![index]
-                                                  .categoryName!
-                                                  .isNotEmpty
-                                              ? DataControllers
-                                                  .to
-                                                  .getLongCategoriesResponse
-                                                  .value
-                                                  .data![index]
-                                                  .categoryName!
-                                              : "",
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.045),
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : Text(
-                                          widget.lc.seeAll.value,
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.045),
-                                              fontWeight: FontWeight.bold,
-                                              color: AllColor.pink_button),
-                                        )),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.topLeft,
-                                  margin: const EdgeInsets.only(
-                                      left: 4, bottom: 5, top: 2),
-                                  child: (DataControllers
-                                              .to
-                                              .getLongCategoriesResponse
-                                              .value
-                                              .data!
-                                              .length >
-                                          index)
-                                      ? Text(
-                                          "Starts from ${DataControllers.to.getLongCategoriesResponse.value.data![index].startPrice!.isNaN ? "0.00" : DataControllers.to.getLongCategoriesResponse.value.data![index].startPrice!} Tk",
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.035)),
-                                        )
-                                      : Text(''),
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Image.asset(
+                                    'assets/images/all_service_icon.png',
+                                    color: AllColor.blue_light,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: dynamicSize(0.02),
+                            ),
+                            const Text(
+                              "All Services",
+                              style: TextStyle(
+                                fontFamily: "Muli",
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 2,
+                            )
+                          ],
                         ),
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              onProgressBar(true);
+                              await DataControllers.to
+                                  .getAllLongService("long");
+                              onProgressBar(false);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => LongTimeServicesPage(
+                                    selectedType: (DataControllers
+                                        .to
+                                        .getLongCategoriesResponse
+                                        .value
+                                        .data![index - 1]
+                                        .categoryName!
+                                        .toString()),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: widget.size.height * 0.11,
+                              width: dynamicSize(0.27),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 173, 229, 0.20),
+                                    blurRadius: 2,
+                                    offset: Offset(0, 3), // Shadow position
+                                  ),
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Image.network(
+                                    "${ApiService.MainURL + DataControllers.to.getLongCategoriesResponse.value.data![index - 1].serviceImage!}"),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: dynamicSize(0.01),
+                          ),
+                          Text(
+                            DataControllers.to.getLongCategoriesResponse.value
+                                .data![index - 1].categoryName!,
+                            style: const TextStyle(
+                              fontFamily: "Muli",
+                              fontWeight: FontWeight.w600,
+                            ),
+                            maxLines: 3,
+                          )
+                        ],
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 }
