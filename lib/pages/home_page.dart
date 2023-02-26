@@ -298,6 +298,7 @@ class _HomePageState extends State<HomePage> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: AppBar(
+              backgroundColor: AllColor.pink_button,
               flexibleSpace: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(8),
