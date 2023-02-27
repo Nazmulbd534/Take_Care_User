@@ -1316,7 +1316,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                           Container(
                         //color: Colors.pinkAccent,
                         height: dynamicSize(0.38),
-                        width: dynamicSize(1),
+                        width: dynamicSize(0.97),
                         // width: MediaQuery.of(context).size.width/2,
                         decoration: BoxDecoration(
                           // color: Colors.pinkAccent,

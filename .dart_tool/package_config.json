@@ -171,7 +171,7 @@
     },
     {
       "name": "dropdown_search",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_search-5.0.5",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/dropdown_search-5.0.6",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -339,9 +339,9 @@
     },
     {
       "name": "flutter_form_builder",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_form_builder-7.7.0",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_form_builder-7.8.0",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "2.19"
     },
     {
       "name": "flutter_keyboard_visibility",
@@ -465,7 +465,7 @@
     },
     {
       "name": "flutter_typeahead",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_typeahead-4.3.6",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_typeahead-4.3.7",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -813,7 +813,7 @@
     },
     {
       "name": "pin_input_text_field",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/pin_input_text_field-4.4.1",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/pin_input_text_field-4.5.0",
       "packageUri": "lib/",
       "languageVersion": "2.13"
     },
@@ -921,7 +921,7 @@
     },
     {
       "name": "sqflite",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/sqflite-2.2.4+1",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/sqflite-2.2.5",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -1101,9 +1101,9 @@
     },
     {
       "name": "xml",
-      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.1.0",
+      "rootUri": "file:///C:/Users/Sabir/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.2.2",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "2.18"
     },
     {
       "name": "yaml",
@@ -1118,7 +1118,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-02-27T15:14:54.086600Z",
+  "generated": "2023-02-27T17:27:38.773130Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }
