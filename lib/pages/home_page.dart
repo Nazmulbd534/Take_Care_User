@@ -298,7 +298,8 @@ class _HomePageState extends State<HomePage> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: AppBar(
-              backgroundColor: AllColor.pink_button,
+              leading: const SizedBox(),
+              backgroundColor: AllColor.themeColor,
               flexibleSpace: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(8),
@@ -1433,6 +1434,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
+                    mainAxisSpacing: 10,
                   ),
                   shrinkWrap: true,
                   controller: widget.fixedScrollController,

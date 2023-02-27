@@ -52,6 +52,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   location: ^4.4.0
   flutter_close_app: ^1.0.0
+  omni_datetime_picker: ^1.0.0
   map_location_picker:
     git:
       url: https://github.com/Soilcsi/map_location_picker.git

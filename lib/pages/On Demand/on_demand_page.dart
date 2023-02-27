@@ -14,6 +14,7 @@ import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/model/AllServiceResponse.dart';
 import 'package:takecare_user/model/CategoriesResponse.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
+import 'package:takecare_user/pages/On%20Demand/schedule_order_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:intl/intl.dart';
 import 'package:takecare_user/pages/loved_form_page.dart';
@@ -283,6 +284,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
         });
   }
 
+  // TODO :: here
+
   void BottomSheetAddedListDialog(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -308,7 +311,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                   height: dynamicSize(0.55),
                   child: ListView(
                     padding: const EdgeInsets.all(8),
-                    children: new List.generate(
+                    children: List.generate(
                       DataControllers
                           .to.getAddCardShortServiceResponse.value.data!.length,
                       (index) => Padding(
@@ -317,7 +320,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: Colors.white,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.grey,
                                 blurRadius: 2.0,
@@ -330,11 +333,11 @@ class _OnDemandPageState extends State<OnDemandPage> {
                           child: Row(
                             children: [
                               Card(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     left: 0, top: 10, bottom: 10),
                                 semanticContainer: true,
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.only(
                                       bottomRight: Radius.circular(15),
                                       topRight: Radius.circular(15)),
@@ -1666,6 +1669,100 @@ class _OnDemandPageState extends State<OnDemandPage> {
                               if (selectMyself) {
                                 if (scheduleLaterSelected == true) {
                                   log("Scheduled for later");
+                                  await DataControllers.to.getProviderList(
+                                      "1",
+                                      "1",
+                                      Variables.currentPostion.longitude
+                                          .toString(),
+                                      Variables.currentPostion.latitude
+                                          .toString());
+                                  // ignore: use_build_context_synchronously
+                                  resultGeo = (await Navigator.push(
+                                    context,
+                                    MaterialPageRoute<GeocodingResult>(
+                                      builder: (cx) {
+                                        return MapLocationPicker(
+                                            topCardColor: Colors.white70,
+                                            bottomCardColor: Colors.pinkAccent,
+                                            currentLatLng:
+                                                Variables.currentPostion,
+                                            desiredAccuracy:
+                                                LocationAccuracy.high,
+                                            apiKey:
+                                                "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                            canPopOnNextButtonTaped: true,
+                                            onNext: (GeocodingResult? result) {
+                                              if (result != null) {
+                                                setState(() {
+                                                  resultGeo = result;
+                                                  Navigator.pop(cx, resultGeo);
+                                                });
+                                              } else {
+                                                resultGeo = result!;
+                                              }
+                                            });
+                                      },
+                                    ),
+                                  ))!;
+                                  if (resultGeo != null) {
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (cp) => ScheduledOrderPage(
+                                          result: resultGeo,
+                                          orderType: "Schedule",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  await DataControllers.to.getProviderList(
+                                      "1",
+                                      "1",
+                                      Variables.currentPostion.longitude
+                                          .toString(),
+                                      Variables.currentPostion.latitude
+                                          .toString());
+                                  // ignore: use_build_context_synchronously
+                                  resultGeo = (await Navigator.push(
+                                    context,
+                                    MaterialPageRoute<GeocodingResult>(
+                                      builder: (cx) {
+                                        return MapLocationPicker(
+                                            topCardColor: Colors.white70,
+                                            bottomCardColor: Colors.pinkAccent,
+                                            currentLatLng:
+                                                Variables.currentPostion,
+                                            desiredAccuracy:
+                                                LocationAccuracy.high,
+                                            apiKey:
+                                                "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                            canPopOnNextButtonTaped: true,
+                                            onNext: (GeocodingResult? result) {
+                                              if (result != null) {
+                                                setState(() {
+                                                  resultGeo = result;
+                                                  Navigator.pop(cx, resultGeo);
+                                                });
+                                              } else {
+                                                resultGeo = result!;
+                                              }
+                                            });
+                                      },
+                                    ),
+                                  ))!;
+                                  if (resultGeo != null) {
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (cp) => MapPage(
+                                          result: resultGeo,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 }
                               } else {
                                 LovedOnesResponse lovedOnes =
