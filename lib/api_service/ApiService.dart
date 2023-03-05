@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +57,7 @@ class ApiService {
     var response = await client
         .get(Uri.parse(BaseURL + 'service/all'), headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Accept': 'application/json', 
+      'Accept': 'application/json',
       'Authorization': bearerToken,
     });
     if (response.statusCode == 200) {
@@ -480,7 +481,7 @@ class ApiService {
       },
       body: jsonDataFormate,
     );
-    print("Api Response : ${response.body}");
+    log("Api Response : ${response.body}");
     if (response.statusCode == 200) {
       //  var jsonString = response.body;
 
@@ -581,8 +582,12 @@ class ApiService {
             DataControllers.to.userLoginResponse.value.data!.user!.id.toString()
       }),
     );
+
+    log("Api Response : ${response.statusCode.toString()}",
+        name: "getOrderHistory");
+
     if (response.statusCode == 200) {
-      print("Api Response : ${response.body}");
+      log("Api Response : ${response.body}", name: "getOrderHistory");
       var jsonString = response.body;
       return errorResponseFromJson(jsonString);
     } else {

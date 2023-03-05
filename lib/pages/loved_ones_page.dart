@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -9,6 +11,8 @@ import 'package:takecare_user/model/SaveAddressResponse.dart';
 import 'package:takecare_user/pages/On%20Demand/map_page.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
 import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
+import 'package:takecare_user/pages/On%20Demand/schedule_order_page.dart';
+import 'package:takecare_user/pages/long_time_services/order_confirm_page.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 
 import '../public_variables/all_colors.dart';
@@ -88,14 +92,16 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               Variables.longTimeServiceActivity ||
                           widget.activity ==
                               Variables.orderInformationActivity) {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
                             builder: (_) => OrderInformationPage(
-                                  activity: Variables.lovedOnesActivity,
-                                  serviceHolderInfo:
-                                      addressResponse.data![index],
-                                  serviceAddress: "test",
-                                  serviceTime: "test1",
-                                )));
+                              activity: Variables.lovedOnesActivity,
+                              serviceHolderInfo: addressResponse.data![index],
+                              serviceAddress: "test",
+                              serviceTime: "test1",
+                            ),
+                          ),
+                        );
                       } else if (widget.activity == "SelectAndGotoMap") {
                         await DataControllers.to.getProviderList(
                             "1",
@@ -134,6 +140,88 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                 builder: (cp) => MapPage(
                                       result: resultGeo!,
                                     )),
+                          );
+                        }
+                      } else if (widget.activity == "ScheduleActivity") {
+                        await DataControllers.to.getProviderList(
+                            "1",
+                            "1",
+                            Variables.currentPostion.longitude.toString(),
+                            Variables.currentPostion.latitude.toString());
+                        resultGeo = (await Navigator.push(
+                          context,
+                          MaterialPageRoute<GeocodingResult>(
+                            builder: (cx) {
+                              return MapLocationPicker(
+                                  topCardColor: Colors.white70,
+                                  bottomCardColor: Colors.pinkAccent,
+                                  currentLatLng: Variables.currentPostion,
+                                  desiredAccuracy: LocationAccuracy.high,
+                                  apiKey:
+                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                  canPopOnNextButtonTaped: true,
+                                  onNext: (GeocodingResult? result) {
+                                    if (result != null) {
+                                      setState(() {
+                                        resultGeo = result;
+                                        Navigator.pop(cx, resultGeo);
+                                      });
+                                    } else {
+                                      resultGeo = result!;
+                                    }
+                                  });
+                            },
+                          ),
+                        ))!;
+                        if (resultGeo != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (cp) => ScheduledOrderPage(
+                                result: resultGeo!,
+                                orderType: "Scheduled",
+                              ),
+                            ),
+                          );
+                        }
+                      } else if (widget.activity == "LongTermSchedule") {
+                        await DataControllers.to.getProviderList(
+                            "1",
+                            "1",
+                            Variables.currentPostion.longitude.toString(),
+                            Variables.currentPostion.latitude.toString());
+                        resultGeo = (await Navigator.push(
+                          context,
+                          MaterialPageRoute<GeocodingResult>(
+                            builder: (cx) {
+                              return MapLocationPicker(
+                                  topCardColor: Colors.white70,
+                                  bottomCardColor: Colors.pinkAccent,
+                                  currentLatLng: Variables.currentPostion,
+                                  desiredAccuracy: LocationAccuracy.high,
+                                  apiKey:
+                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                                  canPopOnNextButtonTaped: true,
+                                  onNext: (GeocodingResult? result) {
+                                    if (result != null) {
+                                      setState(() {
+                                        resultGeo = result;
+                                        Navigator.pop(cx, resultGeo);
+                                      });
+                                    } else {
+                                      resultGeo = result!;
+                                    }
+                                  });
+                            },
+                          ),
+                        ))!;
+                        if (resultGeo != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (cp) => OrderConfirmPage(
+                                  result: resultGeo!, orderType: "Long Term"),
+                            ),
                           );
                         }
                       }

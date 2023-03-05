@@ -32,7 +32,11 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
   }
 
   final TextEditingController notesController = TextEditingController();
-  List<DateTime> pickedTimes = [];
+  final TextEditingController extraAddressTextController =
+      TextEditingController();
+
+  List<List<DateTime>?> pickedTimes = List.generate(100, (i) => []);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,11 +187,15 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                                                   }
                                                 },
                                               );
+
                                               if (dateTime != null) {
                                                 setState(() {
-                                                  pickedTimes.add(dateTime);
+                                                  pickedTimes[index]!
+                                                      .add(dateTime);
                                                 });
                                               }
+
+                                              log(pickedTimes.toString());
                                             },
                                             child: const Text(
                                               "+ Add one or more Date and Time",
@@ -202,14 +210,13 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                                       ),
                                       ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
-                                        itemCount: pickedTimes.length,
+                                        itemCount: pickedTimes[index]!.length,
                                         shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          String formattedDate =
-                                              DateFormat('dd - MMM – h:mm a')
-                                                  .format(
-                                            pickedTimes[index],
-                                          );
+                                        itemBuilder: (context, index1) {
+                                          String formattedDate = DateFormat(
+                                                  'dd - MMM – h:mm a')
+                                              .format(
+                                                  pickedTimes[index]![index1]);
                                           return Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -279,8 +286,8 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                                                   );
                                                   if (dateTime != null) {
                                                     setState(() {
-                                                      pickedTimes[index] =
-                                                          dateTime;
+                                                      pickedTimes[index]![
+                                                          index1] = dateTime;
                                                     });
                                                   }
                                                 },
@@ -407,6 +414,20 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Container(
+                    child: TextField(
+                      controller: extraAddressTextController,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Additional Address"),
                     ),
                   ),
                 ),

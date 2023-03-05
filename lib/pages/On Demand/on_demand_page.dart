@@ -24,6 +24,7 @@ import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import '../../api_service/ApiService.dart';
 import '../long_time_services/service_request_form_page.dart';
 import 'feedback_page.dart';
@@ -37,17 +38,6 @@ class OnDemandPage extends StatefulWidget {
 
   @override
   _OnDemandPageState createState() => _OnDemandPageState();
-}
-
-void click() async {
-  await Future.delayed(Duration(seconds: 2));
-  GestureBinding.instance!.handlePointerEvent(PointerDownEvent(
-    position: Offset(200, 300),
-  ));
-  await Future.delayed(Duration(seconds: 2));
-  GestureBinding.instance!.handlePointerEvent(PointerUpEvent(
-    position: Offset(200, 300),
-  ));
 }
 
 class _OnDemandPageState extends State<OnDemandPage> {
@@ -76,7 +66,6 @@ class _OnDemandPageState extends State<OnDemandPage> {
   List<String> result = [];
   List<AllServiceData> searchData = [];
   bool selectMyself = true;
-  bool scheduleLaterSelected = false;
   @override
   void initState() {
     super.initState();
@@ -100,6 +89,9 @@ class _OnDemandPageState extends State<OnDemandPage> {
       //     });
       //   }
       // }
+    } else {
+      log("here");
+      getAllService();
     }
     showBottom = false;
     getAddCardData();
@@ -107,6 +99,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
       searchData;
     });
     _getUserLocation();
+    loadOrderHistory();
   }
 
   void showButtonDialog(BuildContext context, int index) {
@@ -128,155 +121,9 @@ class _OnDemandPageState extends State<OnDemandPage> {
                           color: Colors.white,
                           size: 35,
                         ))),
-                Container(
-                  height: dynamicSize(0.7),
-                  decoration: const BoxDecoration(
-                    color: AllColor.buttomdialog,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15.0),
-                      topLeft: Radius.circular(15.0),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0, top: 20),
-                            child: Card(
-                              semanticContainer: true,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: CachedNetworkImage(
-                                width: 120,
-                                height: 110,
-                                imageUrl:
-                                    "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  "assets/images/image.png",
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8.0, top: 30),
-                                  child: Text(
-                                    DataControllers.to.shortServiceResponse
-                                        .value.data!.data![index].serviceName!,
-                                    style: TextStyle(
-                                        fontSize: dynamicSize(0.05),
-                                        fontFamily: 'Muli',
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              Navigator.pop(context);
-                              addCard(index);
-                            },
-                            child: Container(
-                              height: dynamicSize(0.09),
-                              margin: EdgeInsets.only(top: 66),
-                              child: Card(
-                                color: AllColor.pink_button,
-                                margin: EdgeInsets.only(left: 0, right: 0),
-                                semanticContainer: true,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(15),
-                                      topLeft: Radius.circular(15)),
-                                ),
-                                elevation: 6,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 2.0,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        (DataControllers
-                                                    .to
-                                                    .shortServiceResponse
-                                                    .value
-                                                    .data!
-                                                    .data![index]
-                                                    .addedInMyCart ==
-                                                null)
-                                            ? Icons.add
-                                            : Icons.done,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        (DataControllers
-                                                    .to
-                                                    .shortServiceResponse
-                                                    .value
-                                                    .data!
-                                                    .data![index]
-                                                    .addedInMyCart ==
-                                                null)
-                                            ? "Order Now "
-                                            : " added ",
-                                        style: TextStyle(
-                                            fontFamily: 'Muli',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-
-                                /*CachedNetworkImage(
-                              fit: BoxFit.fill,
-                              width: 120,
-                              imageUrl:
-                              "https://takecare.ltd/${DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath */ /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */ /*}",
-                              progressIndicatorBuilder:
-                              (context, url, downloadProgress) =>
-                              CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Image.asset(
-                            "assets/images/image.png",
-                              ),
-                            ),*/
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 15),
-                        child: SingleChildScrollView(
-                          child: Text(
-                            DataControllers.to.shortServiceResponse.value.data!
-                                .data![index].description!,
-                            style: TextStyle(
-                                fontFamily: 'Muli',
-                                fontWeight: FontWeight.w600,
-                                fontSize: dynamicSize(0.04),
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                ServiceButtonWidget(
+                  index: index,
+                  addCard: addCard,
                 ),
               ],
             ),
@@ -568,6 +415,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
     setState(() {
       DataControllers.to.shortServiceResponse;
       searchData;
+      _filterValue();
     });
   }
 
@@ -588,6 +436,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
 
+    log(searchData[index].id.toString(), name: "YUGRFEKF");
+
     await DataControllers.to
         .addCard(searchData[index].id.toString(), formattedDate);
 
@@ -602,11 +452,23 @@ class _OnDemandPageState extends State<OnDemandPage> {
 
   void getAllService() async {
     await DataControllers.to.getAllShortService("short");
+    _filterValue();
   }
 
   void _filterValue() {
     searchData = [];
     searchValue = false;
+
+    if (result.isEmpty) {
+      DataControllers.to.shortServiceResponse.value.data!.data!
+          .forEach((value) {
+        value.serviceCats!.forEach((categories) {
+          searchData.add(value);
+          searchValue = true;
+        });
+      });
+    }
+
     result.forEach((element) {
       DataControllers.to.shortServiceResponse.value.data!.data!
           .forEach((value) {
@@ -674,6 +536,418 @@ class _OnDemandPageState extends State<OnDemandPage> {
       MaterialPageRoute(builder: (context) => const HomePage()),
     );
     return true;
+  }
+
+  int selectedToogleIndex = 0;
+
+  Widget _buildBody(int index) {
+    switch (index) {
+      case 0:
+        return ListView(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          children: List.generate(
+            _searchResult.length,
+            (index) => Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      /* borderRadius: BorderRadius.circular(8.0),*/
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 0, top: 10, bottom: 10),
+                          child: Card(
+                            margin: const EdgeInsets.only(left: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                            ),
+                            elevation: 10,
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              width: 120,
+                              height: 110,
+                              imageUrl:
+                                  "${ApiService.MainURL}${_searchResult[index].imagePath}",
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/image.png",
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "${_searchResult[index].serviceName}",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.04),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: dynamicSize(0.12),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    showButtonDialog(context, index);
+                                  },
+                                  child: Text(
+                                    "Details",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.035),
+                                        color: Colors.purple),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20.0,
+                    right: 0.0,
+                    child: InkWell(
+                        onTap: () {
+                          addCard(index);
+                        },
+                        child: Container(
+                          height: dynamicSize(0.10),
+                          width: dynamicSize(0.12),
+                          child: Card(
+                            color: AllColor.pink_button,
+                            margin: EdgeInsets.only(left: 0, right: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  topLeft: Radius.circular(15)),
+                            ),
+                            elevation: 6,
+                            child: Icon(
+                              (_searchResult[index].addedInMyCart == null)
+                                  ? Icons.add
+                                  : Icons.done,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      case 1:
+        return ListView(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          children: List.generate(
+            searchValue
+                ? searchData.length
+                : DataControllers
+                    .to.shortServiceResponse.value.data!.data!.length,
+            (index) => Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      /* borderRadius: BorderRadius.circular(8.0),*/
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 0, top: 10, bottom: 10),
+                          child: Card(
+                            margin: const EdgeInsets.only(left: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                            ),
+                            elevation: 10,
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              width: 120,
+                              height: 110,
+                              imageUrl:
+                                  "${ApiService.MainURL}${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath : searchData[index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/image.png",
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].serviceName : searchData[index].serviceName}",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.04),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: dynamicSize(0.12),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    showButtonDialog(context, index);
+                                  },
+                                  child: Text(
+                                    "Details",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.035),
+                                        color: Colors.purple),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20.0,
+                    right: 0.0,
+                    child: InkWell(
+                        onTap: () {
+                          addCard(index);
+                        },
+                        child: Container(
+                          height: dynamicSize(0.10),
+                          width: dynamicSize(0.12),
+                          child: Card(
+                            color: AllColor.pink_button,
+                            margin: EdgeInsets.only(left: 0, right: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  topLeft: Radius.circular(15)),
+                            ),
+                            elevation: 6,
+                            child: Icon(
+                              (searchValue != true)
+                                  ? ((DataControllers
+                                              .to
+                                              .shortServiceResponse
+                                              .value
+                                              .data!
+                                              .data![index]
+                                              .addedInMyCart ==
+                                          null)
+                                      ? Icons.add
+                                      : Icons.done)
+                                  : ((searchData[index].addedInMyCart == null)
+                                      ? Icons.add
+                                      : Icons.done),
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      case 2:
+        return ListView(
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          children: List.generate(
+            searchValue
+                ? searchData.length
+                : DataControllers
+                    .to.shortServiceResponse.value.data!.data!.length
+                    .clamp(0, 3),
+            (index) => Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      /* borderRadius: BorderRadius.circular(8.0),*/
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2.0,
+                          spreadRadius: 0.0,
+                          offset: Offset(
+                              2.0, 2.0), // shadow direction: bottom right
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 0, top: 10, bottom: 10),
+                          child: Card(
+                            margin: const EdgeInsets.only(left: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                            ),
+                            elevation: 10,
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              width: 120,
+                              height: 110,
+                              imageUrl:
+                                  "${ApiService.MainURL}${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath : searchData[index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/image.png",
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].serviceName : searchData[index].serviceName}",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.04),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: dynamicSize(0.12),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    showButtonDialog(context, index);
+                                  },
+                                  child: Text(
+                                    "Details",
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.035),
+                                        color: Colors.purple),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 20.0,
+                    right: 0.0,
+                    child: InkWell(
+                        onTap: () {
+                          addCard(index);
+                        },
+                        child: Container(
+                          height: dynamicSize(0.10),
+                          width: dynamicSize(0.12),
+                          child: Card(
+                            color: AllColor.pink_button,
+                            margin: EdgeInsets.only(left: 0, right: 0),
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  topLeft: Radius.circular(15)),
+                            ),
+                            elevation: 6,
+                            child: Icon(
+                              (searchValue != true)
+                                  ? ((DataControllers
+                                              .to
+                                              .shortServiceResponse
+                                              .value
+                                              .data!
+                                              .data![index]
+                                              .addedInMyCart ==
+                                          null)
+                                      ? Icons.add
+                                      : Icons.done)
+                                  : ((searchData[index].addedInMyCart == null)
+                                      ? Icons.add
+                                      : Icons.done),
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+    }
+
+    return SizedBox();
+  }
+
+  void loadOrderHistory() async {
+    var data = await ApiService.getOrderHistory();
+    log(data.toString(), name: "loadOrderHistory");
   }
 
   @override
@@ -963,8 +1237,9 @@ class _OnDemandPageState extends State<OnDemandPage> {
               ),
             ],
             bottom: PreferredSize(
-              preferredSize: const Size(25, 25),
+              preferredSize: const Size(25, 35),
               child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: 10),
                 scrollDirection: Axis.horizontal,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -1109,13 +1384,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         width: dynamicSize(0.03),
                       ),
                       InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const FeedBackPage()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           child: Row(
                             children: const [
@@ -1146,277 +1415,11 @@ class _OnDemandPageState extends State<OnDemandPage> {
             backgroundColor: Colors.white,
             elevation: 0,
           ),
-          body: _searchResult.length != 0 || searchController.text.isNotEmpty
-              ? ListView(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  children: List.generate(
-                    _searchResult.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              /* borderRadius: BorderRadius.circular(8.0),*/
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 2.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(2.0,
-                                      2.0), // shadow direction: bottom right
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 0, top: 10, bottom: 10),
-                                  child: Card(
-                                    margin: const EdgeInsets.only(left: 0),
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(15),
-                                          topRight: Radius.circular(15)),
-                                    ),
-                                    elevation: 10,
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.fill,
-                                      width: 120,
-                                      height: 110,
-                                      imageUrl:
-                                          "${ApiService.MainURL}${_searchResult[index].imagePath}",
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        "assets/images/image.png",
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "${_searchResult[index].serviceName}",
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.04),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: dynamicSize(0.12),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            showButtonDialog(context, index);
-                                          },
-                                          child: Text(
-                                            "Details",
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.035),
-                                                color: Colors.purple),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20.0,
-                            right: 0.0,
-                            child: InkWell(
-                                onTap: () {
-                                  addCard(index);
-                                },
-                                child: Container(
-                                  height: dynamicSize(0.10),
-                                  width: dynamicSize(0.12),
-                                  child: Card(
-                                    color: AllColor.pink_button,
-                                    margin: EdgeInsets.only(left: 0, right: 0),
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          topLeft: Radius.circular(15)),
-                                    ),
-                                    elevation: 6,
-                                    child: Icon(
-                                      (_searchResult[index].addedInMyCart ==
-                                              null)
-                                          ? Icons.add
-                                          : Icons.done,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : ListView(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  children: List.generate(
-                    searchValue
-                        ? searchData.length
-                        : DataControllers
-                            .to.shortServiceResponse.value.data!.data!.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              /* borderRadius: BorderRadius.circular(8.0),*/
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 2.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(2.0,
-                                      2.0), // shadow direction: bottom right
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 0, top: 10, bottom: 10),
-                                  child: Card(
-                                    margin: const EdgeInsets.only(left: 0),
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(15),
-                                          topRight: Radius.circular(15)),
-                                    ),
-                                    elevation: 10,
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.fill,
-                                      width: 120,
-                                      height: 110,
-                                      imageUrl:
-                                          "${ApiService.MainURL}${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath : searchData[index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset(
-                                        "assets/images/image.png",
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "${(searchValue != true) ? DataControllers.to.shortServiceResponse.value.data!.data![index].serviceName : searchData[index].serviceName}",
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.04),
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: dynamicSize(0.12),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            showButtonDialog(context, index);
-                                          },
-                                          child: Text(
-                                            "Details",
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.035),
-                                                color: Colors.purple),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20.0,
-                            right: 0.0,
-                            child: InkWell(
-                                onTap: () {
-                                  addCard(index);
-                                },
-                                child: Container(
-                                  height: dynamicSize(0.10),
-                                  width: dynamicSize(0.12),
-                                  child: Card(
-                                    color: AllColor.pink_button,
-                                    margin: EdgeInsets.only(left: 0, right: 0),
-                                    semanticContainer: true,
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          topLeft: Radius.circular(15)),
-                                    ),
-                                    elevation: 6,
-                                    child: Icon(
-                                      (searchValue != true)
-                                          ? ((DataControllers
-                                                      .to
-                                                      .shortServiceResponse
-                                                      .value
-                                                      .data!
-                                                      .data![index]
-                                                      .addedInMyCart ==
-                                                  null)
-                                              ? Icons.add
-                                              : Icons.done)
-                                          : ((searchData[index].addedInMyCart ==
-                                                  null)
-                                              ? Icons.add
-                                              : Icons.done),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                )),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+          body: (_searchResult.isNotEmpty || searchController.text.isNotEmpty)
+              ? _buildBody(0)
+              : (selectedColor == 2)
+                  ? _buildBody(2)
+                  : _buildBody(1),
         ),
       );
     });
@@ -1468,68 +1471,23 @@ class _OnDemandPageState extends State<OnDemandPage> {
                       height: 10.0,
                     ),
                     Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            scheduleLaterSelected = !scheduleLaterSelected;
-                          });
+                      child: ToggleSwitch(
+                        minWidth: 90.0,
+                        cornerRadius: 20.0,
+                        activeBgColors: [
+                          [AllColor.pink_button],
+                          [AllColor.pink_button]
+                        ],
+                        activeFgColor: Colors.white,
+                        inactiveBgColor: Colors.grey,
+                        inactiveFgColor: Colors.white,
+                        initialLabelIndex: selectedToogleIndex,
+                        totalSwitches: 2,
+                        labels: ['Now', 'Schedule'],
+                        radiusStyle: true,
+                        onToggle: (index) {
+                          selectedToogleIndex = index!;
                         },
-                        child: Container(
-                          width: size.width * 0.4,
-                          height: size.height * 0.04,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: scheduleLaterSelected
-                                ? AllColor.pink_button
-                                : Colors.grey[400],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    scheduleLaterSelected =
-                                        !scheduleLaterSelected;
-                                  });
-                                },
-                                child: Container(
-                                  width: size.width * 0.2,
-                                  height: size.height * 0.04,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: scheduleLaterSelected
-                                        ? Colors.grey[400]
-                                        : AllColor.pink_button,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      "Now",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: 10.0),
-                                child: Text(
-                                  "Schedule",
-                                  style: TextStyle(
-                                    fontFamily: "Muli",
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                     Padding(
@@ -1667,8 +1625,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
                           InkWell(
                             onTap: () async {
                               if (selectMyself) {
-                                if (scheduleLaterSelected == true) {
-                                  log("Scheduled for later");
+                                if (selectedToogleIndex == 1) {
+                                  log("Scheduled for later  myself");
                                   await DataControllers.to.getProviderList(
                                       "1",
                                       "1",
@@ -1765,21 +1723,49 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   }
                                 }
                               } else {
-                                LovedOnesResponse lovedOnes =
-                                    await ApiService.getFavAddress();
-                                if (!lovedOnes.success!) {
-                                  Navigator.of(context)
-                                      .pushReplacement(MaterialPageRoute(
-                                          builder: (_) => LovedFormPage(
-                                                activity: Variables
-                                                    .orderInformationActivity,
-                                              )));
-                                } else {
-                                  log("not empty");
-                                  Navigator.of(context).pushReplacement(
+                                if (selectedToogleIndex == 1) {
+                                  log("Schedulef for later");
+                                  LovedOnesResponse lovedOnes =
+                                      await ApiService.getFavAddress();
+                                  if (!lovedOnes.success!) {
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                          builder: (_) => LovedOnesPage(
-                                              activity: "SelectAndGotoMap")));
+                                        builder: (_) => LovedFormPage(
+                                          activity: Variables
+                                              .orderInformationActivity,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    log("not empty");
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => LovedOnesPage(
+                                            activity: "ScheduleActivity"),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  LovedOnesResponse lovedOnes =
+                                      await ApiService.getFavAddress();
+                                  if (!lovedOnes.success!) {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => LovedFormPage(
+                                          activity: Variables
+                                              .orderInformationActivity,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    log("not empty");
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => LovedOnesPage(
+                                            activity: "SelectAndGotoMap"),
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             },
@@ -1806,5 +1792,158 @@ class _OnDemandPageState extends State<OnDemandPage> {
             },
           );
         });
+  }
+}
+
+class ServiceButtonWidget extends StatefulWidget {
+  int index;
+  Function addCard;
+  ServiceButtonWidget({required this.index, required this.addCard, super.key});
+
+  @override
+  State<ServiceButtonWidget> createState() => _ServiceButtonWidgetState();
+}
+
+class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: dynamicSize(0.7),
+      decoration: const BoxDecoration(
+        color: AllColor.buttomdialog,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(15.0),
+          topLeft: Radius.circular(15.0),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0, top: 20),
+                child: Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: CachedNetworkImage(
+                    width: 120,
+                    height: 110,
+                    imageUrl:
+                        "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![widget.index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/images/image.png",
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 30),
+                      child: Text(
+                        DataControllers.to.shortServiceResponse.value.data!
+                            .data![widget.index].serviceName!,
+                        style: TextStyle(
+                            fontSize: dynamicSize(0.05),
+                            fontFamily: 'Muli',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () async {
+                  Navigator.pop(context);
+                  widget.addCard(widget.index);
+                },
+                child: Container(
+                  height: dynamicSize(0.09),
+                  margin: EdgeInsets.only(top: 66),
+                  child: Card(
+                    color: AllColor.pink_button,
+                    margin: EdgeInsets.only(left: 0, right: 0),
+                    semanticContainer: true,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          topLeft: Radius.circular(15)),
+                    ),
+                    elevation: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 2.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            (DataControllers.to.shortServiceResponse.value.data!
+                                        .data![widget.index].addedInMyCart ==
+                                    null)
+                                ? Icons.add
+                                : Icons.done,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            (DataControllers.to.shortServiceResponse.value.data!
+                                        .data![widget.index].addedInMyCart ==
+                                    null)
+                                ? "Order Now "
+                                : " added ",
+                            style: TextStyle(
+                                fontFamily: 'Muli',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    /*CachedNetworkImage(
+                            fit: BoxFit.fill,
+                            width: 120,
+                            imageUrl:
+                            "https://takecare.ltd/${DataControllers.to.shortServiceResponse.value.data!.data![index].imagePath */ /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */ /*}",
+                            progressIndicatorBuilder:
+                            (context, url, downloadProgress) =>
+                            CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Image.asset(
+                          "assets/images/image.png",
+                            ),
+                          ),*/
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, top: 15),
+            child: SingleChildScrollView(
+              child: Text(
+                DataControllers.to.shortServiceResponse.value.data!
+                    .data![widget.index].description!,
+                style: TextStyle(
+                    fontFamily: 'Muli',
+                    fontWeight: FontWeight.w600,
+                    fontSize: dynamicSize(0.04),
+                    color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

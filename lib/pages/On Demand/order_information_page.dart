@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,7 +76,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                       appBar: AppBar(
                         backgroundColor: Colors.white,
                         title: const Text(
-                          "Order Information ",
+                          "Order Information",
                           style: TextStyle(
                               fontFamily: 'Muli',
                               fontWeight: FontWeight.w600,
@@ -244,7 +243,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                                   fontSize: dynamicSize(0.05)),
                                             ),
                                             Text(
-                                              "- ${ discountAmount != 0 ? widget.providerData!.provider_service_total_price! - discountAmount : 0.0}/-",
+                                              "- ${discountAmount != 0 ? widget.providerData!.provider_service_total_price! - discountAmount : 0.0}/-",
                                               style: TextStyle(
                                                   fontFamily: 'Muli',
                                                   fontWeight: FontWeight.w600,
@@ -786,7 +785,8 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                   _couponController.text,
                                   _orderNoteController.text);
 
-                              await dc.confirmOrder(widget.reqDocId!, widget.receiverId!,widget.providerData);
+                              await dc.confirmOrder(widget.reqDocId!,
+                                  widget.receiverId!, widget.providerData);
 
                               dc.loading(true);
                             },

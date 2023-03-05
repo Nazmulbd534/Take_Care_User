@@ -501,8 +501,8 @@ class DataControllers extends GetxController {
     var response = await ApiService.placeOrder(request_number,
         providerData: providerData,
         result: result,
-        coupon_code: coupon!,
-        order_note: order_note!);
+        coupon_code: coupon ?? "",
+        order_note: order_note ?? "");
 
     if (response != null) {
       appResponse.value = response;

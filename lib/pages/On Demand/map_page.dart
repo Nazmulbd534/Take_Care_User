@@ -482,21 +482,29 @@ class _MapPageState extends State<MapPage> {
                                               '')
                                           : snackBar(context,
                                               StringConstant.systemError);
-                                      /*   {
-                                        await DataControllers.to.pleaceOrder(
-                                            DataControllers.to.newRequestResponse
-                                                .value.data!.request_number
-                                                .toString(),
-                                            providerList[requestIndex],
-                                            widget.result);
 
-                                    //    (DataControllers.to.appResponse.value.success!)
+                                      log("reached here");
 
+                                      await DataControllers.to.pleaceOrder(
+                                          DataControllers.to.newRequestResponse
+                                              .value.data!.request_number
+                                              .toString(),
+                                          providerList[requestIndex],
+                                          widget.result,
+                                          null,
+                                          null);
+
+                                      if (DataControllers
+                                          .to.appResponse.value.success!) {
+                                        log("success");
                                       } else {
-                                        snackBar(
-                                            context, StringConstant.systemError);
+                                        log("failed");
                                       }
-                                      */
+
+                                      // } else {
+                                      //   snackBar(
+                                      //       context, StringConstant.systemError);
+                                      // }
                                     },
                               color: AllColor.pink_button,
                               textColor: Colors.white,

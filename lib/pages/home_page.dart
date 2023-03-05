@@ -962,7 +962,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
       children: [
         SizedBox(height: dynamicSize(0)),
         Padding(
-          padding: const EdgeInsets.only(bottom: 0.0, top: 10.0),
+          padding: const EdgeInsets.only(bottom: 5.0, top: 10.0),
           child: Container(
             alignment: Alignment.center,
             child: Text(
@@ -1303,79 +1303,75 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
 
         Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                    flex: 4,
-                    child: CarouselSlider.builder(
-                      carouselController: buttonCarouselController,
-                      itemCount:
-                          DataControllers.to.sliderResponse.value.data!.length,
-                      itemBuilder: (BuildContext context, int itemIndex,
-                              int pageViewIndex) =>
-                          Container(
-                        //color: Colors.pinkAccent,
-                        height: dynamicSize(0.38),
-                        width: dynamicSize(0.97),
-                        // width: MediaQuery.of(context).size.width/2,
-                        decoration: BoxDecoration(
-                          // color: Colors.pinkAccent,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: CarouselSlider.builder(
+                carouselController: buttonCarouselController,
+                itemCount: DataControllers.to.sliderResponse.value.data!.length,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        Container(
+                  //color: Colors.pinkAccent,
+                  height: dynamicSize(0.38),
+                  width: dynamicSize(0.97),
+                  // width: MediaQuery.of(context).size.width/2,
+                  decoration: BoxDecoration(
+                    // color: Colors.pinkAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
 
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
-                            fit: BoxFit.cover,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          "${ApiService.MainURL + DataControllers.to.sliderResponse.value.data![itemIndex].sliderImage!}"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, bottom: 10),
+                          child: Text(
+                            "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
+                            style: TextStyle(
+                                fontSize: dynamicSize(0.075),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, bottom: 10),
-                                child: Text(
-                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle == null) ? "" : DataControllers.to.sliderResponse.value.data![itemIndex].sliderTitle}" /*DataControllers.to.getCategoriesResponse.value.data[].*/,
-                                  style: TextStyle(
-                                      fontSize: dynamicSize(0.075),
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 10.0, bottom: 15),
+                          child: Text(
+                            "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
+                            style: TextStyle(
+                              fontSize: dynamicSize(0.045),
+                              color: Colors.white,
                             ),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, bottom: 15),
-                                child: Text(
-                                  "${(DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription == null) ? '' : DataControllers.to.sliderResponse.value.data![itemIndex].sliderDescription}",
-                                  style: TextStyle(
-                                    fontSize: dynamicSize(0.045),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      options: CarouselOptions(
-                          autoPlay: true,
-                          enlargeCenterPage: false,
-                          viewportFraction: 1.0,
-                          aspectRatio: 2.8,
-                          initialPage: 0,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _current = index;
-                            });
-                          }),
-                    )),
-              ],
+                    ],
+                  ),
+                ),
+                options: CarouselOptions(
+                    height: 180,
+                    autoPlay: true,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1.0,
+                    aspectRatio: 2.8,
+                    initialPage: 0,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    }),
+              ),
             ),
             const SizedBox(
               height: 10,

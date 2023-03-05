@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:blurrycontainer/blurrycontainer.dart';
@@ -14,7 +16,9 @@ import 'package:takecare_user/model/AllServiceResponse.dart';
 import 'package:takecare_user/model/CategoriesResponse.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/pages/On%20Demand/map_page.dart';
+import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
+import 'package:takecare_user/pages/long_time_services/order_confirm_page.dart';
 import 'package:takecare_user/pages/long_time_services/service_request_form_page.dart';
 import 'package:takecare_user/pages/loved_form_page.dart';
 import 'package:takecare_user/pages/loved_ones_page.dart';
@@ -627,71 +631,6 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            scheduleSelected = !scheduleSelected;
-                          });
-                          log("schedule select is now  $scheduleSelected");
-                        },
-                        child: Container(
-                          width: size.width * 0.4,
-                          height: size.height * 0.04,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: scheduleSelected
-                                ? AllColor.pink_button
-                                : Colors.grey[400],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    scheduleSelected = !scheduleSelected;
-                                  });
-                                },
-                                child: Container(
-                                  width: size.width * 0.2,
-                                  height: size.height * 0.04,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: scheduleSelected
-                                        ? Colors.grey[400]
-                                        : AllColor.pink_button,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      "Now",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(right: 10.0),
-                                child: Text(
-                                  "Schedule",
-                                  style: TextStyle(
-                                    fontFamily: "Muli",
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 10, right: 10, top: 15.0),
                       child: Column(
@@ -834,6 +773,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                         .toString(),
                                     Variables.currentPostion.latitude
                                         .toString());
+                                // ignore: use_build_context_synchronously
                                 resultGeo = (await Navigator.push(
                                   context,
                                   MaterialPageRoute<GeocodingResult>(
@@ -865,9 +805,10 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (cp) => MapPage(
-                                              result: resultGeo,
-                                            )),
+                                      builder: (cp) => OrderConfirmPage(
+                                          result: resultGeo,
+                                          orderType: "Long Term"),
+                                    ),
                                   );
                                 }
                               } else {
@@ -883,9 +824,11 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                 } else {
                                   log("not empty");
                                   Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (_) => LovedOnesPage(
-                                              activity: "SelectAndGotoMap")));
+                                    MaterialPageRoute(
+                                      builder: (_) => LovedOnesPage(
+                                          activity: "LongTermSchedule"),
+                                    ),
+                                  );
                                 }
                               }
                             },
