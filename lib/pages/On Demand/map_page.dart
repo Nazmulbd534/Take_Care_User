@@ -66,8 +66,18 @@ class _MapPageState extends State<MapPage> {
               return true;
             },
             child: Scaffold(
+              extendBodyBehindAppBar: true,
               appBar: AppBar(
-                title: const Text("Available Providers"),
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    )),
               ),
               body: SingleChildScrollView(
                 child: Column(
@@ -77,6 +87,7 @@ class _MapPageState extends State<MapPage> {
                       child: Stack(
                         children: [
                           GoogleMap(
+                            compassEnabled: false,
                             mapType: MapType.normal,
                             initialCameraPosition: _kLake = CameraPosition(
                               bearing: 192.8334901395799,
@@ -202,10 +213,9 @@ class _MapPageState extends State<MapPage> {
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.only(top: 15.0, left: 15.0),
                           child: Text(
                               providerList.isEmpty
                                   ? "No provider is available in your area at this moment. Please try again after some time  Or call at 01827370397 . Thank You."
@@ -214,7 +224,6 @@ class _MapPageState extends State<MapPage> {
                               style: TextStyle(fontSize: dynamicSize(0.07))),
                         ),
                         Container(
-                          alignment: Alignment.center,
                           height: dynamicSize(rqbutton ? 0.96 : 1.17),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 18.0),
@@ -526,10 +535,10 @@ class _MapPageState extends State<MapPage> {
                                       //       context, StringConstant.systemError);
                                       // }
                                     },
-                              color: AllColor.pink_button,
+                              color: AllColor.themeColor,
                               textColor: Colors.white,
                               child: Text(
-                                "Book now",
+                                "Book",
                                 style: TextStyle(fontSize: dynamicSize(0.05)),
                               ),
                             ),

@@ -642,55 +642,77 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       height: 200,
                       child: ListView.builder(
-                          itemCount: (widget.providerdata.user_documents! == null) ? 0 : widget.providerdata.user_documents!.length,
+                          itemCount:
+                              (widget.providerdata.user_documents! == null)
+                                  ? 0
+                                  : widget.providerdata.user_documents!.length,
                           itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child:  Container(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    widget.providerdata.user_documents![index].title.toString(),
-                                    style: TextStyle(fontSize: dynamicSize(0.04)),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        widget.providerdata
+                                            .user_documents![index].title
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: dynamicSize(0.04)),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          if (widget
+                                                  .providerdata
+                                                  .user_documents![index]
+                                                  .extension ==
+                                              'pdf') {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PDFReaderPage(
+                                                          '${ApiService.MainURL}${widget.providerdata.user_documents![index].file}')),
+                                            );
+                                          } else if (widget
+                                                      .providerdata
+                                                      .user_documents![index]
+                                                      .extension ==
+                                                  'jpg' ||
+                                              widget
+                                                      .providerdata
+                                                      .user_documents![index]
+                                                      .extension ==
+                                                  'png') {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ImageView(
+                                                        url:
+                                                            '${ApiService.MainURL}${widget.providerdata.user_documents![index].file}',
+                                                        name: widget
+                                                            .providerdata
+                                                            .fullName
+                                                            .toString(),
+                                                      )),
+                                            );
+                                          }
+                                        },
+                                        child: Text(
+                                          "VIEW",
+                                          style: TextStyle(
+                                              fontSize: dynamicSize(0.04),
+                                              color: Colors.pink),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-
-                                      if(widget.providerdata.user_documents![index].extension == 'pdf') {
-
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PDFReaderPage('${ApiService.MainURL}${widget.providerdata.user_documents![index].file}')
-                                          ),
-                                        );
-                                      }else if( widget.providerdata.user_documents![index].extension == 'jpg' || widget.providerdata.user_documents![index].extension == 'png')
-                                         {
-                                           Navigator.push(
-                                             context,
-                                             MaterialPageRoute(
-                                                 builder: (context) =>
-                                                     ImageView( url: '${ApiService.MainURL}${widget.providerdata.user_documents![index].file}', name: widget.providerdata.fullName.toString(),)
-                                             ),
-                                           );
-                                         }
-                                    },
-                                    child: Text(
-                                      "VIEW",
-                                      style: TextStyle(
-                                          fontSize: dynamicSize(0.04),
-                                          color: Colors.pink),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )),
+                                ),
+                              )),
                     ),
-
                   ],
                 ),
               ),
@@ -708,7 +730,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Container(
-        margin:  EdgeInsets.all(8),
+        margin: EdgeInsets.all(8),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Container(
@@ -727,7 +749,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                   '${ApiService.MainURL}${data.file}');
                             },
                             child: Container(
-                              alignment: Alignment.center,
+                                alignment: Alignment.center,
                                 height: 55,
                                 width: 100,
                                 color: Colors.blueAccent,
@@ -737,7 +759,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                           )
                         : data.extension == 'jpg' || data.extension == 'png'
                             ? CachedNetworkImage(
-                      height: 170,
+                                height: 170,
                                 fit: BoxFit.fill,
                                 imageUrl: '${ApiService.MainURL}${data.file}',
                                 errorWidget: (context, url, error) =>
