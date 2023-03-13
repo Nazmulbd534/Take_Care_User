@@ -71,7 +71,9 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              log("clicked");
+            },
             child: const Text("Confirm this Order"),
           ),
         ),

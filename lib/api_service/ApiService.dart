@@ -435,7 +435,7 @@ class ApiService {
       },
       body: jsonEncode(Json),
     );
-    print("Api Response : ${response.body}");
+    log("Api Response : ${response.body}", name: "newRequest");
     // List<String> stringList = (jsonDecode(response.body) as List<dynamic>).cast<String>();
 
     if (response.statusCode == 200) {

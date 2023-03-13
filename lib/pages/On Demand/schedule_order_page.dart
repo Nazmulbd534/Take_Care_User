@@ -53,7 +53,9 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              log("clicked");
+            },
             child: const Text("Confirm this Order"),
           ),
         ),

@@ -798,7 +798,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                               alignment: Alignment.center,
                               height: dynamicSize(0.15),
                               child: Text(
-                                "Confirm this Order",
+                                "rh this Order",
                                 style: TextStyle(
                                     fontSize: dynamicSize(0.05),
                                     color: Colors.white),

@@ -10,6 +10,7 @@ import 'package:takecare_user/controller/data_controller.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/model/provider/provider_data.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
+import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/provider/provider_profile_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
@@ -496,7 +497,26 @@ class _MapPageState extends State<MapPage> {
 
                                       if (DataControllers
                                           .to.appResponse.value.success!) {
-                                        log("success");
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Order successfully placed"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("Back"),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  HomePage()));
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
                                       } else {
                                         log("failed");
                                       }
