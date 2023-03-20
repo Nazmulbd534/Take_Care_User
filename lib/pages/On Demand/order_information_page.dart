@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,6 +58,18 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
     super.dispose();
     _couponController.dispose();
     _orderNoteController.dispose();
+  }
+
+  void cancelOrder() {
+    log("deleting ${widget.reqDocId}");
+
+    FirebaseFirestore.instance
+        .collection('request')
+        .doc(widget.reqDocId)
+        .delete()
+        .then((value) {
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -763,47 +777,86 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(
                               left: 8.0, right: 8, bottom: 8, top: 15),
-                          child: InkWell(
-                            onTap: () async {
-                              dc.loading(true);
-                              GeocodingResult result = GeocodingResult(
-                                  formattedAddress:
-                                      snapshot.data!.get('booking_address'),
-                                  geometry: Geometry(
-                                      location: Location(
-                                          lng: snapshot.data!.get('lng'),
-                                          lat: snapshot.data!.get('lat'))),
-                                  placeId: '');
-
-                              // lng
-                              await DataControllers.to.pleaceOrder(
-                                  snapshot.data!
-                                      .get('request_number')
-                                      .toString(),
-                                  widget.providerData,
-                                  result,
-                                  _couponController.text,
-                                  _orderNoteController.text);
-
-                              await dc.confirmOrder(widget.reqDocId!,
-                                  widget.receiverId!, widget.providerData);
-
-                              dc.loading(true);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AllColor.themeColor,
-                                borderRadius: BorderRadius.circular(5),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: InkWell(
+                                  onTap: () async {
+                                    dc.loading(true);
+                                    cancelOrder();
+                                    dc.loading(false);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AllColor.themeColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    alignment: Alignment.center,
+                                    height: dynamicSize(0.15),
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          fontSize: dynamicSize(0.05),
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              alignment: Alignment.center,
-                              height: dynamicSize(0.15),
-                              child: Text(
-                                "rh this Order",
-                                style: TextStyle(
-                                    fontSize: dynamicSize(0.05),
-                                    color: Colors.white),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    dc.loading(true);
+                                    GeocodingResult result = GeocodingResult(
+                                        formattedAddress: snapshot.data!
+                                            .get('booking_address'),
+                                        geometry: Geometry(
+                                            location: Location(
+                                                lng: snapshot.data!.get('lng'),
+                                                lat:
+                                                    snapshot.data!.get('lat'))),
+                                        placeId: '');
+
+                                    log(result.formattedAddress.toString());
+
+                                    log(snapshot.data!
+                                        .get('request_number')
+                                        .toString());
+
+                                    //lng
+                                    await DataControllers.to.pleaceOrder(
+                                        snapshot.data!
+                                            .get('request_number')
+                                            .toString(),
+                                        widget.providerData,
+                                        result,
+                                        _couponController.text,
+                                        _orderNoteController.text);
+
+                                    await dc.confirmOrder(
+                                        widget.reqDocId!,
+                                        widget.receiverId!,
+                                        widget.providerData);
+
+                                    dc.loading(false);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: AllColor.themeColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    alignment: Alignment.center,
+                                    height: dynamicSize(0.15),
+                                    child: Text(
+                                      "Accept this Order",
+                                      style: TextStyle(
+                                          fontSize: dynamicSize(0.05),
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),

@@ -423,7 +423,8 @@ class ApiService {
       "booking_date": formatted,
       "provider_id": providerData!.id.toString(),
       "latitude": result!.geometry.location.lat.toString(),
-      "longitude": result.geometry.location.lng.toString()
+      "longitude": result.geometry.location.lng.toString(),
+      "foundSchedule": "a",
     };
 
     var response = await client.post(
