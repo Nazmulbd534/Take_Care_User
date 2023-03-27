@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:947236785071:android:c103ee62a9bebb84a07d5a",
+        "android_client_info": {
+          "package_name": "provider.takecare.ltd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947236785071-g7edrgd4k4tk4gbhu4jj82ssafoqg0q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6-exW_Xct0zjsSRnVmXoQJ9zEaWF9jwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947236785071-g7edrgd4k4tk4gbhu4jj82ssafoqg0q2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:947236785071:android:066f31b52ba29c37a07d5a",
         "android_client_info": {
           "package_name": "user.takecare.ltd"

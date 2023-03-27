@@ -11,30 +11,32 @@ import 'api_service/service.dart';
 import 'controller/data_controller.dart';
 import 'controllers/DataContollers.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-class PostHttpOverrides extends HttpOverrides{
+class PostHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(context)
-  {
+  HttpClient createHttpClient(context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   ///Onclick listener
   NotificationService.display(message);
 }
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   NotificationService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(DataController());
   Get.put(DataControllers());
   Get.put(LanguageController());
-
 
   /// Set Device orientation
   AllColor.portraitMood;
@@ -56,9 +58,8 @@ class _MyAppState extends State<MyApp> {
     _fcmInit();
   }
 
-  Future<void> _fcmInit()async{
+  Future<void> _fcmInit() async {
     FirebaseMessaging.instance.getInitialMessage();
-
 
     ///When App Running
     FirebaseMessaging.onMessage.listen((event) {
@@ -83,9 +84,11 @@ class _MyAppState extends State<MyApp> {
     });
 
     ///When App Destroyed
-    FirebaseMessaging.instance.getInitialMessage().then((value){
-      if (kDebugMode) {print('!!FCM message Received (On Destroy)!!');}
-      if(value!=null){
+    FirebaseMessaging.instance.getInitialMessage().then((value) {
+      if (kDebugMode) {
+        print('!!FCM message Received (On Destroy)!!');
+      }
+      if (value != null) {
         NotificationService.display(value);
       }
     });
@@ -97,7 +100,6 @@ class _MyAppState extends State<MyApp> {
         title: 'Take Care',
         theme: AllColor.theme,
         debugShowCheckedModeBanner: false,
-        home: const SignInPage()
-    );
+        home: const SignInPage());
   }
 }
