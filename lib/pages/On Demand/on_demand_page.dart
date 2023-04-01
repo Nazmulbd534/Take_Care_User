@@ -1440,7 +1440,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                     topLeft: Radius.circular(15.0),
                   ),
                 ),
-                height: dynamicSize(0.87),
+                height: dynamicSize(0.97),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1496,7 +1496,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
@@ -1507,7 +1507,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.blue_light
@@ -1561,9 +1561,10 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   'Or',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: dynamicSize(0.05),
-                                      fontWeight: FontWeight.bold,
-                                      color: AllColor.blue),
+                                    fontSize: dynamicSize(0.06),
+                                    fontWeight: FontWeight.bold,
+                                    color: AllColor.black,
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -1574,7 +1575,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.white_light
@@ -1769,18 +1770,29 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                 }
                               }
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Continue',
-                                  style: TextStyle(
+                            child: Container(
+                              height: dynamicSize(0.1),
+                              width: dynamicSize(0.35),
+                              decoration: BoxDecoration(
+                                color: AllColor.greyButton,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Continue',
+                                    style: TextStyle(
                                       fontSize: dynamicSize(0.04),
-                                      color: AllColor.blue_light),
-                                ),
-                                Icon(Icons.arrow_right_alt,
-                                    color: AllColor.blue_light)
-                              ],
+                                      color: AllColor.blue_light,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Icon(Icons.arrow_right_alt,
+                                      color: AllColor.blue_light)
+                                ],
+                              ),
                             ),
                           ),
                         ],
