@@ -61,7 +61,7 @@ class ApiService {
       'Authorization': bearerToken,
     });
     if (response.statusCode == 200) {
-      print("Api Response : ${response.body}");
+      log("Api Response : ${response.body}");
       var jsonString = response.body;
       return allServiceResponseFromJson(jsonString);
     } else {

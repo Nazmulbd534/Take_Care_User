@@ -96,8 +96,9 @@ class LanguageController extends GetxController {
         ? 'On Demand Service Setup'
         : 'চাহিদা অনুযায়ী সেবা সেটআপ');
     // longTimeService(isEnglish.value?'Long Time Service': 'দীর্ঘ সময়ের পরিষেবা');
-    longTimeService(
-        isEnglish.value ? 'Care Packages ' : 'দীর্ঘ সময়ের পরিষেবা');
+    longTimeService(isEnglish.value
+        ? 'Personalized Care Package '
+        : 'দীর্ঘ সময়ের পরিষেবা');
     longTimeServiceSetup(isEnglish.value
         ? 'Long Time Service Setup'
         : 'দীর্ঘ সময়ের পরিষেবা সেটআপ');

@@ -968,7 +968,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
             child: Text(
               widget.lc.onDemandService.value,
               style: TextStyle(
-                  fontSize: dynamicSize(0.056),
+                  fontSize: dynamicSize(0.042),
                   fontWeight: FontWeight.w600,
                   fontFamily: "Muli"),
             ),
@@ -1360,7 +1360,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                   ),
                 ),
                 options: CarouselOptions(
-                    height: 180,
+                    height: 150,
                     autoPlay: true,
                     enlargeCenterPage: false,
                     viewportFraction: 1.0,
@@ -1415,7 +1415,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                   child: Text(
                     widget.lc.longTimeService.value,
                     style: TextStyle(
-                        fontSize: dynamicSize(0.059),
+                        fontSize: dynamicSize(0.048),
                         fontWeight: FontWeight.w600,
                         fontFamily: "Muli"),
                   )),

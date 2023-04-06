@@ -230,14 +230,12 @@ class Link {
 }
 */
 
-
 // To parse this JSON data, do
 //
 //     final allServiceResponse = allServiceResponseFromJson(jsonString);
 
-
-AllServiceResponse allServiceResponseFromJson(String str) => AllServiceResponse.fromJson(json.decode(str));
-
+AllServiceResponse allServiceResponseFromJson(String str) =>
+    AllServiceResponse.fromJson(json.decode(str));
 
 class AllServiceResponse {
   AllServiceResponse({
@@ -250,13 +248,12 @@ class AllServiceResponse {
   String? message;
   Data? data;
 
-  factory AllServiceResponse.fromJson(Map<String, dynamic> json) => AllServiceResponse(
-    success: json["success"],
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
-  );
-
-
+  factory AllServiceResponse.fromJson(Map<String, dynamic> json) =>
+      AllServiceResponse(
+        success: json["success"],
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+      );
 }
 
 class Data {
@@ -291,20 +288,21 @@ class Data {
   int? total;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    currentPage: json["current_page"],
-    data: List<AllServiceData>.from(json["data"].map((x) => AllServiceData.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
+        currentPage: json["current_page"],
+        data: List<AllServiceData>.from(
+            json["data"].map((x) => AllServiceData.fromJson(x))),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
+      );
 }
 
 class AllServiceData {
@@ -347,24 +345,29 @@ class AllServiceData {
   List<ServiceCat>? serviceCats;
 
   factory AllServiceData.fromJson(Map<String, dynamic> json) => AllServiceData(
-    id: json["id"],
-    serviceName: json["service_name"],
-    serviceCategoryId: json["service_category_id"] == null ? null : json["service_category_id"],
-    serviceType: json["service_type"],
-    price: json["price"],
-    description: json["description"],
-    serviceImage: json["service_image"],
-    serviceImageThumbnail: json["service_image_thumbnail"],
-    imagePath: json["image_path"],
-    sorting: json["sorting"],
-    status: json["status"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    bookingDate: json["booking_date"] == null ? null : DateTime.parse(json["booking_date"]),
-    addedInMyService: json["added_in_my_service"],
-    addedInMyCart: json["added_in_my_cart"],
-    serviceCats: List<ServiceCat>.from(json["service_cats"].map((x) => ServiceCat.fromJson(x))),
-  );
+        id: json["id"],
+        serviceName: json["service_name"],
+        serviceCategoryId: json["service_category_id"] == null
+            ? null
+            : json["service_category_id"],
+        serviceType: json["service_type"],
+        price: json["price"],
+        description: json["description"],
+        serviceImage: json["service_image"],
+        serviceImageThumbnail: json["service_image_thumbnail"],
+        imagePath: json["image_path"],
+        sorting: json["sorting"],
+        status: json["status"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        bookingDate: json["booking_date"] == null
+            ? null
+            : DateTime.parse(json["booking_date"]),
+        addedInMyService: json["added_in_my_service"],
+        addedInMyCart: json["added_in_my_cart"],
+        serviceCats: List<ServiceCat>.from(
+            json["service_cats"].map((x) => ServiceCat.fromJson(x))),
+      );
 }
 
 class ServiceCat {
@@ -389,15 +392,15 @@ class ServiceCat {
   ServiceCategory? serviceCategory;
 
   factory ServiceCat.fromJson(Map<String, dynamic> json) => ServiceCat(
-    id: json["id"],
-    serviceId: json["service_id"],
-    categoryId: json["category_id"],
-    createdBy: json["created_by"],
-    updatedBy: json["updated_by"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-    serviceCategory: ServiceCategory.fromJson(json["service_category"]),
-  );
+        id: json["id"],
+        serviceId: json["service_id"],
+        categoryId: json["category_id"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        serviceCategory: ServiceCategory.fromJson(json["service_category"]),
+      );
 }
 
 class ServiceCategory {
@@ -423,19 +426,20 @@ class ServiceCategory {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory ServiceCategory.fromJson(Map<String, dynamic> json) => ServiceCategory(
-    id: json["id"],
-    categoryName: json["category_name"],
-    serviceImage: json["service_image"],
-    serviceThumbnail: json["service_thumbnail"],
-    serviceType:json["service_type"],
-    isPopular: json["is_popular"],
-    startPrice: json["start_price"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
-  );
-
+  factory ServiceCategory.fromJson(Map<String, dynamic> json) =>
+      ServiceCategory(
+        id: json["id"],
+        categoryName: json["category_name"],
+        serviceImage: json["service_image"],
+        serviceThumbnail: json["service_thumbnail"],
+        serviceType: json["service_type"],
+        isPopular: json["is_popular"],
+        startPrice: json["start_price"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
 }
+
 class Link {
   Link({
     this.url,
@@ -448,10 +452,8 @@ class Link {
   bool? active;
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"] == null ? null : json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
-
+        url: json["url"] == null ? null : json["url"],
+        label: json["label"],
+        active: json["active"],
+      );
 }
-
