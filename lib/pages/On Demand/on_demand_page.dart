@@ -43,12 +43,12 @@ class OnDemandPage extends StatefulWidget {
 class _OnDemandPageState extends State<OnDemandPage> {
   Icon cusIcon = const Icon(Icons.search, color: Colors.black);
   Widget cusSearchbar = Text(
-    "Book for right now or later",
+    "On Demand",
     style: TextStyle(
         fontFamily: 'Muli',
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
         color: Colors.black,
-        fontSize: dynamicSize(0.04)),
+        fontSize: dynamicSize(0.03)),
   );
 
   bool focus = false;
@@ -1464,7 +1464,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                     topLeft: Radius.circular(15.0),
                   ),
                 ),
-                height: dynamicSize(0.87),
+                height: dynamicSize(0.97),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1507,7 +1507,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         inactiveFgColor: Colors.white,
                         initialLabelIndex: selectedToogleIndex,
                         totalSwitches: 2,
-                        labels: ['Now', 'Later'],
+                        labels: ['Now', 'Schedule'],
                         radiusStyle: true,
                         onToggle: (index) {
                           selectedToogleIndex = index!;
@@ -1520,7 +1520,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
@@ -1531,7 +1531,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.blue_light
@@ -1585,9 +1585,10 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   'Or',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: dynamicSize(0.05),
-                                      fontWeight: FontWeight.bold,
-                                      color: AllColor.blue),
+                                    fontSize: dynamicSize(0.06),
+                                    fontWeight: FontWeight.bold,
+                                    color: AllColor.black,
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -1598,7 +1599,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.white_light
@@ -1793,18 +1794,29 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                 }
                               }
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Continue',
-                                  style: TextStyle(
+                            child: Container(
+                              height: dynamicSize(0.1),
+                              width: dynamicSize(0.35),
+                              decoration: BoxDecoration(
+                                color: AllColor.greyButton,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Continue',
+                                    style: TextStyle(
                                       fontSize: dynamicSize(0.04),
-                                      color: AllColor.blue_light),
-                                ),
-                                Icon(Icons.arrow_right_alt,
-                                    color: AllColor.blue_light)
-                              ],
+                                      color: AllColor.blue_light,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Icon(Icons.arrow_right_alt,
+                                      color: AllColor.blue_light)
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -1834,7 +1846,7 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
     return Container(
       height: dynamicSize(0.7),
       decoration: const BoxDecoration(
-        color: AllColor.white,
+        color: AllColor.buttomdialog,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(15.0),
           topLeft: Radius.circular(15.0),
@@ -1850,13 +1862,20 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 20),
-                child: CachedNetworkImage(
-                  width: 120,
-                  height: 110,
-                  imageUrl:
-                      "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![widget.index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                  errorWidget: (context, url, error) => Image.asset(
-                    "assets/images/image.png",
+                child: Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: CachedNetworkImage(
+                    width: 120,
+                    height: 110,
+                    imageUrl:
+                        "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![widget.index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/images/image.png",
+                    ),
                   ),
                 ),
               ),
@@ -1873,7 +1892,8 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
                         style: TextStyle(
                             fontSize: dynamicSize(0.05),
                             fontFamily: 'Muli',
-                            fontWeight: FontWeight.w700),
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
                       ),
                     ),
                   ],
@@ -1954,7 +1974,7 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
                     fontFamily: 'Muli',
                     fontWeight: FontWeight.w600,
                     fontSize: dynamicSize(0.04),
-                    color: AllColor.transBack),
+                    color: Colors.white),
               ),
             ),
           ),

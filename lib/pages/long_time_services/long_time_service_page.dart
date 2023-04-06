@@ -50,11 +50,8 @@ bool scheduleSelected = false;
 class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   Icon cusIcon = Icon(Icons.search, color: Colors.black);
   Widget cusSearchbar = Text(
-    "Add service for Package",
-    style: TextStyle(
-        color: Colors.black,
-        fontSize: dynamicSize(0.04),
-        fontWeight: FontWeight.bold),
+    "Long Time Services",
+    style: TextStyle(color: Colors.black, fontSize: dynamicSize(0.03)),
   );
   int selectedColor = 0;
   List<AllServiceData> _searchResult = [];
@@ -604,7 +601,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                     topLeft: Radius.circular(15.0),
                   ),
                 ),
-                height: dynamicSize(0.87),
+                height: dynamicSize(0.9),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -640,7 +637,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
@@ -651,7 +648,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.blue_light
@@ -705,9 +702,10 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                   'Or',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: dynamicSize(0.05),
-                                      fontWeight: FontWeight.bold,
-                                      color: AllColor.blue),
+                                    fontSize: dynamicSize(0.05),
+                                    fontWeight: FontWeight.bold,
+                                    color: AllColor.black,
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -718,7 +716,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                     });
                                   },
                                   child: Container(
-                                    height: dynamicSize(0.35),
+                                    height: dynamicSize(0.3),
                                     child: Card(
                                       color: selectMyself
                                           ? AllColor.white_light
@@ -835,18 +833,29 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                 }
                               }
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Continue',
-                                  style: TextStyle(
+                            child: Container(
+                              height: dynamicSize(0.1),
+                              width: dynamicSize(0.35),
+                              decoration: BoxDecoration(
+                                color: AllColor.greyButton,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Continue',
+                                    style: TextStyle(
                                       fontSize: dynamicSize(0.04),
-                                      color: AllColor.blue_light),
-                                ),
-                                Icon(Icons.arrow_right_alt,
-                                    color: AllColor.blue_light)
-                              ],
+                                      color: AllColor.blue_light,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Icon(Icons.arrow_right_alt,
+                                      color: AllColor.blue_light)
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -1083,11 +1092,11 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: Size(25, 35),
+            preferredSize: Size(25, 25),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
