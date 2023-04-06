@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/pages/home_page.dart';
@@ -65,22 +66,55 @@ class _ProfileState extends State<Profile> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              alignment: Alignment.center,
-              child: ClipRRect(
-                child: CachedNetworkImage(
-                  height: 100,
-                  fit: BoxFit.fitHeight,
-                  imageUrl:
-                      '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
-                  /*  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),*/
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/images/baby.png',
+            const SizedBox(
+              height: 15.0,
+            ),
+            Stack(
+              children: [
+                Container(
+                  height: 140.0,
+                  width: 140.0,
+                  decoration: BoxDecoration(
+                    //color: Colors.amber,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: CachedNetworkImage(
+                      fit: BoxFit.fitHeight,
+                      imageUrl:
+                          '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
+                      /*  placeholder: (context, url) =>
+                                    CircularProgressIndicator(),*/
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/avatar.png',
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 25,
+                  child: Container(
+                    height: 25.0,
+                    width: 25.0,
+                    decoration: BoxDecoration(
+                      color: AllColor.themeColor,
+                      borderRadius: BorderRadius.circular(100.0),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        _getImage();
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 12.0,
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(right: 15.0),
@@ -456,15 +490,20 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Card(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
+                elevation: 3.0,
+                child: SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 5.0,
+                      left: 15.0,
+                      top: 10.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
@@ -473,48 +512,126 @@ class _ProfileState extends State<Profile> {
                             ),
                           ],
                         ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            // controller: et_gallery,
-
-                            cursorHeight: dynamicSize(0.06),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: DataControllers.to.userLoginResponse
-                                    .value.data!.user!.fullName,
-                                hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Email",
-                          style: TextStyle(fontSize: dynamicSize(0.05)),
+                        const SizedBox(
+                          height: 10.0,
                         ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            // controller: et_gallery,
+                        Text(
+                          DataControllers
+                              .to.userLoginResponse.value.data!.user!.fullName!,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
 
-                            cursorHeight: dynamicSize(0.06),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: DataControllers.to.userLoginResponse
-                                    .value.data!.user!.email,
-                                hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Email",
+                                  style: TextStyle(fontSize: dynamicSize(0.05)),
+                                ),
+                              ],
+                            ),
+                            DataControllers.to.userLoginResponse.value.data!
+                                        .user!.email ==
+                                    null
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        bottom: 8,
+                                        right: 10,
+                                        top: 10),
+                                    child: Container(
+                                      width: dynamicSize(0.33),
+                                      decoration: const BoxDecoration(
+                                        color: AllColor.shado_color,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Icon(
+                                              Icons.cancel_outlined,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Not Verified",
+                                            style: TextStyle(color: Colors.red),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0,
+                                        bottom: 8,
+                                        right: 10,
+                                        top: 10),
+                                    child: Container(
+                                      width: dynamicSize(0.27),
+                                      decoration: const BoxDecoration(
+                                        color: AllColor.shado_color,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12.0),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: const [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Icon(
+                                              Icons.done,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Verified",
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          DataControllers.to.userLoginResponse.value.data!.user!
+                                  .email ??
+                              "No email provided",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
@@ -523,88 +640,86 @@ class _ProfileState extends State<Profile> {
                                 ),
                               ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, bottom: 8, right: 10, top: 10),
-                            child: Container(
-                              width: dynamicSize(0.27),
-                              decoration: BoxDecoration(
-                                color: AllColor.shado_color,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12.0),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0, bottom: 8, right: 10, top: 10),
+                              child: Container(
+                                width: dynamicSize(0.27),
+                                decoration: const BoxDecoration(
+                                  color: AllColor.shado_color,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12.0),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: const [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 8.0),
+                                      child: Icon(
+                                        Icons.done,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Verified",
+                                      style: TextStyle(color: Colors.green),
+                                    )
+                                  ],
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Icon(
-                                      Icons.done,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Verified",
-                                    style: TextStyle(color: Colors.green),
-                                  )
-                                ],
-                              ),
                             ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          "+88${DataControllers.to.userLoginResponse.value.data!.user!.phone}",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
                           ),
-                        ],
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            // controller: et_gallery,
-
-                            cursorHeight: dynamicSize(0.06),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText:
-                                    "+88${DataControllers.to.userLoginResponse.value.data!.user!.phone}",
-                                hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Text(
                           "Gender",
                           style: TextStyle(fontSize: dynamicSize(0.05)),
                         ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            // controller: et_gallery,
-
-                            cursorHeight: dynamicSize(0.06),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: DataControllers.to.userLoginResponse
-                                    .value.data!.user!.gender,
-                                hintStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          DataControllers
+                              .to.userLoginResponse.value.data!.user!.gender,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Text(
                           "Age",
                           style: TextStyle(fontSize: dynamicSize(0.05)),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "18",
-                          style: TextStyle(fontSize: dynamicSize(0.05)),
-                        ),
-                      ),
-                    ],
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Text(
+                        //     "18",
+                        //     style: TextStyle(fontSize: dynamicSize(0.05)),
+                        //   ),
+                        // ),
+                        const SizedBox(
+                          height: 10.0,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -612,6 +727,7 @@ class _ProfileState extends State<Profile> {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Card(
+                elevation: 3.0,
                 child: Container(
                   width: double.infinity,
                   child: Column(
