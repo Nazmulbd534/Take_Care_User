@@ -11,6 +11,7 @@ import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/pages/forgate_pass_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/sign_up_page.dart';
+import 'package:takecare_user/pages/signup/signup.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
@@ -105,8 +106,8 @@ class _SignInPageState extends State<SignInPage> {
                     ///Main Content
                     Positioned(
                       top: /*signIn ?*/ dynamicSize(.6) /*: dynamicSize(.75)*/,
-                      child: /*signIn ?*/ _loginWidget(
-                          size, lg) /*: _signUpWidget(size)*/,
+                      child: /*signIn ?*/
+                          _loginWidget(size, lg) /*: _signUpWidget(size)*/,
                     ),
 
                     ///Signin Signup Button
@@ -125,7 +126,9 @@ class _SignInPageState extends State<SignInPage> {
                           fontSize: dynamicSize(0.045),
                           onToggleCallback: (v) async {
                             if (signIn) {
-                              Get.to(SignUpPage());
+                              Get.to(
+                                SignUp(),
+                              );
                               setState(() {
                                 signIn = true;
                               });

@@ -97,9 +97,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'Take Care',
-        theme: AllColor.theme,
-        debugShowCheckedModeBanner: false,
-        home: const SignInPage());
+      title: 'Take Care',
+      theme: AllColor.theme,
+      debugShowCheckedModeBanner: false,
+      home: const SignInPage(),
+    );
   }
 }
