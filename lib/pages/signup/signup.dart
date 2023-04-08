@@ -97,11 +97,18 @@ class _SignUpState extends State<SignUp> {
                                     builder: (context) => SignInPage()));
                           },
                           style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.red)))),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                AllColor.themeColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                                side: BorderSide(
+                                  color: AllColor.themeColor,
+                                ),
+                              ),
+                            ),
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
