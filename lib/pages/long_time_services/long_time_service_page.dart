@@ -171,7 +171,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                 Container(
                   height: dynamicSize(0.7),
                   decoration: const BoxDecoration(
-                    color: AllColor.buttomdialog,
+                    color: AllColor.white,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(15.0),
                       topLeft: Radius.circular(15.0),
@@ -187,21 +187,13 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0, top: 20),
-                            child: Card(
-                              semanticContainer: true,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: CachedNetworkImage(
-                                width: 120,
-                                height: 110,
-                                imageUrl:
-                                    "${ApiService.MainURL}${service.imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  "assets/images/image.png",
-                                ),
+                            child: CachedNetworkImage(
+                              width: 120,
+                              height: 110,
+                              imageUrl:
+                                  "${ApiService.MainURL}${service.imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/image.png",
                               ),
                             ),
                           ),
@@ -218,7 +210,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                     style: TextStyle(
                                         fontSize: dynamicSize(0.05),
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                                        color: Colors.grey),
                                   ),
                                 ),
                               ],
@@ -290,7 +282,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                             service.description!,
                             style: TextStyle(
                                 fontSize: dynamicSize(0.04),
-                                color: Colors.white),
+                                color: Colors.grey),
                           ),
                         ),
                       ),

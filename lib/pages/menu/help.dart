@@ -33,7 +33,7 @@ class HelpPage extends StatelessWidget {
             LanguageController.lc.helpCenter.value,
             style: TextStyle(color: Colors.white, fontSize: dynamicSize(0.05)),
           ),
-          backgroundColor: AllColor.themeColor,
+          backgroundColor: AllColor.blue,
           elevation: 1,
         ),
         body: Column(
@@ -51,8 +51,7 @@ class HelpPage extends StatelessWidget {
                       child: Text(
                         "Get help through",
                         style: TextStyle(
-                            color: Colors.pinkAccent,
-                            fontSize: dynamicSize(0.05)),
+                            color: Colors.blue, fontSize: dynamicSize(0.05)),
                       ),
                     ),
                     // Padding(
@@ -180,7 +179,7 @@ class HelpPage extends StatelessWidget {
 
                                       Icon(
                                         Icons.arrow_forward,
-                                        color: Colors.pinkAccent,
+                                        color: Colors.blue,
                                       )
                                       //ChkBox(checkValue: _value)
                                     ],
@@ -235,7 +234,7 @@ class HelpPage extends StatelessWidget {
 
                                       Icon(
                                         Icons.arrow_forward,
-                                        color: Colors.pinkAccent,
+                                        color: Colors.blue,
                                       )
                                       //ChkBox(checkValue: _value)
                                     ],
@@ -290,7 +289,7 @@ class HelpPage extends StatelessWidget {
 
                                       Icon(
                                         Icons.arrow_forward,
-                                        color: Colors.pinkAccent,
+                                        color: Colors.blue,
                                       )
                                       //ChkBox(checkValue: _value)
                                     ],

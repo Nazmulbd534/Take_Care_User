@@ -43,12 +43,12 @@ class OnDemandPage extends StatefulWidget {
 class _OnDemandPageState extends State<OnDemandPage> {
   Icon cusIcon = const Icon(Icons.search, color: Colors.black);
   Widget cusSearchbar = Text(
-    "On Demand",
+    "Book for right now or later",
     style: TextStyle(
         fontFamily: 'Muli',
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.bold,
         color: Colors.black,
-        fontSize: dynamicSize(0.03)),
+        fontSize: 15),
   );
 
   bool focus = false;
@@ -1507,7 +1507,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                         inactiveFgColor: Colors.white,
                         initialLabelIndex: selectedToogleIndex,
                         totalSwitches: 2,
-                        labels: ['Now', 'Schedule'],
+                        labels: ['Now', 'Later'],
                         radiusStyle: true,
                         onToggle: (index) {
                           selectedToogleIndex = index!;
@@ -1846,7 +1846,7 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
     return Container(
       height: dynamicSize(0.7),
       decoration: const BoxDecoration(
-        color: AllColor.buttomdialog,
+        color: Colors.white,
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(15.0),
           topLeft: Radius.circular(15.0),
@@ -1862,20 +1862,13 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 20),
-                child: Card(
-                  semanticContainer: true,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: CachedNetworkImage(
-                    width: 120,
-                    height: 110,
-                    imageUrl:
-                        "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![widget.index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
-                    errorWidget: (context, url, error) => Image.asset(
-                      "assets/images/image.png",
-                    ),
+                child: CachedNetworkImage(
+                  width: 120,
+                  height: 110,
+                  imageUrl:
+                      "${ApiService.MainURL}${DataControllers.to.shortServiceResponse.value.data!.data![widget.index].imagePath /* == null ?   "https://cdn.vectorstock.com/i/1000x1000/21/73/old-people-in-hospital-vector-34042173.webp": DataControllers.to.shortServiceResponse.value.data![index]!.imagePath */}",
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/images/image.png",
                   ),
                 ),
               ),
@@ -1893,7 +1886,7 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
                             fontSize: dynamicSize(0.05),
                             fontFamily: 'Muli',
                             fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                            color: Colors.grey),
                       ),
                     ),
                   ],
@@ -1974,7 +1967,7 @@ class _ServiceButtonWidgetState extends State<ServiceButtonWidget> {
                     fontFamily: 'Muli',
                     fontWeight: FontWeight.w600,
                     fontSize: dynamicSize(0.04),
-                    color: Colors.white),
+                    color: Colors.grey),
               ),
             ),
           ),

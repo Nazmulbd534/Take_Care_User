@@ -82,6 +82,129 @@ class _SignInPageState extends State<SignInPage> {
                         child: Image.asset('assets/images/image_below.png',
                             fit: BoxFit.fill)),
 
+                    Positioned(
+                      bottom: 30.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: 250,
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: ElevatedButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color?>(
+                                            Colors.grey),
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(0)),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.grey)))),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/login_google_icon.png",
+                                      height: 38,
+                                      width: 38,
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Text("Continue with Google")
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            width: 250,
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: ElevatedButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color?>(
+                                            Colors.grey),
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(0)),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.grey)))),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/login_facebook_icon.png",
+                                      height: 38,
+                                      width: 38,
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Text("Continue with Facebook")
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            width: 250,
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: ElevatedButton(
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color?>(
+                                            Colors.grey),
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(0)),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide(
+                                                color: Colors.grey)))),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/login_google_icon.png",
+                                      height: 38,
+                                      width: 38,
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Text("Continue with apple")
+                                  ],
+                                )),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                                text: "By sign up or Login I agree to the all ",
+                                style: TextStyle(color: Colors.grey),
+                                children: [
+                                  TextSpan(
+                                      text: "terms & conditions",
+                                      style:
+                                          TextStyle(color: AllColor.themeColor))
+                                ]),
+                          ),
+                        ],
+                      ),
+                    ),
+
                     ///English Bangla toggle button
                     language
                         ? GetBuilder<LanguageController>(
