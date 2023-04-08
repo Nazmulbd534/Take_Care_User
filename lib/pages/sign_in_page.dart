@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -68,11 +69,14 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     ///Nurse Image
                     Positioned(
-                        top: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Image.asset('assets/images/home_header.png',
-                            fit: BoxFit.fill)),
+                      top: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Transform.rotate(
+                        angle: pi * 90 / 2,
+                        child: Image.asset('assets/images/image_below.png'),
+                      ),
+                    ),
 
                     ///Bottom
                     Positioned(
@@ -210,8 +214,8 @@ class _SignInPageState extends State<SignInPage> {
                         ? GetBuilder<LanguageController>(
                             builder: (languageController) {
                             return Positioned(
-                              right: dynamicSize(0.05),
-                              top: dynamicSize(0.04),
+                              left: dynamicSize(0.05),
+                              top: dynamicSize(0.1),
                               child: AnimatedToggleButton(
                                 values: const ['English', 'বাংলা'],
                                 toggleValue: languageController.isEnglish.value,

@@ -36,9 +36,9 @@ class _SignUpState extends State<SignUp> {
                       height: 40.0,
                     ),
                     Align(
-                      alignment: Alignment.bottomRight,
+                      alignment: Alignment.bottomLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(left: 20),
                         child: GetBuilder<LanguageController>(
                             builder: (languageController) {
                           return Positioned(
