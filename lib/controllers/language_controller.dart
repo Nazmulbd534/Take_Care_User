@@ -71,7 +71,7 @@ class LanguageController extends GetxController {
   }
 
   void changeVariables() {
-    sigIn(isEnglish.value ? 'Sign In' : 'সাইন ইন');
+    sigIn(isEnglish.value ? 'Login' : 'সাইন ইন');
     signUp(isEnglish.value ? 'Sign Up' : 'সাইন আপ');
 
     mobileNumber(isEnglish.value ? 'Mobile Number*' : 'মোবাইল নম্বর*');

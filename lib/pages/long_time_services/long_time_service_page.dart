@@ -532,7 +532,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
 
   void getAddCardData() async {
     await DataControllers.to.getCard('long');
-    await DataControllers.to.getAllLongService("long");
+    //await DataControllers.to.getAllLongService("long");
 
     if (DataControllers.to.getAddCardLongServiceResponse.value.success!) {
       setState(() {

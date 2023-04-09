@@ -66,24 +66,8 @@ class _SignInPageState extends State<SignInPage> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
                   children: [
-                    ///Nurse Image
                     Positioned(
-                        top: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Image.asset('assets/images/home_header.png',
-                            fit: BoxFit.fill)),
-
-                    ///Bottom
-                    Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Image.asset('assets/images/image_below.png',
-                            fit: BoxFit.fill)),
-
-                    Positioned(
-                      bottom: 30.0,
+                      bottom: 45.0,
                       left: 0.0,
                       right: 0.0,
                       child: Column(
@@ -99,7 +83,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
-                                            Colors.grey),
+                                            Color(0xffCBC9C9)),
                                     padding:
                                         MaterialStateProperty.all<EdgeInsets>(
                                             EdgeInsets.all(0)),
@@ -109,7 +93,7 @@ class _SignInPageState extends State<SignInPage> {
                                             borderRadius:
                                                 BorderRadius.circular(18.0),
                                             side: BorderSide(
-                                                color: Colors.grey)))),
+                                                color: Color(0xffCBC9C9))))),
                                 child: Row(
                                   children: [
                                     Image.asset(
@@ -132,7 +116,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
-                                            Colors.grey),
+                                            Color(0xffCBC9C9)),
                                     padding:
                                         MaterialStateProperty.all<EdgeInsets>(
                                             EdgeInsets.all(0)),
@@ -142,7 +126,7 @@ class _SignInPageState extends State<SignInPage> {
                                             borderRadius:
                                                 BorderRadius.circular(18.0),
                                             side: BorderSide(
-                                                color: Colors.grey)))),
+                                                color: Color(0xffCBC9C9))))),
                                 child: Row(
                                   children: [
                                     Image.asset(
@@ -165,7 +149,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
-                                            Colors.grey),
+                                            Color(0xffCBC9C9)),
                                     padding:
                                         MaterialStateProperty.all<EdgeInsets>(
                                             EdgeInsets.all(0)),
@@ -175,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                                             borderRadius:
                                                 BorderRadius.circular(18.0),
                                             side: BorderSide(
-                                                color: Colors.grey)))),
+                                                color: Color(0xffCBC9C9))))),
                                 child: Row(
                                   children: [
                                     Image.asset(
@@ -190,6 +174,9 @@ class _SignInPageState extends State<SignInPage> {
                                   ],
                                 )),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           RichText(
                             text: TextSpan(
                                 text: "By sign up or Login I agree to the all ",
@@ -197,8 +184,9 @@ class _SignInPageState extends State<SignInPage> {
                                 children: [
                                   TextSpan(
                                       text: "terms & conditions",
-                                      style:
-                                          TextStyle(color: AllColor.themeColor))
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: AllColor.themeColor))
                                 ]),
                           ),
                         ],
@@ -211,7 +199,7 @@ class _SignInPageState extends State<SignInPage> {
                             builder: (languageController) {
                             return Positioned(
                               right: dynamicSize(0.05),
-                              top: dynamicSize(0.04),
+                              top: dynamicSize(0.08),
                               child: AnimatedToggleButton(
                                 values: const ['English', 'বাংলা'],
                                 toggleValue: languageController.isEnglish.value,
@@ -228,7 +216,7 @@ class _SignInPageState extends State<SignInPage> {
 
                     ///Main Content
                     Positioned(
-                      top: /*signIn ?*/ dynamicSize(.6) /*: dynamicSize(.75)*/,
+                      top: 150,
                       child: /*signIn ?*/
                           _loginWidget(size, lg) /*: _signUpWidget(size)*/,
                     ),
@@ -237,7 +225,7 @@ class _SignInPageState extends State<SignInPage> {
                     GetBuilder<LanguageController>(
                         builder: (languageController) {
                       return Positioned(
-                        top: dynamicSize(.6),
+                        top: 150,
                         child: AnimatedToggleButton(
                           values: [
                             (languageController.sigIn.value),
@@ -336,6 +324,8 @@ class _SignInPageState extends State<SignInPage> {
           Positioned(
             bottom: -dynamicSize(0.065),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AllColor.themeColor),
               onPressed: () async {
                 //isLoading = true;
 
@@ -360,12 +350,20 @@ class _SignInPageState extends State<SignInPage> {
                 // onProgressBar(false);
               },
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: dynamicSize(0.04), vertical: dynamicSize(0.04)),
-                child: Text('Sign In',
-                    style: TextStyle(
-                        fontSize: dynamicSize(0.045),
-                        fontWeight: FontWeight.bold)),
+                padding:
+                    EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+                child: Row(
+                  children: [
+                    Text('Go',
+                        style: TextStyle(
+                            fontSize: dynamicSize(0.045),
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Icons.arrow_forward)
+                  ],
+                ),
               ),
             ),
           )

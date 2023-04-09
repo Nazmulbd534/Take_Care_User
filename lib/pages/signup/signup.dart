@@ -21,19 +21,16 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AllColor.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
             child: Stack(
               children: [
-                Transform.rotate(
-                  angle: pi * 90 / 2,
-                  child: Image.asset('assets/images/image_below.png'),
-                ),
                 Column(
                   children: [
                     const SizedBox(
-                      height: 40.0,
+                      height: 20.0,
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
@@ -62,7 +59,14 @@ class _SignUpState extends State<SignUp> {
                       height: 50,
                     ),
                     Card(
-                      child: Image.asset("assets/images/icon.png"),
+                      elevation: 3.0,
+                      shadowColor: AllColor.themeColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Container(
+                          margin: EdgeInsets.all(5),
+                          child: Image.asset("assets/images/icon.png")),
                     ),
                     SizedBox(
                       height: 25,
@@ -70,11 +74,16 @@ class _SignUpState extends State<SignUp> {
                     RichText(
                       text: TextSpan(
                           text: "Sign up or ",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              fontFamily: "Muli", color: Colors.grey[700]),
                           children: [
                             TextSpan(
                                 text: "Login",
-                                style: TextStyle(color: Colors.blue))
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Muli",
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.blue))
                           ]),
                     ),
                     SizedBox(
@@ -82,7 +91,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     Text(
                       "You must login to place an order.",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
                     SizedBox(
                       height: 10,
@@ -97,11 +106,15 @@ class _SignUpState extends State<SignUp> {
                                     builder: (context) => SignInPage()));
                           },
                           style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color?>(
+                                      AllColor.themeColor),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.red)))),
+                                      side: BorderSide(
+                                          color: AllColor.themeColor)))),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -131,14 +144,15 @@ class _SignUpState extends State<SignUp> {
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all<Color?>(
-                                      Colors.grey),
+                                      Color(0xffCBC9C9)),
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(0)),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.grey)))),
+                                      side: BorderSide(
+                                          color: Color(0xffCBC9C9))))),
                           child: Row(
                             children: [
                               Image.asset(
@@ -161,14 +175,15 @@ class _SignUpState extends State<SignUp> {
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all<Color?>(
-                                      Colors.grey),
+                                      Color(0xffCBC9C9)),
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(0)),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.grey)))),
+                                      side: BorderSide(
+                                          color: Color(0xffCBC9C9))))),
                           child: Row(
                             children: [
                               Image.asset(
@@ -191,14 +206,15 @@ class _SignUpState extends State<SignUp> {
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all<Color?>(
-                                      Colors.grey),
+                                      Color(0xffCBC9C9)),
                               padding: MaterialStateProperty.all<EdgeInsets>(
                                   EdgeInsets.all(0)),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.grey)))),
+                                      side: BorderSide(
+                                          color: Color(0xffCBC9C9))))),
                           child: Row(
                             children: [
                               Image.asset(
@@ -213,6 +229,9 @@ class _SignUpState extends State<SignUp> {
                             ],
                           )),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     RichText(
                       text: TextSpan(
                           text: "By sign up or Login I agree to the all ",
@@ -220,7 +239,9 @@ class _SignUpState extends State<SignUp> {
                           children: [
                             TextSpan(
                                 text: "terms & conditions",
-                                style: TextStyle(color: AllColor.themeColor))
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: AllColor.themeColor))
                           ]),
                     ),
                   ],
