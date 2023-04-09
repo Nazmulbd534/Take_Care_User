@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -63,11 +64,30 @@ class _SignInPageState extends State<SignInPage> {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
                   children: [
+                    Transform.rotate(
+                      angle: pi / 2 * 90,
+                      child: Image.asset("assets/images/image_below.png"),
+                    ),
                     Positioned(
-                      bottom: 45.0,
+                      top: 40.0,
+                      left: 25.0,
+                      child: GetBuilder<LanguageController>(
+                          builder: (languageController) {
+                        return AnimatedToggleButton(
+                          values: const ['English', 'বাংলা'],
+                          toggleValue: languageController.isEnglish.value,
+                          width: dynamicSize(.4),
+                          height: dynamicSize(0.08),
+                          fontSize: dynamicSize(0.035),
+                          onToggleCallback: (v) async {
+                            setState(() => english = !english);
+                          },
+                        );
+                      }),
+                    ),
+                    Positioned(
+                      bottom: 80.0,
                       left: 0.0,
                       right: 0.0,
                       child: Column(
@@ -174,11 +194,11 @@ class _SignInPageState extends State<SignInPage> {
                                   ],
                                 )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           RichText(
-                            text: TextSpan(
+                            text: const TextSpan(
                                 text: "By sign up or Login I agree to the all ",
                                 style: TextStyle(color: Colors.grey),
                                 children: [
@@ -193,30 +213,10 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
 
-                    ///English Bangla toggle button
-                    language
-                        ? GetBuilder<LanguageController>(
-                            builder: (languageController) {
-                            return Positioned(
-                              right: dynamicSize(0.05),
-                              top: dynamicSize(0.08),
-                              child: AnimatedToggleButton(
-                                values: const ['English', 'বাংলা'],
-                                toggleValue: languageController.isEnglish.value,
-                                width: dynamicSize(.4),
-                                height: dynamicSize(0.08),
-                                fontSize: dynamicSize(0.035),
-                                onToggleCallback: (v) async {
-                                  setState(() => english = !english);
-                                },
-                              ),
-                            );
-                          })
-                        : Container(),
-
                     ///Main Content
                     Positioned(
-                      top: 150,
+                      top: 170,
+                      left: 30,
                       child: /*signIn ?*/
                           _loginWidget(size, lg) /*: _signUpWidget(size)*/,
                     ),
@@ -225,7 +225,8 @@ class _SignInPageState extends State<SignInPage> {
                     GetBuilder<LanguageController>(
                         builder: (languageController) {
                       return Positioned(
-                        top: 150,
+                        top: 170,
+                        left: 30,
                         child: AnimatedToggleButton(
                           values: [
                             (languageController.sigIn.value),

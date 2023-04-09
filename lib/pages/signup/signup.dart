@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:takecare_user/pages/sign_in_page.dart';
+import 'package:takecare_user/pages/sign_up_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 
 import '../../controllers/language_controller.dart';
@@ -27,36 +28,31 @@ class _SignUpState extends State<SignUp> {
           child: Container(
             child: Stack(
               children: [
+                Transform.rotate(
+                  angle: pi / 2 * 90,
+                  child: Image.asset("assets/images/image_below.png"),
+                ),
+                Positioned(
+                  top: 40.0,
+                  left: 25.0,
+                  child: GetBuilder<LanguageController>(
+                      builder: (languageController) {
+                    return AnimatedToggleButton(
+                      values: const ['English', 'বাংলা'],
+                      toggleValue: languageController.isEnglish.value,
+                      width: dynamicSize(.4),
+                      height: dynamicSize(0.08),
+                      fontSize: dynamicSize(0.035),
+                      onToggleCallback: (v) async {
+                        setState(() => english = !english);
+                      },
+                    );
+                  }),
+                ),
                 Column(
                   children: [
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: GetBuilder<LanguageController>(
-                            builder: (languageController) {
-                          return Positioned(
-                            right: dynamicSize(0.05),
-                            top: dynamicSize(0.04),
-                            child: AnimatedToggleButton(
-                              values: const ['English', 'বাংলা'],
-                              toggleValue: languageController.isEnglish.value,
-                              width: dynamicSize(.4),
-                              height: dynamicSize(0.08),
-                              fontSize: dynamicSize(0.035),
-                              onToggleCallback: (v) async {
-                                setState(() => english = !english);
-                              },
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
                     SizedBox(
-                      height: 50,
+                      height: 110,
                     ),
                     Card(
                       elevation: 3.0,
@@ -71,29 +67,46 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 25,
                     ),
-                    RichText(
-                      text: TextSpan(
-                          text: "Sign up or ",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Sign up or",
                           style: TextStyle(
-                              fontFamily: "Muli", color: Colors.grey[700]),
-                          children: [
-                            TextSpan(
-                                text: "Login",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Muli",
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.blue))
-                          ]),
+                            fontFamily: "Muli",
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SignInPage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Muli",
+                                decoration: TextDecoration.underline,
+                                color: Colors.blue),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
                       "You must login to place an order.",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
@@ -101,9 +114,11 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignInPage()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPage(),
+                              ),
+                            );
                           },
                           style: ButtonStyle(
                               backgroundColor:
