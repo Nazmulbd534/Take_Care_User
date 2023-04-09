@@ -61,7 +61,7 @@ class LanguageController extends GetxController {
   RxString termsPrefix = ''.obs;
   RxString terms = ''.obs;
   RxString go = ''.obs;
-
+  RxString allService = ''.obs;
   @override
   void onInit() {
     super.onInit();
@@ -98,6 +98,7 @@ class LanguageController extends GetxController {
     sigIn(isEnglish.value ? 'Login' : 'সাইন ইন');
     signUp(isEnglish.value ? 'Sign Up' : 'সাইন আপ');
     or(isEnglish.value ? "Or" : "অথবা");
+    allService(isEnglish.value ? "All Services" : "সকল সেবা");
     signInOrSignup(isEnglish.value ? "Sign up or" : "সাইন আপ অথবা");
     login(isEnglish.value ? "Login" : "লগইন");
     loginNeeded(isEnglish.value
