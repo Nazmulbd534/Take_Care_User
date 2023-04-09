@@ -610,7 +610,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: dynamicSize(0.12),
+                                  height: dynamicSize(0.04),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -752,6 +752,8 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                       Tooltip(
                                         message:
                                             "It's an estimated price, it's not the final. Price various upon service provider's demand",
+                                        margin: EdgeInsets.only(
+                                            left: 20, right: 20),
                                         showDuration: Duration(seconds: 5),
                                         triggerMode: TooltipTriggerMode.tap,
                                         child: Text("ⓘ"),
@@ -760,7 +762,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: dynamicSize(0.12),
+                                  height: dynamicSize(0.04),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -898,7 +900,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: dynamicSize(0.12),
+                                  height: dynamicSize(0.04),
                                 ),
                                 TextButton(
                                   onPressed: () {
@@ -1809,12 +1811,12 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     'Continue',
                                     style: TextStyle(
                                       fontSize: dynamicSize(0.04),
-                                      color: AllColor.blue_light,
+                                      color: AllColor.white,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   Icon(Icons.arrow_right_alt,
-                                      color: AllColor.blue_light)
+                                      color: AllColor.white)
                                 ],
                               ),
                             ),

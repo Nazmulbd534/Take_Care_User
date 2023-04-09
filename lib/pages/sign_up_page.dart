@@ -462,20 +462,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: dynamicSize(0.12),
                       fontSize: dynamicSize(0.045),
                       onToggleCallback: (v) async {
-                        // // if (signIn) {
-                        // //   Get.to(SignUpPage());
-                        // //   setState(() {
-                        // //     signIn = true;
-                        // //   });
-                        // // } else {
-                        // //   setState(() {
-                        // //     signIn = true;
-                        // //   });
-                        // // }
+                        Get.to(SignInPage());
+                        // if (signIn) {
+                        //   Get.to(SignUpPage());
+                        //   setState(() {
+                        //     signIn = true;
+                        //   });
+                        // } else {
+                        //   setState(() {
+                        //     signIn = true;
+                        //   });
+                        // }
 
                         // /*  setState(() => );*/
 
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       },
                     ),
                   );
@@ -520,7 +521,6 @@ class _SignUpPageState extends State<SignUpPage> {
           Navigator.pop(context);
         }
       });*/
-
     } else {
       showToast('Image not selected');
     }

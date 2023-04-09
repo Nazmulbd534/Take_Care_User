@@ -536,7 +536,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
 
     if (DataControllers.to.getAddCardLongServiceResponse.value.success!) {
       setState(() {
-        DataControllers.to.longServiceResponse;
+        //DataControllers.to.longServiceResponse;
         DataControllers.to.getAddCardLongServiceResponse;
         _filterValue();
         showBottom = true;
@@ -840,12 +840,12 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                     'Continue',
                                     style: TextStyle(
                                       fontSize: dynamicSize(0.04),
-                                      color: AllColor.blue_light,
+                                      color: AllColor.white,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   Icon(Icons.arrow_right_alt,
-                                      color: AllColor.blue_light)
+                                      color: AllColor.white)
                                 ],
                               ),
                             ),
@@ -1084,11 +1084,11 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: Size(25, 25),
+            preferredSize: Size(25, 35),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
