@@ -14,6 +14,7 @@ class Variables {
   static const List<String> hoursList = ['12 Hrs.', '24 Hrs.', 'Others'];
   static const List<String> year = ['Years', 'Months'];
   static const List<String> genderList = ['Male', 'Female', 'Others'];
+  static const List<String> genderListBangla = ['পুরুষ', 'নারী', 'অন্য'];
   static const List<String> FahilyList = ['Male', 'Female', 'Others'];
   static const List<String> relation = [
     'Father',

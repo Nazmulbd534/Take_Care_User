@@ -99,7 +99,13 @@ class _SignInPageState extends State<SignInPage> {
                             width: 250,
                             margin: EdgeInsets.only(bottom: 5),
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(lg.comingSoon.string),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
@@ -124,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                                     SizedBox(
                                       width: 30,
                                     ),
-                                    Text("Continue with Google")
+                                    Text(lg.google.string)
                                   ],
                                 )),
                           ),
@@ -132,7 +138,13 @@ class _SignInPageState extends State<SignInPage> {
                             width: 250,
                             margin: EdgeInsets.only(bottom: 5),
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(lg.comingSoon.string),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
@@ -157,7 +169,7 @@ class _SignInPageState extends State<SignInPage> {
                                     SizedBox(
                                       width: 30,
                                     ),
-                                    Text("Continue with Facebook")
+                                    Text(lg.facebook.string)
                                   ],
                                 )),
                           ),
@@ -165,7 +177,13 @@ class _SignInPageState extends State<SignInPage> {
                             width: 250,
                             margin: EdgeInsets.only(bottom: 5),
                             child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                           ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(lg.comingSoon.string),
+                                  ),
+                                );
+                                },
                                 style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color?>(
@@ -183,14 +201,14 @@ class _SignInPageState extends State<SignInPage> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/login_google_icon.png",
-                                      height: 38,
-                                      width: 38,
+                                      "assets/images/login_apple_icon.png",
+                                      height: 30,
+                                      width: 30,
                                     ),
                                     SizedBox(
                                       width: 30,
                                     ),
-                                    Text("Continue with apple")
+                                    Text(lg.apple.string)
                                   ],
                                 )),
                           ),
@@ -198,13 +216,13 @@ class _SignInPageState extends State<SignInPage> {
                             height: 10,
                           ),
                           RichText(
-                            text: const TextSpan(
-                                text: "By sign up or Login I agree to the all ",
-                                style: TextStyle(color: Colors.grey),
+                            text:  TextSpan(
+                                text: lg.termsPrefix.string + " ",
+                                style: const TextStyle(color: Colors.grey),
                                 children: [
                                   TextSpan(
-                                      text: "terms & conditions",
-                                      style: TextStyle(
+                                      text: lg.terms.string,
+                                      style: const TextStyle(
                                           decoration: TextDecoration.underline,
                                           color: AllColor.themeColor))
                                 ]),
@@ -355,7 +373,7 @@ class _SignInPageState extends State<SignInPage> {
                     EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
                 child: Row(
                   children: [
-                    Text('Go',
+                    Text(lng.go.string,
                         style: TextStyle(
                             fontSize: dynamicSize(0.045),
                             fontWeight: FontWeight.bold)),

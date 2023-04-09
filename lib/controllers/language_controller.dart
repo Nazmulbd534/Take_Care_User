@@ -8,6 +8,9 @@ class LanguageController extends GetxController {
 
   RxString sigIn = ''.obs;
   RxString signUp = ''.obs;
+  RxString login = ''.obs;
+  RxString loginNeeded = ''.obs;
+  RxString signInOrSignup = ''.obs;
   RxString mobileNumber = ''.obs;
   RxString password = ''.obs;
   RxString forgotPassword = ''.obs;
@@ -49,6 +52,15 @@ class LanguageController extends GetxController {
   RxString goodAfterNoon = ''.obs;
   RxString goodEv = ''.obs;
   RxString goodNight = ''.obs;
+  RxString mobileSignup = ''.obs;
+  RxString or = ''.obs;
+  RxString comingSoon = ''.obs;
+  RxString google = ''.obs;
+  RxString facebook = ''.obs;
+  RxString apple = ''.obs;
+  RxString termsPrefix = ''.obs;
+  RxString terms = ''.obs;
+  RxString go = ''.obs;
 
   @override
   void onInit() {
@@ -71,9 +83,26 @@ class LanguageController extends GetxController {
   }
 
   void changeVariables() {
+    mobileSignup(isEnglish.value
+        ? "Sign up with Phone Number"
+        : "মোবাইল নাম্বার দিয়ে নিবন্ধন");
+    comingSoon(isEnglish.value ? "Coming soon..." : "শীঘ্রই আসছে...");
+    google(isEnglish.value ? "Continue with Google" : "গুগল লগইন করুন");
+    facebook(isEnglish.value ? "Continue with Facebook" : "ফেসবুক লগইন করুন");
+    apple(isEnglish.value ? "Continue with Apple" : "অ্যাপল লগইন করুন");
+    termsPrefix(isEnglish.value
+        ? "By sign up or Login I agree to the all"
+        : "সাইন আপ বা লগইন করে সম্মতি জানাচ্ছি");
+    terms(isEnglish.value ? "Terms & conditions " : "টার্ম ও কন্ডিশন ");
+    go(isEnglish.value ? "Go" : "চলুন");
     sigIn(isEnglish.value ? 'Login' : 'সাইন ইন');
     signUp(isEnglish.value ? 'Sign Up' : 'সাইন আপ');
-
+    or(isEnglish.value ? "Or" : "অথবা");
+    signInOrSignup(isEnglish.value ? "Sign up or" : "সাইন আপ অথবা");
+    login(isEnglish.value ? "Login" : "লগইন");
+    loginNeeded(isEnglish.value
+        ? "You must login to place an order"
+        : "অর্ডার করতে লগইন করুন");
     mobileNumber(isEnglish.value ? 'Mobile Number*' : 'মোবাইল নম্বর*');
     password(isEnglish.value ? 'password*' : 'পাসওয়ার্ড*');
     forgotPassword(
