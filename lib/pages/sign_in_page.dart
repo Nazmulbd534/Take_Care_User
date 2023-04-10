@@ -65,10 +65,6 @@ class _SignInPageState extends State<SignInPage> {
                 height: MediaQuery.of(context).size.height,
                 child: Stack(
                   children: [
-                    Transform.rotate(
-                      angle: pi / 2 * 90,
-                      child: Image.asset("assets/images/image_below.png"),
-                    ),
                     Positioned(
                       top: 40.0,
                       left: 25.0,
@@ -178,11 +174,11 @@ class _SignInPageState extends State<SignInPage> {
                             margin: EdgeInsets.only(bottom: 5),
                             child: ElevatedButton(
                                 onPressed: () {
-                                           ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(lg.comingSoon.string),
-                                  ),
-                                );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(lg.comingSoon.string),
+                                    ),
+                                  );
                                 },
                                 style: ButtonStyle(
                                     backgroundColor:
@@ -216,7 +212,7 @@ class _SignInPageState extends State<SignInPage> {
                             height: 10,
                           ),
                           RichText(
-                            text:  TextSpan(
+                            text: TextSpan(
                                 text: lg.termsPrefix.string + " ",
                                 style: const TextStyle(color: Colors.grey),
                                 children: [
@@ -234,7 +230,7 @@ class _SignInPageState extends State<SignInPage> {
                     ///Main Content
                     Positioned(
                       top: 170,
-                      left: 30,
+                      left: MediaQuery.of(context).size.width * 0.08,
                       child: /*signIn ?*/
                           _loginWidget(size, lg) /*: _signUpWidget(size)*/,
                     ),
@@ -244,7 +240,7 @@ class _SignInPageState extends State<SignInPage> {
                         builder: (languageController) {
                       return Positioned(
                         top: 170,
-                        left: 30,
+                        left: MediaQuery.of(context).size.width * 0.08,
                         child: AnimatedToggleButton(
                           values: [
                             (languageController.sigIn.value),

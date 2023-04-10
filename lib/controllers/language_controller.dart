@@ -56,12 +56,31 @@ class LanguageController extends GetxController {
   RxString or = ''.obs;
   RxString comingSoon = ''.obs;
   RxString google = ''.obs;
-  RxString facebook = ''.obs;
+  RxString facebookLogin = ''.obs;
   RxString apple = ''.obs;
   RxString termsPrefix = ''.obs;
   RxString terms = ''.obs;
   RxString go = ''.obs;
   RxString allService = ''.obs;
+  RxString edit = ''.obs;
+  RxString email = ''.obs;
+  RxString verified = ''.obs;
+  RxString notVerified = ''.obs;
+  RxString gender = ''.obs;
+  RxString age = ''.obs;
+  RxString noEmail = ''.obs;
+  RxString updateProfile = ''.obs;
+  RxString nameHint = ''.obs;
+  RxString save = ''.obs;
+  RxString addNew = ''.obs;
+  RxString addLovedOnesHeader = ''.obs;
+  RxString seekersAge = ''.obs;
+  RxString relation = ''.obs;
+  RxString getHelp = ''.obs;
+  RxString whatsapp = ''.obs;
+  RxString facebook = ''.obs;
+  RxString youtube = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -86,9 +105,30 @@ class LanguageController extends GetxController {
     mobileSignup(isEnglish.value
         ? "Sign up with Phone Number"
         : "মোবাইল নাম্বার দিয়ে নিবন্ধন");
+    edit(isEnglish.value ? "Edit" : "পরিবর্তন ");
+    email(isEnglish.value ? "Email" : "ইমেইল");
+    verified(isEnglish.value ? "Verified" : "পরিক্ষিত");
+    notVerified(isEnglish.value ? "Not verified" : "অপরিক্ষিত");
+    gender(isEnglish.value ? "Gender" : "লিঙ্গ");
+    age(isEnglish.value ? "Age" : "বয়স");
+    noEmail(isEnglish.value ? "No email provided" : "কোন ইমেইল পাওয়া যাইনি");
+    updateProfile(isEnglish.value ? "Update Profile" : "তথ্য হালনাগাদ");
+    nameHint(isEnglish.value ? "Nazmul Hasan Sohan" : "নাজমুল হাসান সোহান");
+    save(isEnglish.value ? "Save" : "সেভ");
+    addNew(isEnglish.value ? "Add New" : "যোগ করুন");
+    addLovedOnesHeader(isEnglish.value
+        ? "Provide few Information to \nconnect with you."
+        : "আপনার সাথে সংযোগ করতে \nকিছু তথ্য প্রদান করুন.");
+    seekersAge(isEnglish.value ? "Seeker's Age" : "সন্ধানকারীর বয়স");
+    relation(isEnglish.value ? "Relation" : "সম্পর্ক");
+    getHelp(isEnglish.value ? "Get help through" : "সাহায্য নিন");
+    facebook(isEnglish.value ? "Facebook" : "ফেসবুক");
+    whatsapp(isEnglish.value ? "Whatsapp" : "হোয়াটসঅ্যাপ");
+    youtube(isEnglish.value ? "YouTube" : "ইউটিউব");
     comingSoon(isEnglish.value ? "Coming soon..." : "শীঘ্রই আসছে...");
     google(isEnglish.value ? "Continue with Google" : "গুগল লগইন করুন");
-    facebook(isEnglish.value ? "Continue with Facebook" : "ফেসবুক লগইন করুন");
+    facebookLogin(
+        isEnglish.value ? "Continue with Facebook" : "ফেসবুক লগইন করুন");
     apple(isEnglish.value ? "Continue with Apple" : "অ্যাপল লগইন করুন");
     termsPrefix(isEnglish.value
         ? "By sign up or Login I agree to the all"
@@ -116,7 +156,7 @@ class LanguageController extends GetxController {
     category(isEnglish.value ? 'Category' : 'বিভাগ');
     logOut(isEnglish.value ? 'Log Out' : 'প্রস্থান');
     search(isEnglish.value ? 'Search..' : 'অনুসন্ধান করুন');
-    profile(isEnglish.value ? 'Profile' : 'প্রোফাইল');
+    profile(isEnglish.value ? 'My Profile' : 'আমার প্রোফাইল');
     personalDetails(isEnglish.value ? "Personal Details" : "ব্যক্তিগত বিবরণ");
 
     onDemandService(isEnglish.value
@@ -146,7 +186,7 @@ class LanguageController extends GetxController {
 
     //Menu
     orderHistory(isEnglish.value ? 'Order History' : 'অর্ডার ইতিহাস');
-    lovedOnes(isEnglish.value ? 'Loved One\'s' : 'প্রিয়জনের');
+    lovedOnes(isEnglish.value ? 'Loved One\'s' : 'প্রিয়জনেরা');
     coupons(isEnglish.value ? 'Coupons' : 'কুপন');
     helpCenter(isEnglish.value ? 'Help Center' : 'সাহায্য কেন্দ্র');
     help(isEnglish.value ? 'Help ' : 'সাহায্য ');

@@ -30,10 +30,6 @@ class _SignUpState extends State<SignUp> {
               child: Container(
                 child: Stack(
                   children: [
-                    Transform.rotate(
-                      angle: pi / 2 * 90,
-                      child: Image.asset("assets/images/image_below.png"),
-                    ),
                     Positioned(
                       top: 40.0,
                       left: 25.0,
@@ -63,6 +59,8 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(15.0),
                           ),
                           child: Container(
+                              height: 130.0,
+                              width: 150.0,
                               margin: EdgeInsets.all(5),
                               child: Image.asset("assets/images/icon.png")),
                         ),
