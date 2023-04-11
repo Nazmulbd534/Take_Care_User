@@ -109,7 +109,8 @@ class LanguageController extends GetxController {
   RxString myself = ''.obs;
   RxString srvcforu = ''.obs;
   RxString bookedloved = ''.obs;
-
+  RxString now = ''.obs;
+  RxString later = ''.obs;
   @override
   void onInit() {
     super.onInit();
@@ -134,7 +135,7 @@ class LanguageController extends GetxController {
     mobileSignup(isEnglish.value
         ? "Sign up with Phone Number"
         : "মোবাইল নাম্বার দিয়ে নিবন্ধন");
-    edit(isEnglish.value ? "Edit" : "পরিবর্তন ");
+    edit(isEnglish.value ? "Edit" : "পরিবর্তন");
     email(isEnglish.value ? "Email" : "ইমেইল");
     verified(isEnglish.value ? "Verified" : "পরিক্ষিত");
     notVerified(isEnglish.value ? "Not verified" : "অপরিক্ষিত");
@@ -148,6 +149,8 @@ class LanguageController extends GetxController {
     addLovedOnesHeader(isEnglish.value
         ? "Provide few Information to \nconnect with you."
         : "আপনার সাথে সংযোগ করতে \nকিছু তথ্য প্রদান করুন.");
+    now(isEnglish.value ? "Now" : "এখন");
+    later(isEnglish.value ? "Later" : "পরে");
     seekersAge(isEnglish.value ? "Seeker's Age" : "সন্ধানকারীর বয়স");
     relation(isEnglish.value ? "Relation" : "সম্পর্ক");
     getHelp(isEnglish.value ? "Get help through" : "সাহায্য নিন");
@@ -229,40 +232,45 @@ class LanguageController extends GetxController {
     goodEv(isEnglish.value ? 'Good Evening!' : 'শুভ সন্ধ্যা!');
     goodNight(isEnglish.value ? 'Good Night!' : 'শুভ রাত্রি!');
 
-    forgetPassText1(isEnglish.value ? 'Forget Your' : 'bangla');
-    forgetPassText2(isEnglish.value ? 'Password' : 'bangla');
-    enterMobile(isEnglish.value ? 'Enter Your Mobile Number*' : 'bangla');
-    next(isEnglish.value ? 'Next' : 'bangla');
+    forgetPassText1(isEnglish.value ? 'Forget Your' : 'পাসওয়ার্ড');
+    forgetPassText2(isEnglish.value ? 'Password' : 'ভুলে গিয়েছেন?');
+    enterMobile(
+        isEnglish.value ? 'Enter Your Mobile Number*' : 'মোবাইল নম্বর দিন');
+    next(isEnglish.value ? 'Next' : 'পরবর্তি');
     plsEnterMore5(isEnglish.value
         ? "Please enter the new Password more then 5"
-        : "bangla");
-    orders(isEnglish.value ? 'Orders' : 'bangla');
-    current(isEnglish.value ? 'Current' : 'bangla');
-    past(isEnglish.value ? 'Past' : 'bangla');
-    package(isEnglish.value ? 'Package' : 'bangla');
-    details(isEnglish.value ? 'Details' : 'bangla');
+        : "পাসওয়ার্ড সর্বনিন্ম ৫ সংখ্যা");
+    orders(isEnglish.value ? 'Orders' : 'অর্ডারসমুহ');
+    current(isEnglish.value ? 'Current' : 'চলতি');
+    past(isEnglish.value ? 'Past' : 'বিগত');
+    package(isEnglish.value ? 'Package' : 'প্যাকেজ');
+    details(isEnglish.value ? 'Details' : 'বিস্তারিত');
     reorderText(isEnglish.value
         ? 'Reordering now will ensure continuation of this service with the same Provider.'
-        : 'bangla');
-    selcat(isEnglish.value ? 'Select Category' : 'bangla');
-    showList(isEnglish.value ? 'Show Listing' : 'bangla');
-    est(isEnglish.value ? 'Estimated Price' : '');
+        : 'এখন পুনরায় অর্ডার করা একই প্রদানকারীর সাথে এই পরিষেবাটির ধারাবাহিকতা নিশ্চিত করবে.');
+    selcat(isEnglish.value ? 'Select Category' : 'ক্যাটাগরি নির্বাচন করুন');
+    showList(isEnglish.value ? 'Show Listing' : 'তালিকা দেখান');
+    est(isEnglish.value ? 'Estimated Price' : 'আনুমানিক মূল্য');
     estMsg(isEnglish.value
         ? "It's an estimated price, it's not the final. Price various upon service provider's demand"
-        : '');
-    onDemand(isEnglish.value ? "On Demand" : '');
-    serviceAdded(isEnglish.value ? "Service Added" : '');
-    att(isEnglish.value ? "Attendant for Hospital Visit" : '');
-    continueString(isEnglish.value ? "Continue" : '');
-    categories(isEnglish.value ? "Categories" : '');
-    all(isEnglish.value ? "All" : '');
-    takenbefore(isEnglish.value ? "Taken Before" : '');
-    pop(isEnglish.value ? 'Popular Service' : '');
-    bookfor(isEnglish.value ? 'Book For' : '');
-    orderNow(isEnglish.value ? 'Order Now' : '');
-    added(isEnglish.value ? 'Added' : '');
-    myself(isEnglish.value ? 'Myself' : '');
-    srvcforu(isEnglish.value ? 'Book Service for you' : '');
-    bookedloved(isEnglish.value ? 'Book Service for Your loved One\'s' : '');
+        : 'এটি একটি আনুমানিক মূল্য, এটি চূড়ান্ত নয়। সেবা প্রদানকারীর চাহিদা অনুযায়ী মূল্য বিভিন্ন হতে পারে.');
+    onDemand(isEnglish.value ? "On Demand" : 'চাহিদা অনুযায়ী সেবা');
+    serviceAdded(isEnglish.value ? "Service Added" : 'পরিষেবা যোগ করা হয়েছে');
+    att(isEnglish.value
+        ? "Attendant for Hospital Visit"
+        : 'হাসপাতাল পরিদর্শনের জন্য পরিচারক');
+    continueString(isEnglish.value ? "Continue" : 'এগিয়ে যান');
+    categories(isEnglish.value ? "Categories" : 'ক্যাটাগরি');
+    all(isEnglish.value ? "All" : 'সব');
+    takenbefore(isEnglish.value ? "Taken Before" : 'আগে নেওয়া');
+    pop(isEnglish.value ? 'Popular Service' : 'জনপ্রিয় পরিষেবা');
+    bookfor(isEnglish.value ? 'Book For' : 'যার জন্য');
+    orderNow(isEnglish.value ? 'Order Now' : 'এখনই নিন');
+    added(isEnglish.value ? 'Added' : 'যোগ করা হয়েছে');
+    myself(isEnglish.value ? 'Myself' : 'নিজ');
+    srvcforu(isEnglish.value ? 'Book Service for you' : 'নিজের জন্য বুক করুন');
+    bookedloved(isEnglish.value
+        ? 'Book Service for Your loved One\'s'
+        : 'আপনার প্রিয়জনের জন্য  সার্ভিস নিন ');
   }
 }

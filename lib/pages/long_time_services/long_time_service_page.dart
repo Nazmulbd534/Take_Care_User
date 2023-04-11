@@ -49,9 +49,13 @@ bool scheduleSelected = false;
 
 class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   Icon cusIcon = Icon(Icons.search, color: Colors.black);
-  Widget cusSearchbar = Text(
-    "Long Time Services",
-    style: TextStyle(color: Colors.black, fontSize: dynamicSize(0.03)),
+  Widget cusSearchbar = GetBuilder<LanguageController>(
+    builder: (language) {
+      return Text(
+        language.longTimeService.string,
+        style: TextStyle(color: Colors.black, fontSize: dynamicSize(0.04)),
+      );
+    },
   );
   int selectedColor = 0;
   List<AllServiceData> _searchResult = [];
@@ -912,7 +916,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                   padding:
                                       const EdgeInsets.only(left: 8.0, top: 5),
                                   child: Text(
-                                    "Long Time Services",
+                                    lc.longTimeService.string,
                                     style: TextStyle(
                                         fontSize: dynamicSize(0.035),
                                         fontWeight: FontWeight.bold,
@@ -950,7 +954,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                                               padding:
                                                   const EdgeInsets.only(top: 5),
                                               child: Text(
-                                                " Service Added",
+                                                " " + lc.serviceAdded.string,
                                                 style: TextStyle(
                                                     fontSize: dynamicSize(0.04),
                                                     fontWeight: FontWeight.bold,
