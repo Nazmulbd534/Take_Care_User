@@ -80,6 +80,35 @@ class LanguageController extends GetxController {
   RxString whatsapp = ''.obs;
   RxString facebook = ''.obs;
   RxString youtube = ''.obs;
+  RxString forgetPassText1 = ''.obs;
+  RxString forgetPassText2 = ''.obs;
+  RxString enterMobile = ''.obs;
+  RxString next = ''.obs;
+  RxString plsEnterMore5 = ''.obs;
+  RxString orders = ''.obs;
+  RxString current = ''.obs;
+  RxString past = ''.obs;
+  RxString package = ''.obs;
+  RxString details = ''.obs;
+  RxString reorderText = ''.obs;
+  RxString selcat = ''.obs;
+  RxString showList = ''.obs;
+  RxString est = ''.obs;
+  RxString estMsg = ''.obs;
+  RxString onDemand = ''.obs;
+  RxString serviceAdded = ''.obs;
+  RxString att = ''.obs;
+  RxString continueString = ''.obs;
+  RxString categories = ''.obs;
+  RxString all = ''.obs;
+  RxString takenbefore = ''.obs;
+  RxString pop = ''.obs;
+  RxString bookfor = ''.obs;
+  RxString orderNow = ''.obs;
+  RxString added = ''.obs;
+  RxString myself = ''.obs;
+  RxString srvcforu = ''.obs;
+  RxString bookedloved = ''.obs;
 
   @override
   void onInit() {
@@ -199,5 +228,41 @@ class LanguageController extends GetxController {
     goodAfterNoon(isEnglish.value ? 'Good Afternoon!' : 'শুভ অপরাহ্ন!');
     goodEv(isEnglish.value ? 'Good Evening!' : 'শুভ সন্ধ্যা!');
     goodNight(isEnglish.value ? 'Good Night!' : 'শুভ রাত্রি!');
+
+    forgetPassText1(isEnglish.value ? 'Forget Your' : 'bangla');
+    forgetPassText2(isEnglish.value ? 'Password' : 'bangla');
+    enterMobile(isEnglish.value ? 'Enter Your Mobile Number*' : 'bangla');
+    next(isEnglish.value ? 'Next' : 'bangla');
+    plsEnterMore5(isEnglish.value
+        ? "Please enter the new Password more then 5"
+        : "bangla");
+    orders(isEnglish.value ? 'Orders' : 'bangla');
+    current(isEnglish.value ? 'Current' : 'bangla');
+    past(isEnglish.value ? 'Past' : 'bangla');
+    package(isEnglish.value ? 'Package' : 'bangla');
+    details(isEnglish.value ? 'Details' : 'bangla');
+    reorderText(isEnglish.value
+        ? 'Reordering now will ensure continuation of this service with the same Provider.'
+        : 'bangla');
+    selcat(isEnglish.value ? 'Select Category' : 'bangla');
+    showList(isEnglish.value ? 'Show Listing' : 'bangla');
+    est(isEnglish.value ? 'Estimated Price' : '');
+    estMsg(isEnglish.value
+        ? "It's an estimated price, it's not the final. Price various upon service provider's demand"
+        : '');
+    onDemand(isEnglish.value ? "On Demand" : '');
+    serviceAdded(isEnglish.value ? "Service Added" : '');
+    att(isEnglish.value ? "Attendant for Hospital Visit" : '');
+    continueString(isEnglish.value ? "Continue" : '');
+    categories(isEnglish.value ? "Categories" : '');
+    all(isEnglish.value ? "All" : '');
+    takenbefore(isEnglish.value ? "Taken Before" : '');
+    pop(isEnglish.value ? 'Popular Service' : '');
+    bookfor(isEnglish.value ? 'Book For' : '');
+    orderNow(isEnglish.value ? 'Order Now' : '');
+    added(isEnglish.value ? 'Added' : '');
+    myself(isEnglish.value ? 'Myself' : '');
+    srvcforu(isEnglish.value ? 'Book Service for you' : '');
+    bookedloved(isEnglish.value ? 'Book Service for Your loved One\'s' : '');
   }
 }
