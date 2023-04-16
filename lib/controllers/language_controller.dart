@@ -282,15 +282,20 @@ class LanguageController extends GetxController {
         ? 'Book Service for Your loved One\'s'
         : 'আপনার প্রিয়জনের জন্য  সার্ভিস নিন ');
 
-    confirmthisorder(isEnglish.value ? "Confirm this Order" : "");
+    confirmthisorder(
+        isEnglish.value ? "Confirm this Order" : "অর্ডারটি কনফার্ম করুন");
 
-    orderinfo(isEnglish.value ? "Order Information" : "");
-    selectstart(isEnglish.value ? "Select start date & duration" : "");
-    visitingaddress(isEnglish.value ? "Visiting Address" : "");
-    additionaladdress(isEnglish.value ? "Additional Address" : "");
-    bookinginformation(isEnglish.value ? "Booking Information" : "");
-    confirmthisorder(isEnglish.value ? "Confirm this Order" : "");
-    name(isEnglish.value ? "Confirm this Order" : "");
-    additionalnote(isEnglish.value ? "Additional Note" : "");
+    orderinfo(isEnglish.value ? "Order Information" : "অর্ডারের তথ্য");
+    selectstart(isEnglish.value
+        ? "Select start date & duration"
+        : "শুরুর দিন এবং সময় নির্বাচন");
+    visitingaddress(isEnglish.value ? "Visiting Address" : "ভিজিটের ঠিকানা");
+    additionaladdress(
+        isEnglish.value ? "Additional Address" : "অতিরিক্ত ঠিকানা");
+    bookinginformation(isEnglish.value ? "Booking Information" : "বুকিং তথ্য");
+    confirmthisorder(
+        isEnglish.value ? "Confirm this Order" : "অর্ডারটি কনফার্ম করুন");
+    name(isEnglish.value ? "Name" : "নাম");
+    additionalnote(isEnglish.value ? "Additional Note" : "অতিরিক্ত নোট");
   }
 }

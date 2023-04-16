@@ -26,6 +26,7 @@ import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/ui/common.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../../api_service/ApiService.dart';
+import '../long_time_services/map_picker_page.dart';
 import '../long_time_services/service_request_form_page.dart';
 import 'feedback_page.dart';
 import 'map_page.dart';
@@ -1771,43 +1772,18 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                                     .currentPostion.latitude
                                                     .toString());
                                         // ignore: use_build_context_synchronously
-                                        resultGeo = (await Navigator.push(
-                                          context,
-                                          MaterialPageRoute<GeocodingResult>(
-                                            builder: (cx) {
-                                              return MapLocationPicker(
-                                                  topCardColor: Colors.white70,
-                                                  bottomCardColor:
-                                                      Colors.pinkAccent,
-                                                  currentLatLng:
-                                                      Variables.currentPostion,
-                                                  desiredAccuracy:
-                                                      LocationAccuracy.high,
-                                                  apiKey:
-                                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                                  canPopOnNextButtonTaped: true,
-                                                  onNext: (GeocodingResult?
-                                                      result) {
-                                                    if (result != null) {
-                                                      setState(() {
-                                                        resultGeo = result;
-                                                        Navigator.pop(
-                                                            cx, resultGeo);
-                                                      });
-                                                    } else {
-                                                      resultGeo = result!;
-                                                    }
-                                                  });
-                                            },
-                                          ),
-                                        ))!;
-                                        if (resultGeo != null) {
+                                        final result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CustomMapPicker()));
+                                        if (result != null) {
                                           // ignore: use_build_context_synchronously
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (cp) => MapPage(
-                                                result: resultGeo,
+                                                result: result[1],
                                               ),
                                             ),
                                           );

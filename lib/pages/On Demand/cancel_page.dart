@@ -11,7 +11,7 @@ import '../../public_variables/size_config.dart';
 class CancelPage extends StatelessWidget {
   final ProviderData providerInfo;
 
-  const CancelPage( {Key? key,required this.providerInfo}) : super(key: key);
+  const CancelPage({Key? key, required this.providerInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,8 @@ class CancelPage extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 40,
-              child: ClipOval(child: Image.network("${providerInfo.profilePhoto}")),
+              child: ClipOval(
+                  child: Image.network("${providerInfo.profilePhoto}")),
             ),
             SizedBox(
               height: dynamicSize(0.1),
@@ -71,36 +72,40 @@ class CancelPage extends StatelessWidget {
               height: dynamicSize(0.04),
             ),
             TextButton(
-              onPressed: () async{
-
-                 GeocodingResult resultGeo;
+              onPressed: () async {
+                GeocodingResult resultGeo;
 
                 resultGeo = (await Navigator.push(
-                context,
-                MaterialPageRoute<GeocodingResult>(
+                  context,
+                  MaterialPageRoute<GeocodingResult>(
                     builder: (cx) {
-                  return MapLocationPicker(
-
-                      origin:Location(lat: Variables.currentPostion.latitude , lng :  Variables.currentPostion.longitude),
-                      desiredAccuracy : LocationAccuracy.high,
-                      location :  Location(lat: Variables.currentPostion.latitude , lng :  Variables.currentPostion.longitude),
-                      apiKey: "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                      canPopOnNextButtonTaped: true,
-                      onNext: (GeocodingResult? result) {
-                        if (result != null) {
-
-                            resultGeo = result;
-                            Navigator.pop(cx,resultGeo);
-
-                        }
-                      }
-                  );
-
-                },
-                ),
+                      return MapLocationPicker(
+                          origin: Location(
+                              lat: Variables.currentPostion.latitude,
+                              lng: Variables.currentPostion.longitude),
+                          desiredAccuracy: LocationAccuracy.high,
+                          location: Location(
+                              lat: Variables.currentPostion.latitude,
+                              lng: Variables.currentPostion.longitude),
+                          apiKey: "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                          canPopOnNextButtonTaped: true,
+                          onNext: (GeocodingResult? result) {
+                            if (result != null) {
+                              resultGeo = result;
+                              Navigator.pop(cx, resultGeo);
+                            }
+                          });
+                    },
+                  ),
                 ))!;
-                if(resultGeo != null){
-                Navigator.push(context, MaterialPageRoute(builder: (cp) => MapPage(result: resultGeo,)),);
+                if (resultGeo != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (cp) => MapPage(
+                              result: resultGeo,
+                            )),
+                  );
                 }
               },
               child: Text(
