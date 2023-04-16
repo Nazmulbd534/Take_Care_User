@@ -31,7 +31,6 @@ dependencies:
   http: ^0.13.4
   cloud_firestore: ^4.4.3
   cached_network_image: ^3.2.0
-  flutter_launcher_icons: ^0.11.0
   uuid: ^3.0.6
   firebase_auth: ^4.2.9
   firebase_core: ^2.7.0
@@ -56,6 +55,10 @@ dependencies:
   map_location_picker:
     git:
       url: https://github.com/Soilcsi/map_location_picker.git
+  search_map_place_updated: ^0.0.4
+  flutter_google_places: ^0.3.0
+  google_maps_webservice: ^0.0.20-nullsafety.5
+  geocoding: ^2.1.0
 
   # google_maps_flutter_platform_interface: ^2.2.1
  # google_maps_flutter_android: ^2.1.10

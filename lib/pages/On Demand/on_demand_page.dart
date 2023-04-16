@@ -1706,13 +1706,22 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                                 Variables
                                                     .currentPostion.latitude
                                                     .toString());
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (cp) => MapPage(
+                                        //       result: resultGeo,
+                                        //     ),
+                                        //   ),
+                                        // );
+
                                         // ignore: use_build_context_synchronously
                                         resultGeo = (await Navigator.push(
                                           context,
                                           MaterialPageRoute<GeocodingResult>(
                                             builder: (cx) {
                                               return MapLocationPicker(
-                                                  topCardColor: Colors.white70,
+                                                  //topCardColor: Colors.white70,
                                                   bottomCardColor:
                                                       Colors.pinkAccent,
                                                   currentLatLng:

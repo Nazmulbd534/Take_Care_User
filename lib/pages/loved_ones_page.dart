@@ -219,13 +219,13 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                             ),
                           ))!;
                           if (resultGeo != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (cp) => OrderConfirmPage(
-                                    result: resultGeo!, orderType: "Long Term"),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (cp) => OrderConfirmPage(
+                            //         result: resultGeo!, orderType: "Long Term"),
+                            //   ),
+                            // );
                           }
                         }
                       },

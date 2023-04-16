@@ -49,7 +49,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    filter();
+    //filter();
   }
 
   @override
@@ -130,6 +130,8 @@ class _MapPageState extends State<MapPage> {
                                                       GeocodingResult>(
                                                     builder: (cx) {
                                                       return MapLocationPicker(
+                                                          topCardColor:
+                                                              Colors.white,
                                                           location: Location(
                                                             lat: Variables
                                                                 .currentPostion
@@ -215,13 +217,13 @@ class _MapPageState extends State<MapPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 15.0, left: 15.0),
+                          padding: const EdgeInsets.only(
+                              top: 15.0, left: 15.0, right: 15.0),
                           child: Text(
                               providerList.isEmpty
-                                  ? "No provider is available in your area at this moment. Please try again after some time  Or call at 01827370397 . Thank You."
+                                  ? "No provider is available in your area at this moment. Please try again after some time call at 01827370397.\nThank You."
                                   : "Choose One...",
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(fontSize: dynamicSize(0.07))),
+                              style: TextStyle(fontSize: dynamicSize(0.05))),
                         ),
                         Container(
                           height: dynamicSize(rqbutton ? 0.96 : 1.17),

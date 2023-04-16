@@ -111,6 +111,15 @@ class LanguageController extends GetxController {
   RxString bookedloved = ''.obs;
   RxString now = ''.obs;
   RxString later = ''.obs;
+  RxString confirmthisorder = ''.obs;
+
+  RxString orderinfo = ''.obs;
+  RxString selectstart = ''.obs;
+  RxString visitingaddress = ''.obs;
+  RxString additionaladdress = ''.obs;
+  RxString bookinginformation = ''.obs;
+  RxString additionalnote = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -272,5 +281,16 @@ class LanguageController extends GetxController {
     bookedloved(isEnglish.value
         ? 'Book Service for Your loved One\'s'
         : 'আপনার প্রিয়জনের জন্য  সার্ভিস নিন ');
+
+    confirmthisorder(isEnglish.value ? "Confirm this Order" : "");
+
+    orderinfo(isEnglish.value ? "Order Information" : "");
+    selectstart(isEnglish.value ? "Select start date & duration" : "");
+    visitingaddress(isEnglish.value ? "Visiting Address" : "");
+    additionaladdress(isEnglish.value ? "Additional Address" : "");
+    bookinginformation(isEnglish.value ? "Booking Information" : "");
+    confirmthisorder(isEnglish.value ? "Confirm this Order" : "");
+    name(isEnglish.value ? "Confirm this Order" : "");
+    additionalnote(isEnglish.value ? "Additional Note" : "");
   }
 }

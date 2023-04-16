@@ -18,6 +18,7 @@ import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/pages/On%20Demand/map_page.dart';
 import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
+import 'package:takecare_user/pages/long_time_services/map_picker_page.dart';
 import 'package:takecare_user/pages/long_time_services/order_confirm_page.dart';
 import 'package:takecare_user/pages/long_time_services/service_request_form_page.dart';
 import 'package:takecare_user/pages/loved_form_page.dart';
@@ -62,8 +63,6 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   TextEditingController searchController = TextEditingController();
   List<CategoriesData> dataResponse = [];
   bool focus = false;
-
-  late GeocodingResult resultGeo;
 
   @override
   void initState() {
@@ -775,51 +774,27 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                             InkWell(
                               onTap: () async {
                                 if (selectMyself) {
+                                  log("here");
+                                  final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CustomMapPicker()));
+
                                   await DataControllers.to.getProviderList(
                                       "1",
                                       "1",
-                                      Variables.currentPostion.longitude
-                                          .toString(),
-                                      Variables.currentPostion.latitude
-                                          .toString());
-                                  // ignore: use_build_context_synchronously
-                                  resultGeo = (await Navigator.push(
+                                      result[0].longitude.toString(),
+                                      result[0].latitude.toString());
+
+                                  Navigator.push(
                                     context,
-                                    MaterialPageRoute<GeocodingResult>(
-                                      builder: (cx) {
-                                        return MapLocationPicker(
-                                            topCardColor: Colors.white70,
-                                            bottomCardColor: Colors.pinkAccent,
-                                            currentLatLng:
-                                                Variables.currentPostion,
-                                            desiredAccuracy:
-                                                LocationAccuracy.high,
-                                            apiKey:
-                                                "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                            canPopOnNextButtonTaped: true,
-                                            onNext: (GeocodingResult? result) {
-                                              if (result != null) {
-                                                setState(() {
-                                                  resultGeo = result;
-                                                  Navigator.pop(cx, resultGeo);
-                                                });
-                                              } else {
-                                                resultGeo = result!;
-                                              }
-                                            });
-                                      },
+                                    MaterialPageRoute(
+                                      builder: (cp) => OrderConfirmPage(
+                                          result: result[1],
+                                          orderType: "Long Term"),
                                     ),
-                                  ))!;
-                                  if (resultGeo != null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (cp) => OrderConfirmPage(
-                                            result: resultGeo,
-                                            orderType: "Long Term"),
-                                      ),
-                                    );
-                                  }
+                                  );
                                 } else {
                                   LovedOnesResponse lovedOnes =
                                       await ApiService.getFavAddress();
