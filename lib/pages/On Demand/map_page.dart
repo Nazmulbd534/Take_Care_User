@@ -11,6 +11,7 @@ import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/model/provider/provider_data.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
+import 'package:takecare_user/pages/long_time_services/map_picker_page.dart';
 import 'package:takecare_user/pages/provider/provider_profile_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
@@ -49,7 +50,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    //filter();
+    filter();
   }
 
   @override
@@ -91,8 +92,9 @@ class _MapPageState extends State<MapPage> {
                             mapType: MapType.normal,
                             initialCameraPosition: _kLake = CameraPosition(
                               bearing: 192.8334901395799,
-                              target: LatLng(Variables.currentPostion.latitude,
-                                  Variables.currentPostion.longitude),
+                              target: LatLng(
+                                  widget.result.geometry.location.lat,
+                                  widget.result.geometry.location.lng),
                               tilt: 59.440717697143555,
                               zoom: 15.151926040649414,
                             ),
@@ -122,47 +124,17 @@ class _MapPageState extends State<MapPage> {
                                           ),
                                           TextButton(
                                               onPressed: () async {
-                                                late GeocodingResult resultGeo;
-                                                resultGeo =
-                                                    (await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute<
-                                                      GeocodingResult>(
-                                                    builder: (cx) {
-                                                      return MapLocationPicker(
-                                                          topCardColor:
-                                                              Colors.white,
-                                                          location: Location(
-                                                            lat: Variables
-                                                                .currentPostion
-                                                                .latitude,
-                                                            lng: Variables
-                                                                .currentPostion
-                                                                .longitude,
-                                                          ),
-                                                          apiKey:
-                                                              "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                                          canPopOnNextButtonTaped:
-                                                              true,
-                                                          onNext:
-                                                              (GeocodingResult?
-                                                                  result) {
-                                                            if (result !=
-                                                                null) {
-                                                              setState(() {
-                                                                resultGeo =
-                                                                    result;
-                                                                // var  address = result.formattedAddress ?? "";
-                                                                Navigator.pop(
-                                                                    cx,
-                                                                    resultGeo);
-                                                              });
-                                                              // Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()),);
-                                                            }
-                                                          });
-                                                    },
-                                                  ),
-                                                ))!;
+                                                List<GeocodingResult?>
+                                                    resultGeo =
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CustomMapPicker(
+                                                                    location: widget
+                                                                        .result
+                                                                        .geometry
+                                                                        .location)));
                                                 if (resultGeo != null) {
                                                   // ignore: use_build_context_synchronously
                                                   Navigator.push(
@@ -170,7 +142,8 @@ class _MapPageState extends State<MapPage> {
                                                     MaterialPageRoute(
                                                         builder: (cp) =>
                                                             MapPage(
-                                                              result: resultGeo,
+                                                              result: resultGeo
+                                                                  .first!,
                                                             )),
                                                   );
                                                 }

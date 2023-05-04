@@ -1,23 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart' as gc;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:search_map_place_updated/search_map_place_updated.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
-import 'package:takecare_user/controllers/DataContollers.dart';
-import 'package:takecare_user/pages/long_time_services/order_confirm_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/map_styles.dart';
 
 import '../../public_variables/variables.dart';
 
 class CustomMapPicker extends StatefulWidget {
-  const CustomMapPicker({super.key});
+  final Location? location;
+  const CustomMapPicker({super.key, this.location});
 
   @override
   State<CustomMapPicker> createState() => _CustomMapPickerState();
@@ -40,10 +38,54 @@ class _CustomMapPickerState extends State<CustomMapPicker> {
     mapController.setMapStyle(mapStyleJsonString);
 
     setState(() {
-      currentSelectedLocation = Variables.currentPostion;
+      log("this setstate");
+      if (widget.location != null) {
+        log("here");
+        currentSelectedLocation =
+            LatLng(widget.location!.lat, widget.location!.lng);
+        mapController
+            .animateCamera(CameraUpdate.newLatLng(currentSelectedLocation!));
+      } else {
+        log("not here");
+        currentSelectedLocation = Variables.currentPostion;
+      }
     });
 
     searchProviders();
+  }
+
+  Future<GeocodingResult?> decodeAddress(Location location) async {
+    try {
+      final geocoding = GoogleMapsGeocoding(
+        apiKey: "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+      );
+
+      GeocodingResponse response = await geocoding.searchByLocation(location);
+
+      if (response.hasNoResults ||
+          response.isDenied ||
+          response.isInvalid ||
+          response.isNotFound ||
+          response.unknownError ||
+          response.isOverQueryLimit) {
+        log(response.errorMessage.toString());
+        //_address = response.status;
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.errorMessage ??
+                  "Address not found, something went wrong!"),
+            ),
+          );
+        }
+        return null;
+      }
+      return response.results.first;
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return null;
   }
 
   void searchProviders() async {
@@ -108,13 +150,19 @@ class _CustomMapPickerState extends State<CustomMapPicker> {
           color: AllColor.themeColor,
           child: InkWell(
             onTap: () async {
-              List<Placemark> placemarks = await placemarkFromCoordinates(
-                  currentSelectedLocation!.latitude,
-                  currentSelectedLocation!.longitude);
-              Navigator.pop(context, [
-                currentSelectedLocation,
-                "${placemarks[0].name}, ${placemarks[0].street}, ${placemarks[0].country},"
-              ]);
+              // List<Placemark> placemarks = await placemarkFromCoordinates(
+              //     currentSelectedLocation!.latitude,
+              //     currentSelectedLocation!.longitude);
+              // Navigator.pop(context, [
+              //   currentSelectedLocation,
+              //   "${placemarks[0].name}, ${placemarks[0].street}, ${placemarks[0].country},"
+              // ]);
+
+              GeocodingResult? address = await decodeAddress(Location(
+                  lat: currentSelectedLocation!.latitude,
+                  lng: currentSelectedLocation!.longitude));
+
+              Navigator.pop(context, [address]);
             },
             child: Container(
               height: 50,

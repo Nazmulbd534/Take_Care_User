@@ -1697,56 +1697,25 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                     if (selectMyself) {
                                       if (selectedToogleIndex == 1) {
                                         log("Scheduled for later  myself");
+
+                                        List<GeocodingResult?> results =
+                                            await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CustomMapPicker()));
+
                                         await DataControllers.to
                                             .getProviderList(
                                                 "1",
                                                 "1",
-                                                Variables
-                                                    .currentPostion.longitude
+                                                results.first!.geometry.location
+                                                    .lng
                                                     .toString(),
-                                                Variables
-                                                    .currentPostion.latitude
+                                                results.first!.geometry.location
+                                                    .lat
                                                     .toString());
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (cp) => MapPage(
-                                        //       result: resultGeo,
-                                        //     ),
-                                        //   ),
-                                        // );
 
-                                        // ignore: use_build_context_synchronously
-                                        resultGeo = (await Navigator.push(
-                                          context,
-                                          MaterialPageRoute<GeocodingResult>(
-                                            builder: (cx) {
-                                              return MapLocationPicker(
-                                                  //topCardColor: Colors.white70,
-                                                  bottomCardColor:
-                                                      Colors.pinkAccent,
-                                                  currentLatLng:
-                                                      Variables.currentPostion,
-                                                  desiredAccuracy:
-                                                      LocationAccuracy.high,
-                                                  apiKey:
-                                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                                  canPopOnNextButtonTaped: true,
-                                                  onNext: (GeocodingResult?
-                                                      result) {
-                                                    if (result != null) {
-                                                      setState(() {
-                                                        resultGeo = result;
-                                                        Navigator.pop(
-                                                            cx, resultGeo);
-                                                      });
-                                                    } else {
-                                                      resultGeo = result!;
-                                                    }
-                                                  });
-                                            },
-                                          ),
-                                        ))!;
                                         if (resultGeo != null) {
                                           // ignore: use_build_context_synchronously
                                           Navigator.push(
@@ -1761,29 +1730,30 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                           );
                                         }
                                       } else {
+                                        List<GeocodingResult?> results =
+                                            await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CustomMapPicker()));
+
                                         await DataControllers.to
                                             .getProviderList(
                                                 "1",
                                                 "1",
-                                                Variables
-                                                    .currentPostion.longitude
+                                                results.first!.geometry.location
+                                                    .lng
                                                     .toString(),
-                                                Variables
-                                                    .currentPostion.latitude
+                                                results.first!.geometry.location
+                                                    .lat
                                                     .toString());
-                                        // ignore: use_build_context_synchronously
-                                        final result = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CustomMapPicker()));
                                         if (result != null) {
                                           // ignore: use_build_context_synchronously
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (cp) => MapPage(
-                                                result: result[1],
+                                                result: results.first!,
                                               ),
                                             ),
                                           );

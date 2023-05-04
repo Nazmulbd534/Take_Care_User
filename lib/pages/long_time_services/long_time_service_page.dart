@@ -775,26 +775,38 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
                               onTap: () async {
                                 if (selectMyself) {
                                   log("here");
-                                  final result = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CustomMapPicker()));
+                                  List<GeocodingResult?> results =
+                                      await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CustomMapPicker()));
 
                                   await DataControllers.to.getProviderList(
-                                      "1",
-                                      "1",
-                                      result[0].longitude.toString(),
-                                      result[0].latitude.toString());
+                                    "1",
+                                    "1",
+                                    results.first!.geometry.location.lng
+                                        .toString(),
+                                    results.first!.geometry.location.lat
+                                        .toString(),
+                                  );
+
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (cp) => OrderConfirmPage(
+                                  //         result: results.first,
+                                  //         orderType: "Long Term",
+                                  //   ),
+                                  // );
 
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (cp) => OrderConfirmPage(
-                                          result: result[1],
-                                          orderType: "Long Term"),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (cp) => OrderConfirmPage(
+                                                result: results.first!,
+                                                orderType: "Long Term",
+                                              )));
                                 } else {
                                   LovedOnesResponse lovedOnes =
                                       await ApiService.getFavAddress();
