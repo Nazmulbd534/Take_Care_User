@@ -184,16 +184,20 @@ class _HomePageState extends State<HomePage> {
           'status': Variables.orderStatusData[2].statusCode,
         });
       } else {
-        ProviderData providerData = DataControllers
-            .to.getAvailableProviderList.value.data!.provider_data!
-            .firstWhere((element) =>
-                element.phone == requests.first.get('receiver_id'));
-        Get.to(() => AcceptedPage(
-              reqDocId: requests.first.get('id'),
-              receiverId: requests.first.get('receiver_id'),
-              requestList: snapshot.docs.first,
-              providerData: providerData,
-            ));
+        if (DataControllers.to.getAvailableProviderList.value.data != null) {
+          ProviderData providerData = DataControllers
+              .to.getAvailableProviderList.value.data!.provider_data!
+              .firstWhere((element) =>
+                  element.phone == requests.first.get('receiver_id'));
+          Get.to(() => AcceptedPage(
+                reqDocId: requests.first.get('id'),
+                receiverId: requests.first.get('receiver_id'),
+                requestList: snapshot.docs.first,
+                providerData: providerData,
+              ));
+        } else {
+          log("Available provider data null\n");
+        }
       }
     }
   }

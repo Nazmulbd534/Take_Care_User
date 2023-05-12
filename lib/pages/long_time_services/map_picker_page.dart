@@ -99,7 +99,7 @@ class _CustomMapPickerState extends State<CustomMapPicker> {
         currentSelectedLocation!.longitude.toString(),
         currentSelectedLocation!.longitude.toString());
 
-    log(response!.data!.provider_data.toString());
+    // log(response!.data!.provider_data.toString());
 
     setState(() {
       currentMapState = 2;

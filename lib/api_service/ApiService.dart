@@ -417,16 +417,18 @@ class ApiService {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(now);
-
-    var Json = <String, String>{
-      "coupon_code": coupon_code,
+    log("this is called", name: "test");
+    var jsonData = <String, String>{
+      // "coupon_code": coupon_code,
       "booking_date": formatted,
       "provider_id": providerData!.id.toString(),
       "latitude": result!.geometry.location.lat.toString(),
       "longitude": result.geometry.location.lng.toString(),
-      "foundSchedule": "a",
+      //   "foundSchedule": "a",
     };
 
+    log(jsonData.toString() + "\n token = " + bearerToken,
+        name: "new-request payload");
     var response = await client.post(
       Uri.parse(BaseURL + 'user/request/new-request'),
       headers: <String, String>{
@@ -434,7 +436,7 @@ class ApiService {
         'Accept': 'application/json',
         'Authorization': bearerToken,
       },
-      body: jsonEncode(Json),
+      body: jsonEncode(jsonData),
     );
     log("Api Response : ${response.body}", name: "newRequest");
     // List<String> stringList = (jsonDecode(response.body) as List<dynamic>).cast<String>();
@@ -458,6 +460,7 @@ class ApiService {
       String order_note = '',
       ProviderData? providerData,
       GeocodingResult? result}) async {
+    log("place order called");
     Map<String, String> jsonData = <String, String>{
       'user_id':
           DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
@@ -471,6 +474,7 @@ class ApiService {
       "longitude": result.geometry.location.lng.toString()
     };
 
+    log(jsonData.toString(), name: "jsonTest");
     var jsonDataFormate = jsonEncode(jsonData);
 
     var response = await client.post(
@@ -805,7 +809,7 @@ class ApiService {
       String lattitude) async {
     var response = await client.get(
         Uri.parse(BaseURL +
-            'user/providers-by-status?status=${status}&available=${available}&longitude${longitude}&lattitude${lattitude}'),
+            'user/providers-by-status?status=${status}&available=${available}&longitude=${longitude}&latitude=${lattitude}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',
