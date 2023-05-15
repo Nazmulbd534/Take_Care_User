@@ -580,7 +580,13 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
     var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
 
-    await DataControllers.to.addCard(addedService.id.toString(), formattedDate);
+    await DataControllers.to.addCard(
+      context,
+      addedService.id.toString(),
+      formattedDate,
+      addedService.serviceCategoryId.toString(),
+      DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
+    );
 
     if (DataControllers.to.addCardResponse.value.success!) {
       Common.storeSharedPreferences.setString("service", "long");

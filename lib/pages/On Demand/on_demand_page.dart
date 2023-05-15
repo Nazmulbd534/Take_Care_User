@@ -445,8 +445,13 @@ class _OnDemandPageState extends State<OnDemandPage> {
 
     log(searchData[index].id.toString(), name: "YUGRFEKF");
 
-    await DataControllers.to
-        .addCard(searchData[index].id.toString(), formattedDate);
+    await DataControllers.to.addCard(
+      context,
+      searchData[index].id.toString(),
+      formattedDate,
+      searchData[index].serviceCategoryId.toString(),
+      DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
+    );
 
     if (DataControllers.to.addCardResponse.value.success!) {
       Common.storeSharedPreferences.setString("service", "short");

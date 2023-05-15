@@ -381,8 +381,8 @@ class ApiService {
     }
   }
 
-  static Future<ErrorResponse?> addCard(
-      String service_id, String booking_date) async {
+  static Future<ErrorResponse?> addCard(BuildContext context, String service_id,
+      String booking_date, String categoryId, String userID) async {
     var response = await client.post(
       Uri.parse(BaseURL + 'user/cart/add-service-to-cart'),
       headers: <String, String>{
@@ -393,6 +393,7 @@ class ApiService {
       body: jsonEncode(<String, String>{
         'id': service_id,
         'booking_date': booking_date,
+        'category_id': categoryId,
       }),
     );
     if (response.statusCode == 200) {
@@ -404,8 +405,30 @@ class ApiService {
           json.decode(response.body)["success"];
       DataControllers.to.addCardResponse.value.message =
           json.decode(response.body)["message"];
-      //showToast("Please enter your valid user and password!!",Colors.red);
-      //  return errorResponseFromJson(response.body);
+      if (json.decode(response.body)["success"] == "false") {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(
+                    "You can't add to cart from multiple categiory at once. If you continue your previous cart will be cleared."),
+                actions: [
+                  TextButton(
+                    child: Text("Cancel"),
+                    onPressed: () {},
+                  ),
+                  TextButton(
+                    child: Text("Continue"),
+                    onPressed: () async {
+                      await deleteAllCard(userID);
+                      await addCard(context, service_id, booking_date,
+                          categoryId, userID);
+                    },
+                  )
+                ],
+              );
+            });
+      } //  return errorResponseFromJson(response.body);
       return DataControllers.to.addCardResponse.value;
     }
   }

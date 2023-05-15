@@ -258,9 +258,11 @@ class DataControllers extends GetxController {
     return forgetPassConfirm.value;
   }
 
-  Future addCard(String service_id, String date) async {
+  Future addCard(BuildContext context, String service_id, String date,
+      String categoryId, String userid) async {
     isLoading(true);
-    var response = await ApiService.addCard(service_id, date);
+    var response =
+        await ApiService.addCard(context, service_id, date, categoryId, userid);
 
     if (response != null) {
       addCardResponse.value = response;
@@ -498,6 +500,7 @@ class DataControllers extends GetxController {
   Future pleaceOrder(String request_number, ProviderData? providerData,
       GeocodingResult result, String? coupon, String? order_note) async {
     isLoading(true);
+
     var response = await ApiService.placeOrder(request_number,
         providerData: providerData,
         result: result,

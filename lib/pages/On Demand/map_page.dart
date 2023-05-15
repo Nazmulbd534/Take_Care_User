@@ -470,40 +470,40 @@ class _MapPageState extends State<MapPage> {
 
                                       log("reached here");
 
-                                      await DataControllers.to.pleaceOrder(
-                                          DataControllers.to.newRequestResponse
-                                              .value.data!.request_number
-                                              .toString(),
-                                          providerList[requestIndex],
-                                          widget.result,
-                                          null,
-                                          null);
+                                      // await DataControllers.to.pleaceOrder(
+                                      //     DataControllers.to.newRequestResponse
+                                      //         .value.data!.request_number
+                                      //         .toString(),
+                                      //     providerList[requestIndex],
+                                      //     widget.result,
+                                      //     null,
+                                      //     null);
 
-                                      if (DataControllers
-                                          .to.appResponse.value.success!) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    "Order successfully placed"),
-                                                actions: [
-                                                  TextButton(
-                                                    child: Text("Back"),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  HomePage()));
-                                                    },
-                                                  )
-                                                ],
-                                              );
-                                            });
-                                      } else {
-                                        log("failed");
-                                      }
+                                      // if (DataControllers
+                                      //     .to.appResponse.value.success!) {
+                                      //   showDialog(
+                                      //       context: context,
+                                      //       builder: (context) {
+                                      //         return AlertDialog(
+                                      //           title: Text(
+                                      //               "Order successfully placed"),
+                                      //           actions: [
+                                      //             TextButton(
+                                      //               child: Text("Back"),
+                                      //               onPressed: () {
+                                      //                 Navigator.push(
+                                      //                     context,
+                                      //                     MaterialPageRoute(
+                                      //                         builder: (context) =>
+                                      //                             HomePage()));
+                                      //               },
+                                      //             )
+                                      //           ],
+                                      //         );
+                                      //       });
+                                      // } else {
+                                      //   log("failed");
+                                      // }
 
                                       // } else {
                                       //   snackBar(
