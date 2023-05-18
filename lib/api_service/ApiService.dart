@@ -396,6 +396,7 @@ class ApiService {
         'category_id': categoryId,
       }),
     );
+
     if (response.statusCode == 200) {
       print("Api Response : ${response.body}");
       var jsonString = response.body;
@@ -405,9 +406,15 @@ class ApiService {
           json.decode(response.body)["success"];
       DataControllers.to.addCardResponse.value.message =
           json.decode(response.body)["message"];
+<<<<<<< HEAD
       if (json.decode(response.body)["success"] == "false") {
         // ignore: use_build_context_synchronously
         showDialog(
+=======
+
+      if (json.decode(response.body)["success"] == false) {
+        await showDialog(
+>>>>>>> 0afc6eda4a921fded3e496f8dc53aef15e20dafc
             context: context,
             builder: (context) {
               return AlertDialog(
@@ -416,7 +423,9 @@ class ApiService {
                 actions: [
                   TextButton(
                     child: Text("Cancel"),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   TextButton(
                     child: Text("Continue"),
@@ -424,13 +433,15 @@ class ApiService {
                       await deleteAllCard(userID);
                       await addCard(context, service_id, booking_date,
                           categoryId, userID);
+                      Navigator.pop(context);
                     },
                   )
                 ],
               );
             });
-      } //  return errorResponseFromJson(response.body);
-      return DataControllers.to.addCardResponse.value;
+      }
+      //return errorResponseFromJson(response.body);
+      //return DataControllers.to.addCardResponse.value;
     }
   }
 

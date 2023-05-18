@@ -999,70 +999,12 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                   //  physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
-                  itemCount: dataResponse.length + 1,
+                  itemCount: dataResponse.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: ((context, index) {
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                onProgressBar(true);
-                                await DataControllers.to
-                                    .getAllShortService("short");
-                                onProgressBar(false);
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => OnDemandPage(
-                                      selectedCategory: [''],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                height: widget.size.height * 0.11,
-                                width: dynamicSize(0.27),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 173, 229, 0.20),
-                                      blurRadius: 2,
-                                      offset: Offset(0, 3), // Shadow position
-                                    ),
-                                  ],
-                                ),
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: Image.asset(
-                                    'assets/images/all_service_icon.png',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: dynamicSize(0.02),
-                            ),
-                            Text(
-                              language.allService.string,
-                              style: TextStyle(
-                                fontFamily: "Muli",
-                                fontWeight: FontWeight.w600,
-                              ),
-                              maxLines: 2,
-                            )
-                          ],
-                        ),
-                      );
-                    }
                     return Padding(
                       padding: const EdgeInsets.only(right: 10.0),
-                      child: _getIsSelected(
-                              dataResponse[index - 1].categoryName!)
+                      child: _getIsSelected(dataResponse[index].categoryName!)
                           ? Stack(
                               children: [
                                 Column(
@@ -1080,7 +1022,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                             showServiceCheckBox =
                                                 !showServiceCheckBox;
                                             _addOrRemoveSelectedCategory(
-                                                dataResponse[index - 1]
+                                                dataResponse[index]
                                                     .categoryName!);
                                           });
                                         });
@@ -1096,7 +1038,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                           log("clicked1");
                                           setState(() {
                                             _addOrRemoveSelectedCategory(
-                                                dataResponse[index - 1]
+                                                dataResponse[index]
                                                     .categoryName!);
                                           });
                                           if (selectedCategory.isEmpty) {
@@ -1111,7 +1053,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                             MaterialPageRoute(
                                               builder: (_) => OnDemandPage(
                                                 selectedCategory: [
-                                                  dataResponse[index - 1]
+                                                  dataResponse[index]
                                                       .categoryName!
                                                 ],
                                               ),
@@ -1143,7 +1085,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                           width: 20,
                                           child: Image.network(
                                             ApiService.MainURL +
-                                                dataResponse[index - 1]
+                                                dataResponse[index]
                                                     .serviceImage!,
                                           ),
                                         ),
@@ -1153,7 +1095,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                       height: dynamicSize(0.02),
                                     ),
                                     Text(
-                                      dataResponse[index - 1].categoryName!,
+                                      dataResponse[index].categoryName!,
                                       style: const TextStyle(
                                         fontFamily: "Muli",
                                         fontWeight: FontWeight.w600,
@@ -1176,7 +1118,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                             log("clicked1");
                                             setState(() {
                                               _addOrRemoveSelectedCategory(
-                                                  dataResponse[index - 1]
+                                                  dataResponse[index]
                                                       .categoryName!);
                                             });
                                             if (selectedCategory.isEmpty) {
@@ -1191,7 +1133,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                               MaterialPageRoute(
                                                 builder: (_) => OnDemandPage(
                                                   selectedCategory: [
-                                                    dataResponse[index - 1]
+                                                    dataResponse[index]
                                                         .categoryName!
                                                   ],
                                                 ),
@@ -1227,8 +1169,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                       //           .categoryName!);
                                       // }
                                       _addOrRemoveSelectedCategory(
-                                          dataResponse[index - 1]
-                                              .categoryName!);
+                                          dataResponse[index].categoryName!);
                                       if (!showServiceCheckBox) {
                                         selectedCategory.clear();
                                       }
@@ -1240,8 +1181,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                       log("clicked1");
                                       setState(() {
                                         _addOrRemoveSelectedCategory(
-                                            dataResponse[index - 1]
-                                                .categoryName!);
+                                            dataResponse[index].categoryName!);
                                       });
                                       if (selectedCategory.isEmpty) {
                                         showServiceCheckBox = false;
@@ -1255,8 +1195,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                         MaterialPageRoute(
                                           builder: (_) => OnDemandPage(
                                             selectedCategory: [
-                                              dataResponse[index - 1]
-                                                  .categoryName!
+                                              dataResponse[index].categoryName!
                                             ],
                                           ),
                                         ),
@@ -1269,8 +1208,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       color: _getIsSelected(
-                                              dataResponse[index - 1]
-                                                  .categoryName!)
+                                              dataResponse[index].categoryName!)
                                           ? Colors.red
                                           : Colors.white,
                                       boxShadow: const [
@@ -1288,8 +1226,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                       width: 20,
                                       child: Image.network(
                                         ApiService.MainURL +
-                                            dataResponse[index - 1]
-                                                .serviceImage!,
+                                            dataResponse[index].serviceImage!,
                                       ),
                                     ),
                                   ),
@@ -1298,7 +1235,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                   height: dynamicSize(0.02),
                                 ),
                                 Text(
-                                  dataResponse[index - 1].categoryName!,
+                                  dataResponse[index].categoryName!,
                                   style: const TextStyle(
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.w600,
@@ -1457,73 +1394,8 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                       scrollDirection: Axis.vertical,
                       // padding: EdgeInsets.zero,
                       itemCount: DataControllers
-                              .to.getLongCategoriesResponse.value.data!.length +
-                          1,
-
+                          .to.getLongCategoriesResponse.value.data!.length,
                       itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              right: 10.0,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () async {
-                                    onProgressBar(true);
-                                    await DataControllers.to
-                                        .getAllLongService("long");
-                                    onProgressBar(false);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            const LongTimeServicesPage(
-                                          selectedType: "",
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: widget.size.height * 0.11,
-                                    width: dynamicSize(0.27),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color:
-                                              Color.fromRGBO(0, 173, 229, 0.20),
-                                          blurRadius: 2,
-                                          offset:
-                                              Offset(0, 3), // Shadow position
-                                        ),
-                                      ],
-                                    ),
-                                    child: SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: Image.asset(
-                                        'assets/images/all_service_icon.png',
-                                        color: AllColor.blue_light,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: dynamicSize(0.02),
-                                ),
-                                Text(
-                                  language.allService.string,
-                                  style: TextStyle(
-                                    fontFamily: "Muli",
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  maxLines: 2,
-                                )
-                              ],
-                            ),
-                          );
-                        }
                         return Padding(
                           padding: const EdgeInsets.only(right: 10.0),
                           child: Column(
@@ -1541,7 +1413,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                             .to
                                             .getLongCategoriesResponse
                                             .value
-                                            .data![index - 1]
+                                            .data![index]
                                             .categoryName!
                                             .toString()),
                                       ),
@@ -1567,7 +1439,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                     height: 20,
                                     width: 20,
                                     child: Image.network(
-                                        "${ApiService.MainURL + DataControllers.to.getLongCategoriesResponse.value.data![index - 1].serviceImage!}"),
+                                        "${ApiService.MainURL + DataControllers.to.getLongCategoriesResponse.value.data![index].serviceImage!}"),
                                   ),
                                 ),
                               ),
@@ -1576,7 +1448,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                               ),
                               Text(
                                 DataControllers.to.getLongCategoriesResponse
-                                    .value.data![index - 1].categoryName!,
+                                    .value.data![index].categoryName!,
                                 style: const TextStyle(
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.w600,
