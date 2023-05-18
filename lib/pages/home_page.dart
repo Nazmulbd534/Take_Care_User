@@ -299,6 +299,7 @@ class _HomePageState extends State<HomePage> {
         onWillPop: _onWillPop,
         child: Scaffold(
           key: _scaffoldKey,
+          extendBody: true,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: AppBar(
@@ -425,216 +426,317 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _drawer() => Drawer(
-        child: SafeArea(
-          child: GetBuilder<LanguageController>(builder: (lc) {
-            return Scaffold(
-              backgroundColor: AllColor.themeColor,
-              appBar: AppBar(
+        child: GetBuilder<LanguageController>(builder: (lc) {
+          return Scaffold(
+            backgroundColor: AllColor.themeColor,
+            appBar: AppBar(
 //leadingWidth: 0,
-                  leading: Text(""),
-                  backgroundColor: AllColor.themeColor,
-                  elevation: 0,
-                  bottom: PreferredSize(
-                    preferredSize: Size(70, 100),
-                    child: Container(
-                      // height: dynamicSize(0.5),
-                      color: AllColor.themeColor,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: dynamicSize(0.02),
-                          ),
-                          Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                leading: Text(""),
+                backgroundColor: AllColor.themeColor,
+                elevation: 0,
+                bottom: PreferredSize(
+                  preferredSize: Size(70, 100),
+                  child: Container(
+                    // height: dynamicSize(0.5),
+                    color: AllColor.themeColor,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: dynamicSize(0.02),
+                        ),
+                        Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                  child: CachedNetworkImage(
+                                    height: 55,
+                                    width: 55,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
+                                    /*  placeholder: (context, url) =>
+                                          CircularProgressIndicator(),*/
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset('assets/images/baby.png'),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    '${DataControllers.to.userLoginResponse.value.data!.user!.fullName}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: dynamicSize(0.06),
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(dynamicSize(.04)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    child: CachedNetworkImage(
-                                      height: 55,
-                                      width: 55,
-                                      fit: BoxFit.cover,
-                                      imageUrl:
-                                          '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
-                                      /*  placeholder: (context, url) =>
-                                            CircularProgressIndicator(),*/
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset('assets/images/baby.png'),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      '${DataControllers.to.userLoginResponse.value.data!.user!.fullName}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: dynamicSize(0.06),
-                                          color: Colors.white),
-                                    ),
-                                  ),
+                                  InkWell(
+                                      onTap: () => Navigator.pop(context),
+                                      child: Icon(Icons.arrow_forward,
+                                          color: Colors.white)),
                                 ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(dynamicSize(.04)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                        onTap: () => Navigator.pop(context),
-                                        child: Icon(Icons.arrow_forward,
-                                            color: Colors.white)),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: dynamicSize(0.08),
-                          ),
-                          SizedBox(
-                            height: dynamicSize(0.02),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
-              bottomNavigationBar: BottomAppBar(
-                child: InkWell(
-                  onTap: () {
-                    logOutMethod(context);
-                  },
-                  child: Container(
-                    color: AllColor.themeColor,
-                    height: dynamicSize(0.15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20.0,
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.logout, color: Colors.white),
-                              TextButton(
-                                onPressed: () {
-                                  logOutMethod(context);
-                                },
-                                child: Text(
-                                  lc.logOut.value,
-                                  style: TextStyle(
-                                      fontSize: dynamicSize(0.04),
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: dynamicSize(0.08),
+                        ),
+                        SizedBox(
+                          height: dynamicSize(0.02),
                         ),
                       ],
                     ),
                   ),
+                )),
+            bottomNavigationBar: BottomAppBar(
+              child: InkWell(
+                onTap: () {
+                  logOutMethod(context);
+                },
+                child: Container(
+                  color: AllColor.themeColor,
+                  height: dynamicSize(0.15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.logout, color: Colors.white),
+                            TextButton(
+                              onPressed: () {
+                                logOutMethod(context);
+                              },
+                              child: Text(
+                                lc.logOut.value,
+                                style: TextStyle(
+                                    fontSize: dynamicSize(0.04),
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              body: Container(
-                color: Colors.white,
-                height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    Wrap(
-                      direction: Axis.vertical,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 30),
-                          child: InkWell(
-                            onTap: () {
-                              goToOtherHistory();
-                            },
-                            child: Container(
-                              width: dynamicSize(1),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/service_history.png",
-                                    fit: BoxFit.fill,
-                                    height: 25,
-                                  ),
-                                  Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          goToOtherHistory();
-                                        },
-                                        child: Text(
-                                          lc.orderHistory.value,
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.035),
-                                              color: Colors.black),
-                                        ),
-                                      )),
-                                ],
-                              ),
+            ),
+            body: Container(
+              color: Colors.white,
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: Column(children: [
+                  Wrap(
+                    direction: Axis.vertical,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 30),
+                        child: InkWell(
+                          onTap: () {
+                            goToOtherHistory();
+                          },
+                          child: Container(
+                            width: dynamicSize(1),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/images/service_history.png",
+                                  fit: BoxFit.fill,
+                                  height: 25,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        goToOtherHistory();
+                                      },
+                                      child: Text(
+                                        lc.orderHistory.value,
+                                        style: TextStyle(
+                                            fontSize: dynamicSize(0.035),
+                                            color: Colors.black),
+                                      ),
+                                    )),
+                              ],
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, top: 15),
-                          child: InkWell(
-                            onTap: () {
-                              goToProfile();
-                            },
-                            child: Container(
-                              width: dynamicSize(1),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/profile_setup.png",
-                                    fit: BoxFit.fill,
-                                    height: 20,
-                                    color: Colors.black,
-                                  ),
-                                  Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          goToProfile();
-                                        },
-                                        child: Text(
-                                          lc.profile.value,
-                                          style: TextStyle(
-                                              fontSize: dynamicSize(0.035),
-                                              color: Colors.black),
-                                        ),
-                                      )),
-                                ],
-                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 15),
+                        child: InkWell(
+                          onTap: () {
+                            goToProfile();
+                          },
+                          child: Container(
+                            width: dynamicSize(1),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/images/profile_setup.png",
+                                  fit: BoxFit.fill,
+                                  height: 20,
+                                  color: Colors.black,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        goToProfile();
+                                      },
+                                      child: Text(
+                                        lc.profile.value,
+                                        style: TextStyle(
+                                            fontSize: dynamicSize(0.035),
+                                            color: Colors.black),
+                                      ),
+                                    )),
+                              ],
                             ),
                           ),
                         ),
-                        Padding(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 20),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => LovedOnesPage(
+                                      activity: Variables.homeActivity,
+                                    )));
+                          },
+                          child: Container(
+                            width: dynamicSize(1),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/images/earning.png",
+                                  height: 25,
+                                  fit: BoxFit.fill,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (_) => LovedOnesPage(
+                                                    activity: Variables
+                                                        .homeActivity)));
+                                      },
+                                      child: Text(
+                                        lc.lovedOnes.value,
+                                        style: TextStyle(
+                                            fontSize: dynamicSize(0.035),
+                                            color: Colors.black),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      /* Padding(
                           padding: const EdgeInsets.only(top: 15, left: 20),
                           child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => LovedOnesPage(
-                                        activity: Variables.homeActivity,
-                                      )));
+                            onTap: (){
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          AddressesPage()));
                             },
                             child: Container(
+                                width: dynamicSize(1),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on),
+                                    Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        AddressesPage()));
+                                          },
+                                          child: Text(
+                                            "Addresses",
+                                            style: TextStyle(
+                                                fontSize: dynamicSize(0.035),
+                                                color: Colors.black),
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ),
+                        ),*/
+                      /* Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 20),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.of(context)
+                                  .push(
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          CouponsHomePage()));
+                            },
+                            child: Container(
+                                width: dynamicSize(1),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.loyalty),
+                                    Padding(
+                                        padding: const EdgeInsets.only(left: 10.0),
+                                        child: TextButton(
+                                          onPressed: () {
+                                             Navigator.of(context)
+                                            .push(
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    CouponsHomePage()));
+                                          },
+                                          child: Text(
+                                             lc.coupons.value,
+                                            style: TextStyle(
+                                                fontSize: dynamicSize(0.035),
+                                                color: Colors.black),
+                                          ),
+                                        )),
+                                  ],
+                                )),
+                          ),
+                        ),*/
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 20),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => HelpPage()));
+                          },
+                          child: Container(
                               width: dynamicSize(1),
                               child: Row(
                                 children: [
-                                  Image.asset(
-                                    "assets/images/earning.png",
-                                    height: 25,
-                                    fit: BoxFit.fill,
-                                  ),
+                                  Icon(Icons.help_outline),
                                   Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
@@ -642,167 +744,60 @@ class _HomePageState extends State<HomePage> {
                                         onPressed: () {
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
-                                                  builder: (_) => LovedOnesPage(
-                                                      activity: Variables
-                                                          .homeActivity)));
+                                                  builder: (_) => HelpPage()));
                                         },
                                         child: Text(
-                                          lc.lovedOnes.value,
+                                          lc.helpCenter.value,
                                           style: TextStyle(
                                               fontSize: dynamicSize(0.035),
                                               color: Colors.black),
                                         ),
                                       )),
                                 ],
-                              ),
-                            ),
-                          ),
+                              )),
                         ),
-                        /* Padding(
-                            padding: const EdgeInsets.only(top: 15, left: 20),
-                            child: InkWell(
-                              onTap: (){
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            AddressesPage()));
-                              },
-                              child: Container(
-                                  width: dynamicSize(1),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.location_on),
-                                      Padding(
-                                          padding: const EdgeInsets.only(left: 10.0),
-                                          child: TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pushReplacement(
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          AddressesPage()));
-                                            },
-                                            child: Text(
-                                              "Addresses",
-                                              style: TextStyle(
-                                                  fontSize: dynamicSize(0.035),
-                                                  color: Colors.black),
-                                            ),
-                                          )),
-                                    ],
-                                  )),
-                            ),
-                          ),*/
-                        /* Padding(
-                            padding: const EdgeInsets.only(top: 15, left: 20),
-                            child: InkWell(
-                              onTap: (){
-                                Navigator.of(context)
-                                    .push(
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            CouponsHomePage()));
-                              },
-                              child: Container(
-                                  width: dynamicSize(1),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.loyalty),
-                                      Padding(
-                                          padding: const EdgeInsets.only(left: 10.0),
-                                          child: TextButton(
-                                            onPressed: () {
-                                               Navigator.of(context)
-                                              .push(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 15, left: 20, bottom: 30),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => SettingsPage()));
+                          },
+                          child: Container(
+                              width: dynamicSize(1),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.settings),
+                                  Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (_) =>
-                                                      CouponsHomePage()));
-                                            },
-                                            child: Text(
-                                               lc.coupons.value,
-                                              style: TextStyle(
-                                                  fontSize: dynamicSize(0.035),
-                                                  color: Colors.black),
-                                            ),
-                                          )),
-                                    ],
-                                  )),
-                            ),
-                          ),*/
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15, left: 20),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => HelpPage()));
-                            },
-                            child: Container(
-                                width: dynamicSize(1),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.help_outline),
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10.0),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        HelpPage()));
-                                          },
-                                          child: Text(
-                                            lc.helpCenter.value,
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.035),
-                                                color: Colors.black),
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                          ),
+                                                      SettingsPage()));
+                                        },
+                                        child: Text(
+                                          lc.setting.value,
+                                          style: TextStyle(
+                                              fontSize: dynamicSize(0.035),
+                                              color: Colors.black),
+                                        ),
+                                      )),
+                                ],
+                              )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 20, bottom: 30),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => SettingsPage()));
-                            },
-                            child: Container(
-                                width: dynamicSize(1),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.settings),
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10.0),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        SettingsPage()));
-                                          },
-                                          child: Text(
-                                            lc.setting.value,
-                                            style: TextStyle(
-                                                fontSize: dynamicSize(0.035),
-                                                color: Colors.black),
-                                          ),
-                                        )),
-                                  ],
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
-                ),
+                      ),
+                    ],
+                  ),
+                ]),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       );
 
   showAlertForAddCardDeleted(var title, var message) {

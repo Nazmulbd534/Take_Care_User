@@ -406,15 +406,9 @@ class ApiService {
           json.decode(response.body)["success"];
       DataControllers.to.addCardResponse.value.message =
           json.decode(response.body)["message"];
-<<<<<<< HEAD
-      if (json.decode(response.body)["success"] == "false") {
-        // ignore: use_build_context_synchronously
-        showDialog(
-=======
 
       if (json.decode(response.body)["success"] == false) {
         await showDialog(
->>>>>>> 0afc6eda4a921fded3e496f8dc53aef15e20dafc
             context: context,
             builder: (context) {
               return AlertDialog(

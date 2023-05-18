@@ -305,6 +305,7 @@ class _LongTimeServicesPageState extends State<LongTimeServicesPage> {
   void BottomSheetAddedListDialog(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (BuildContext bcs) {
           return Container(
             color: Colors.transparent,

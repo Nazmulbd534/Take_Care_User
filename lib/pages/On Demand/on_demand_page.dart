@@ -141,9 +141,10 @@ class _OnDemandPageState extends State<OnDemandPage> {
   void BottomSheetAddedListDialog(BuildContext context) {
     showModalBottomSheet(
         context: context,
+        backgroundColor: Colors.transparent,
         builder: (BuildContext bcs) {
           return Container(
-            color: Colors.blue.withOpacity(0.1),
+            color: Colors.transparent.withOpacity(0.001),
             height: dynamicSize(0.9),
             child: Column(
               children: [
