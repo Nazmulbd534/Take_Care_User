@@ -143,7 +143,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
         context: context,
         builder: (BuildContext bcs) {
           return Container(
-            color: Colors.transparent,
+            color: Colors.blue.withOpacity(0.1),
             height: dynamicSize(0.9),
             child: Column(
               children: [
@@ -1064,12 +1064,13 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                                     left: 8.0, top: 5),
                                                 child: Text(
                                                   DataControllers
-                                                      .to
-                                                      .getAddCardShortServiceResponse
-                                                      .value
-                                                      .data!
-                                                      .length
-                                                      .toString(),
+                                                          .to
+                                                          .getAddCardShortServiceResponse
+                                                          .value
+                                                          .data!
+                                                          .length
+                                                          .toString() +
+                                                      " ",
                                                   style: TextStyle(
                                                       fontSize:
                                                           dynamicSize(0.04),

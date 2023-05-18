@@ -406,6 +406,7 @@ class ApiService {
       DataControllers.to.addCardResponse.value.message =
           json.decode(response.body)["message"];
       if (json.decode(response.body)["success"] == "false") {
+        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (context) {
