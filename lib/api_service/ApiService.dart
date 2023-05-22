@@ -837,19 +837,20 @@ class ApiService {
       String longitude,
       String lattitude) async {
     var response = await client.get(
-        Uri.parse(BaseURL +
-            'user/providers-by-status?status=${status}&available=${available}&longitude=${longitude}&latitude=${lattitude}'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json',
-          'Authorization': bearerToken,
-        } /*,
+      Uri.parse(BaseURL +
+          'user/providers-by-status?status=${status}&available=${available}&longitude=${longitude}&latitude=${lattitude}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      }, /*,
       body: jsonEncode(<String, String>{
         'status': status,
         'available': available,
       }),*/
-
-        );
+    );
+    log("token = \n $bearerToken \n status = $status \n available = $available \n latitude = $lattitude \n longitude = $longitude\n",
+        name: "payload");
     print("Api Response -> Available Provider List : ${response.body}");
 
     if (response.statusCode == 200) {

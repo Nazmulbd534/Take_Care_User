@@ -375,11 +375,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        (widget.providerdata.professionData! == null)
-                            ? 'Loading....'
-                            : widget
-                                .providerdata.professionData!.first.license_no
-                                .toString(),
+                        widget.providerdata.professionData?.first.license_no
+                                .toString() ??
+                            "Loading",
                         style: TextStyle(
                             fontFamily: 'Muli',
                             fontSize: dynamicSize(0.04),
@@ -526,8 +524,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     ),
                     Container(
                         alignment: Alignment.topLeft,
-                        child:
-                            Text(widget.providerdata.speciality!.description!)),
+                        child: Text(
+                            widget.providerdata.speciality?.description ??
+                                "loading")),
                     SizedBox(
                       height: dynamicSize(0.02),
                     ),
