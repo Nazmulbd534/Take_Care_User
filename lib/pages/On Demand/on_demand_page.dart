@@ -14,6 +14,7 @@ import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/model/AllServiceResponse.dart';
 import 'package:takecare_user/model/CategoriesResponse.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
+import 'package:takecare_user/model/loved_one/loved_one_model.dart';
 import 'package:takecare_user/pages/On%20Demand/schedule_order_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:intl/intl.dart';
@@ -1723,15 +1724,40 @@ class _OnDemandPageState extends State<OnDemandPage> {
                                                     .lat
                                                     .toString());
 
-                                        if (resultGeo != null) {
+                                        if (results[0] != null) {
                                           // ignore: use_build_context_synchronously
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (cp) =>
                                                   ScheduledOrderPage(
-                                                result: resultGeo,
+                                                result: results[0]!,
                                                 orderType: "Schedule",
+                                                lovedOne: LovedOneModel(
+                                                  name: DataControllers
+                                                      .to
+                                                      .userLoginResponse
+                                                      .value
+                                                      .data!
+                                                      .user!
+                                                      .fullName!,
+                                                  age: "N/A",
+                                                  gender: DataControllers
+                                                      .to
+                                                      .userLoginResponse
+                                                      .value
+                                                      .data!
+                                                      .user!
+                                                      .gender!,
+                                                  mobileNumber: DataControllers
+                                                      .to
+                                                      .userLoginResponse
+                                                      .value
+                                                      .data!
+                                                      .user!
+                                                      .phone!,
+                                                  relation: "Myself",
+                                                ),
                                               ),
                                             ),
                                           );

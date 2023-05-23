@@ -75,23 +75,25 @@ class _ProfileState extends State<Profile> {
                 ),
                 Stack(
                   children: [
-                    Container(
-                      height: 140.0,
-                      width: 140.0,
-                      decoration: BoxDecoration(
-                        //color: Colors.amber,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.fitHeight,
-                          imageUrl:
-                              '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
-                          /*  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),*/
-                          errorWidget: (context, url, error) => Image.asset(
-                            'assets/images/avatar.png',
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100.0),
+                      child: Container(
+                        height: 140.0,
+                        width: 140.0,
+                        decoration: BoxDecoration(
+                            //color: Colors.amber,
+                            // borderRadius: BorderRadius.circular(100),
+                            ),
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                '${DataControllers.to.userLoginResponse.value.data!.user!.profilePhoto}',
+                            /*  placeholder: (context, url) =>
+                                        CircularProgressIndicator(),*/
+                            errorWidget: (context, url, error) => Image.asset(
+                              'assets/images/avatar.png',
+                            ),
                           ),
                         ),
                       ),

@@ -5,19 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:takecare_user/model/loved_one/loved_one_model.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 
 import '../../api_service/ApiService.dart';
 import '../../controllers/DataContollers.dart';
 import '../../public_variables/size_config.dart';
 import '../../public_variables/variables.dart';
+import '../long_time_services/map_picker_page.dart';
 
 class ScheduledOrderPage extends StatefulWidget {
   final GeocodingResult result;
   final String orderType;
+  final LovedOneModel lovedOne;
   // ignore: prefer_const_constructors_in_immutables
   ScheduledOrderPage(
-      {super.key, required this.result, required this.orderType});
+      {super.key,
+      required this.result,
+      required this.orderType,
+      required this.lovedOne});
 
   @override
   State<ScheduledOrderPage> createState() => _ScheduledOrderPageState();
@@ -41,22 +47,28 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomSheet: Container(
-        color: Colors.grey[200]!.withOpacity(0.8),
+        color: Colors.grey[100]!.withOpacity(0.9),
         height: dynamicSize(0.2),
         child: Center(
           child: ElevatedButton(
             style: ButtonStyle(
-              fixedSize: MaterialStateProperty.all<Size>(
-                Size(
-                  dynamicSize(0.8),
-                  dynamicSize(0.17),
+                fixedSize: MaterialStateProperty.all<Size>(
+                  Size(
+                    dynamicSize(0.8),
+                    dynamicSize(0.17),
+                  ),
                 ),
-              ),
-            ),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(AllColor.themeColor)),
             onPressed: () {
               log("clicked");
             },
-            child: const Text("Confirm this Order"),
+            child: const Text(
+              "Confirm this Order",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ),
       ),
@@ -329,107 +341,105 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Card(
+                    elevation: 3,
+                    child: Column(
                       children: [
-                        const Text(
-                          "Visiting Address",
-                          style: TextStyle(
-                            fontFamily: "Muli",
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () async {
-                            late GeocodingResult resultGeo;
-                            resultGeo = (await Navigator.push(
-                              context,
-                              MaterialPageRoute<GeocodingResult>(
-                                builder: (cx) {
-                                  return MapLocationPicker(
-                                      location: Location(
-                                        lat: Variables.currentPostion.latitude,
-                                        lng: Variables.currentPostion.longitude,
-                                      ),
-                                      apiKey:
-                                          "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                      canPopOnNextButtonTaped: true,
-                                      onNext: (GeocodingResult? result) {
-                                        if (result != null) {
-                                          setState(() {
-                                            resultGeo = result;
-                                            // var  address = result.formattedAddress ?? "";
-                                            Navigator.pop(cx, resultGeo);
-                                          });
-                                          // Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()),);
-                                        }
-                                      });
-                                },
-                              ),
-                            ))!;
-                            if (resultGeo != null) {
-                              // ignore: use_build_context_synchronously
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (cp) => ScheduledOrderPage(
-                                      result: resultGeo, orderType: "Schedule"),
+                        Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                const Text(
+                                  "Visiting Address",
+                                  style: TextStyle(
+                                    fontFamily: "Muli",
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              );
-                            }
-                          },
-                          child: const Text(
-                            "Edit",
-                            style: TextStyle(),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10.0,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 5),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.location_pin,
-                          color: AllColor.colorGreen,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Flexible(
-                          child: Text(
-                            widget.result.formattedAddress!,
-                            style: const TextStyle(
-                              fontFamily: "Muli",
-                              fontWeight: FontWeight.w600,
+                                const Spacer(),
+                                TextButton(
+                                  onPressed: () async {
+                                    late GeocodingResult resultGeo;
+                                    List<GeocodingResult?> results =
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CustomMapPicker()));
+                                    if (results[0] != null) {
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (cp) => ScheduledOrderPage(
+                                            result: results[0]!,
+                                            orderType: "Schedule",
+                                            lovedOne: widget.lovedOne,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Edit",
+                                    style: TextStyle(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10.0,
+                                )
+                              ],
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 5),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_pin,
+                                  color: AllColor.colorGreen,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    widget.result.formattedAddress!,
+                                    style: const TextStyle(
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Container(
+                            child: TextField(
+                              controller: extraAddressTextController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: "Additional Address",
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        )
                       ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    child: TextField(
-                      controller: extraAddressTextController,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Additional Address"),
                     ),
                   ),
                 ),
@@ -456,33 +466,47 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 15.0,
+                Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Card(
+                    elevation: 3.0,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 15.0,
+                            ),
+                            Text(
+                              widget.lovedOne.relation,
+                              style: TextStyle(
+                                  color: AllColor.boldTextColor,
+                                  fontSize: dynamicSize(0.05),
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "Muli"),
+                            ),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text("Edit"),
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            )
+                          ],
+                        ),
+                        personDataRow("Name", widget.lovedOne.name),
+                        personDataRow("Age", widget.lovedOne.age),
+                        personDataRow("Gender", widget.lovedOne.gender),
+                        personDataRow(
+                            "Contact Number", widget.lovedOne.mobileNumber),
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Baba",
-                      style: TextStyle(
-                        color: AllColor.boldTextColor,
-                        fontSize: dynamicSize(0.05),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Edit"),
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    )
-                  ],
+                  ),
                 ),
-                personDataRow("Name", "Wasiul Alam"),
-                personDataRow("Age", "22 Years"),
-                personDataRow("Gender", "Male"),
-                personDataRow("Contact Number", "017xxxxxxxxxx"),
                 const SizedBox(
                   height: 10,
                 ),

@@ -46,7 +46,10 @@ void main() async {
   /// Set Device orientation
   AllColor.portraitMood;
   HttpOverrides.global = new PostHttpOverrides();
-  runApp(const MyApp());
+
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatefulWidget {

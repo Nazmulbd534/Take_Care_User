@@ -56,7 +56,7 @@ class AllColor {
     scaffoldBackgroundColor: Colors.white,
     primarySwatch: const MaterialColor(0xffFF0054, AllColor.themeMapColor),
     //canvasColor: Colors.transparent,
-    // fontFamily: 'ubuntu',
+    fontFamily: 'Muli',
     //textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.redAccent),
     // bottomNavigationBarTheme: BottomNavigationBarThemeData(
     //     backgroundColor: Colors.transparent,

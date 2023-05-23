@@ -10,6 +10,7 @@ import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/controllers/language_controller.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/model/SaveAddressResponse.dart';
+import 'package:takecare_user/model/loved_one/loved_one_model.dart';
 import 'package:takecare_user/pages/On%20Demand/map_page.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
 import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
@@ -20,6 +21,7 @@ import 'package:takecare_user/public_variables/variables.dart';
 import '../public_variables/all_colors.dart';
 import '../public_variables/size_config.dart';
 import 'home_page.dart';
+import 'long_time_services/map_picker_page.dart';
 import 'loved_form_page.dart';
 
 class LovedOnesPage extends StatefulWidget {
@@ -39,11 +41,11 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
 
   //late FocusNode name;
 
-  LovedOnesResponse addressResponse = new LovedOnesResponse();
+  LovedOnesResponse lovedOneResponse = new LovedOnesResponse();
 
   int length = 0;
 
-  GeocodingResult? resultGeo;
+  // GeocodingResult? resultGeo;
 
   @override
   void initState() {
@@ -99,7 +101,8 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                             MaterialPageRoute(
                               builder: (_) => OrderInformationPage(
                                 activity: Variables.lovedOnesActivity,
-                                serviceHolderInfo: addressResponse.data![index],
+                                serviceHolderInfo:
+                                    lovedOneResponse.data![index],
                                 serviceAddress: "test",
                                 serviceTime: "test1",
                               ),
@@ -111,37 +114,16 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               "1",
                               Variables.currentPostion.longitude.toString(),
                               Variables.currentPostion.latitude.toString());
-                          resultGeo = (await Navigator.push(
-                            context,
-                            MaterialPageRoute<GeocodingResult>(
-                              builder: (cx) {
-                                return MapLocationPicker(
-                                    topCardColor: Colors.white70,
-                                    bottomCardColor: Colors.pinkAccent,
-                                    currentLatLng: Variables.currentPostion,
-                                    desiredAccuracy: LocationAccuracy.high,
-                                    apiKey:
-                                        "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                    canPopOnNextButtonTaped: true,
-                                    onNext: (GeocodingResult? result) {
-                                      if (result != null) {
-                                        setState(() {
-                                          resultGeo = result;
-                                          Navigator.pop(cx, resultGeo);
-                                        });
-                                      } else {
-                                        resultGeo = result!;
-                                      }
-                                    });
-                              },
-                            ),
-                          ))!;
-                          if (resultGeo != null) {
+                          List<GeocodingResult?> results = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CustomMapPicker()));
+                          if (results[0] != null) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (cp) => MapPage(
-                                        result: resultGeo!,
+                                        result: results[0]!,
                                       )),
                             );
                           }
@@ -151,38 +133,28 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               "1",
                               Variables.currentPostion.longitude.toString(),
                               Variables.currentPostion.latitude.toString());
-                          resultGeo = (await Navigator.push(
-                            context,
-                            MaterialPageRoute<GeocodingResult>(
-                              builder: (cx) {
-                                return MapLocationPicker(
-                                    topCardColor: Colors.white70,
-                                    bottomCardColor: Colors.pinkAccent,
-                                    currentLatLng: Variables.currentPostion,
-                                    desiredAccuracy: LocationAccuracy.high,
-                                    apiKey:
-                                        "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                    canPopOnNextButtonTaped: true,
-                                    onNext: (GeocodingResult? result) {
-                                      if (result != null) {
-                                        setState(() {
-                                          resultGeo = result;
-                                          Navigator.pop(cx, resultGeo);
-                                        });
-                                      } else {
-                                        resultGeo = result!;
-                                      }
-                                    });
-                              },
-                            ),
-                          ))!;
-                          if (resultGeo != null) {
+                          List<GeocodingResult?> results = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CustomMapPicker()));
+                          if (results[0] != null) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (cp) => ScheduledOrderPage(
-                                  result: resultGeo!,
+                                  result: results[0]!,
                                   orderType: "Scheduled",
+                                  lovedOne: LovedOneModel(
+                                      name: lovedOneResponse.data![index].name!,
+                                      mobileNumber: lovedOneResponse
+                                          .data![index].contactNo!
+                                          .toString(),
+                                      age: lovedOneResponse.data![index].age
+                                          .toString(),
+                                      gender:
+                                          lovedOneResponse.data![index].gender!,
+                                      relation: lovedOneResponse
+                                          .data![index].relationship!),
                                 ),
                               ),
                             );
@@ -193,32 +165,11 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               "1",
                               Variables.currentPostion.longitude.toString(),
                               Variables.currentPostion.latitude.toString());
-                          resultGeo = (await Navigator.push(
-                            context,
-                            MaterialPageRoute<GeocodingResult>(
-                              builder: (cx) {
-                                return MapLocationPicker(
-                                    topCardColor: Colors.white70,
-                                    bottomCardColor: Colors.pinkAccent,
-                                    currentLatLng: Variables.currentPostion,
-                                    desiredAccuracy: LocationAccuracy.high,
-                                    apiKey:
-                                        "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                    canPopOnNextButtonTaped: true,
-                                    onNext: (GeocodingResult? result) {
-                                      if (result != null) {
-                                        setState(() {
-                                          resultGeo = result;
-                                          Navigator.pop(cx, resultGeo);
-                                        });
-                                      } else {
-                                        resultGeo = result!;
-                                      }
-                                    });
-                              },
-                            ),
-                          ))!;
-                          if (resultGeo != null) {
+                          List<GeocodingResult?> results = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CustomMapPicker()));
+                          if (results[0] != null) {
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(
@@ -244,7 +195,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '${addressResponse.data![index].relationship}',
+                                    '${lovedOneResponse.data![index].relationship}',
                                     style: TextStyle(
                                         fontFamily: 'Muli',
                                         fontWeight: FontWeight.w600,
@@ -258,7 +209,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                                   builder: (_) => LovedFormPage(
                                                         edit: true,
                                                         editValue:
-                                                            addressResponse
+                                                            lovedOneResponse
                                                                 .data![index],
                                                         activity:
                                                             widget.activity,
@@ -317,7 +268,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                           padding:
                                               const EdgeInsets.only(top: 3.0),
                                           child: Text(
-                                            '${addressResponse.data![index].name}',
+                                            '${lovedOneResponse.data![index].name}',
                                             style: TextStyle(
                                               fontSize: dynamicSize(0.04),
                                               fontFamily: 'Muli',
@@ -369,7 +320,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                           padding:
                                               const EdgeInsets.only(top: 3.0),
                                           child: Text(
-                                            '${addressResponse.data![index].age} Year(s)',
+                                            '${lovedOneResponse.data![index].age} Year(s)',
                                             style: TextStyle(
                                                 fontSize: dynamicSize(0.04),
                                                 fontWeight: FontWeight.bold),
@@ -416,7 +367,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                                           padding:
                                               const EdgeInsets.only(top: 3.0),
                                           child: Text(
-                                            '${addressResponse.data![index].contactNo}',
+                                            '${lovedOneResponse.data![index].contactNo}',
                                             style: TextStyle(
                                                 fontSize: dynamicSize(0.04),
                                                 fontWeight: FontWeight.bold),
@@ -468,11 +419,11 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
   }
 
   void getFavAddressList() async {
-    addressResponse = await DataControllers.to.getFavAddress();
+    lovedOneResponse = await DataControllers.to.getFavAddress();
 
-    if (addressResponse.success!) {
+    if (lovedOneResponse.success!) {
       setState(() {
-        length = addressResponse.data!.length;
+        length = lovedOneResponse.data!.length;
         //   addressResponse;
       });
     }
