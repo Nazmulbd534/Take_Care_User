@@ -3,13 +3,15 @@ import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:map_location_picker/map_location_picker.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:takecare_user/controller/data_controller.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/model/provider/provider_data.dart';
 import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
+import 'package:takecare_user/pages/On%20Demand/request_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/long_time_services/map_picker_page.dart';
 import 'package:takecare_user/pages/provider/provider_profile_page.dart';
@@ -137,6 +139,7 @@ class _MapPageState extends State<MapPage> {
                                                                         .location)));
                                                 if (resultGeo != null) {
                                                   // ignore: use_build_context_synchronously
+                                                  selectedLoc = resultGeo.first;
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -451,23 +454,6 @@ class _MapPageState extends State<MapPage> {
                                           providerList[requestIndex],
                                           widget.result);
 
-                                      (DataControllers.to.newRequestResponse
-                                              .value.success!)
-                                          ? await dc.createRequest(
-                                              DataControllers
-                                                  .to
-                                                  .newRequestResponse
-                                                  .value
-                                                  .data!
-                                                  .request_number,
-                                              providerList[requestIndex],
-                                              widget.result,
-                                              requestIndex,
-                                              '',
-                                              '')
-                                          : snackBar(context,
-                                              StringConstant.systemError);
-
                                       log("reached here");
 
                                       // await DataControllers.to.pleaceOrder(
@@ -509,6 +495,20 @@ class _MapPageState extends State<MapPage> {
                                       //   snackBar(
                                       //       context, StringConstant.systemError);
                                       // }
+
+                                      showDialog(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                  "Order successfully placed"),
+                                            );
+                                          });
+
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Get.to(RequestPage());
+                                      });
                                     },
                               color: AllColor.themeColor,
                               textColor: Colors.white,

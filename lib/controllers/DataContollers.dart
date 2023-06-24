@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:map_location_picker/map_location_picker.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
 import 'package:takecare_user/model/AddCardResponse.dart';
 import 'package:takecare_user/model/AllServiceResponse.dart';
@@ -497,12 +497,13 @@ class DataControllers extends GetxController {
     return newRequestResponse.value;
   }
 
-  Future pleaceOrder(String request_number, ProviderData? providerData,
+  Future pleaceOrder(String request_number, String provider_id,
       GeocodingResult result, String? coupon, String? order_note) async {
     isLoading(true);
 
-    var response = await ApiService.placeOrder(request_number,
-        providerData: providerData,
+    var response = await ApiService.placeOrder(
+        request_number: request_number,
+        provider_id: provider_id,
         result: result,
         coupon_code: coupon ?? "",
         order_note: order_note ?? "");

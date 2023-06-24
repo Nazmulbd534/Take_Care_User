@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:intl/intl.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:takecare_user/model/loved_one/loved_one_model.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
@@ -362,26 +362,26 @@ class _ScheduledOrderPageState extends State<ScheduledOrderPage> {
                                 const Spacer(),
                                 TextButton(
                                   onPressed: () async {
-                                    late GeocodingResult resultGeo;
-                                    List<GeocodingResult?> results =
-                                        await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CustomMapPicker()));
-                                    if (results[0] != null) {
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (cp) => ScheduledOrderPage(
-                                            result: results[0]!,
-                                            orderType: "Schedule",
-                                            lovedOne: widget.lovedOne,
-                                          ),
-                                        ),
-                                      );
-                                    }
+                                    // late GeocodingResult resultGeo;
+                                    // List<GeocodingResult?> results =
+                                    //     await Navigator.push(
+                                    //         context,
+                                    //         MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //                 CustomMapPicker()));
+                                    // if (results[0] != null) {
+                                    //   // ignore: use_build_context_synchronously
+                                    //   Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (cp) => ScheduledOrderPage(
+                                    //         result: results[0]!,
+                                    //         orderType: "Schedule",
+                                    //         lovedOne: widget.lovedOne,
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // }
                                   },
                                   child: const Text(
                                     "Edit",

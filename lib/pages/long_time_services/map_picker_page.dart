@@ -162,6 +162,7 @@ class _CustomMapPickerState extends State<CustomMapPicker> {
                   lat: currentSelectedLocation!.latitude,
                   lng: currentSelectedLocation!.longitude));
 
+              selectedLoc = address;
               Navigator.pop(context, [address]);
             },
             child: Container(

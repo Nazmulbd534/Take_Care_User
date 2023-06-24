@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -113,141 +112,141 @@ class DataController extends GetxController {
     }
   }
 
-  Future<void> createRequest(
-      request_number,
-      ProviderData providerData,
-      GeocodingResult result,
-      int requestIndex,
-      String? invoiceNumber,
-      String? orderId) async {
-    try {
-      loading(true);
-      update();
-      QuerySnapshot receiverShot = await FirebaseFirestore.instance
-          .collection('request')
-          .where('receiver_id', isEqualTo: providerData.phone.toString())
-          .get();
-      final List<QueryDocumentSnapshot> lst1 = receiverShot.docs;
-      List<QueryDocumentSnapshot> receiverList = lst1
-          .where((element) =>
-              element['status'] == Variables.orderStatusData[0].statusCode ||
-              element['status'] == Variables.orderStatusData[1].statusCode)
-          .toList();
+  // Future<void> createRequest(
+  //     request_number,
+  //     ProviderData providerData,
+  //     GeocodingResult result,
+  //     int requestIndex,
+  //     String? invoiceNumber,
+  //     String? orderId) async {
+  //   try {
+  //     loading(true);
+  //     update();
+  //     QuerySnapshot receiverShot = await FirebaseFirestore.instance
+  //         .collection('request')
+  //         .where('receiver_id', isEqualTo: providerData.phone.toString())
+  //         .get();
+  //     final List<QueryDocumentSnapshot> lst1 = receiverShot.docs;
+  //     List<QueryDocumentSnapshot> receiverList = lst1
+  //         .where((element) =>
+  //             element['status'] == Variables.orderStatusData[0].statusCode ||
+  //             element['status'] == Variables.orderStatusData[1].statusCode)
+  //         .toList();
 
-      QuerySnapshot senderShot = await FirebaseFirestore.instance
-          .collection('request')
-          .where('sender_id', isEqualTo: providerData.phone.toString())
-          .get();
-      final List<QueryDocumentSnapshot> lst2 = senderShot.docs;
-      List<QueryDocumentSnapshot> senderList = lst2
-          .where((element) =>
-              element['status'] == Variables.orderStatusData[0].statusCode ||
-              element['status'] == Variables.orderStatusData[1].statusCode)
-          .toList();
+  //     QuerySnapshot senderShot = await FirebaseFirestore.instance
+  //         .collection('request')
+  //         .where('sender_id', isEqualTo: providerData.phone.toString())
+  //         .get();
+  //     final List<QueryDocumentSnapshot> lst2 = senderShot.docs;
+  //     List<QueryDocumentSnapshot> senderList = lst2
+  //         .where((element) =>
+  //             element['status'] == Variables.orderStatusData[0].statusCode ||
+  //             element['status'] == Variables.orderStatusData[1].statusCode)
+  //         .toList();
 
-      if (senderList.isNotEmpty) {
-        loading(false);
-        update();
-        showToast('You already busy with a Provider');
-      } else if (receiverList.isNotEmpty) {
-        loading(false);
-        update();
-        //showToast('Provider busy now! Try again');
-      } else if (receiverList.isEmpty && senderList.isEmpty) {
-        saveData(request_number, providerData, result, requestIndex,
-            invoiceNumber!, orderId!);
-      } else {
-        loading(false);
-        update();
-        showToast('Something went wrong! Try again');
-      }
-    } catch (e) {
-      loading(false);
-      update();
-      showToast('Something went wrong! Try again');
-      if (kDebugMode) {
-        print(e.toString());
-      }
-    }
-  }
+  //     if (senderList.isNotEmpty) {
+  //       loading(false);
+  //       update();
+  //       showToast('You already busy with a Provider');
+  //     } else if (receiverList.isNotEmpty) {
+  //       loading(false);
+  //       update();
+  //       //showToast('Provider busy now! Try again');
+  //     } else if (receiverList.isEmpty && senderList.isEmpty) {
+  //       saveData(request_number, providerData, result, requestIndex,
+  //           invoiceNumber!, orderId!);
+  //     } else {
+  //       loading(false);
+  //       update();
+  //       showToast('Something went wrong! Try again');
+  //     }
+  //   } catch (e) {
+  //     loading(false);
+  //     update();
+  //     showToast('Something went wrong! Try again');
+  //     if (kDebugMode) {
+  //       print(e.toString());
+  //     }
+  //   }
+  // }
 
-  Future<void> saveData(
-      String request_number,
-      ProviderData providerData,
-      GeocodingResult result,
-      int requestIndex,
-      String invoiceNumber,
-      String orderId) async {
-    var uuid = const Uuid();
-    final String id = uuid.v1();
-    await FirebaseFirestore.instance.collection('request').doc(id).set({
-      'id': id,
-      'request_number': request_number,
-      'sender_id': DataControllers.to.userLoginResponse.value.data!.user!.phone,
-      'sender_name':
-          DataControllers.to.userLoginResponse.value.data!.user!.fullName,
-      'receiver_id': providerData.phone.toString(),
-      'receiver_name': providerData.fullName,
-      'lat': result.geometry.location.lat,
-      'lng': result.geometry.location.lng,
-      'booking_address': result.formattedAddress,
-      'invoiceNumber': invoiceNumber,
-      'provider_id': providerData.id,
-      'seeker_id': DataControllers.to.userLoginResponse.value.data!.user!.id,
-      'order_id': orderId,
-      'order_note': '',
-      'engage_start_time': DateTime.now().millisecondsSinceEpoch,
-      'engage_end_time': null,
-      'status': Variables.orderStatusData[0].statusCode,
-      'date_time': DateTime.now().millisecondsSinceEpoch
-    }).whenComplete(() async {
-      await sendNotification(providerData.phone.toString());
-      loading(false);
-      update();
-      Get.to(() => RequestPage(
-          providerInfo: providerData,
-          docId: id,
-          requestIndex: requestIndex,
-          receiverId: providerData.phone.toString(),
-          geocodingResult: result));
-    });
-  }
+  // Future<void> saveData(
+  //     String request_number,
+  //     ProviderData providerData,
+  //     GeocodingResult result,
+  //     int requestIndex,
+  //     String invoiceNumber,
+  //     String orderId) async {
+  //   var uuid = const Uuid();
+  //   final String id = uuid.v1();
+  //   await FirebaseFirestore.instance.collection('request').doc(id).set({
+  //     'id': id,
+  //     'request_number': request_number,
+  //     'sender_id': DataControllers.to.userLoginResponse.value.data!.user!.phone,
+  //     'sender_name':
+  //         DataControllers.to.userLoginResponse.value.data!.user!.fullName,
+  //     'receiver_id': providerData.phone.toString(),
+  //     'receiver_name': providerData.fullName,
+  //     'lat': result.geometry.location.lat,
+  //     'lng': result.geometry.location.lng,
+  //     'booking_address': result.formattedAddress,
+  //     'invoiceNumber': invoiceNumber,
+  //     'provider_id': providerData.id,
+  //     'seeker_id': DataControllers.to.userLoginResponse.value.data!.user!.id,
+  //     'order_id': orderId,
+  //     'order_note': '',
+  //     'engage_start_time': DateTime.now().millisecondsSinceEpoch,
+  //     'engage_end_time': null,
+  //     'status': Variables.orderStatusData[0].statusCode,
+  //     'date_time': DateTime.now().millisecondsSinceEpoch
+  //   }).whenComplete(() async {
+  //     await sendNotification(providerData.phone.toString());
+  //     loading(false);
+  //     update();
+  //     Get.to(() => RequestPage(
+  //         providerInfo: providerData,
+  //         docId: id,
+  //         requestIndex: requestIndex,
+  //         receiverId: providerData.phone.toString(),
+  //         geocodingResult: result));
+  //   });
+  // }
 
-  Future<void> autoCancelRequest(String docId, String receiverId) async {
-    Future.delayed(const Duration(seconds: 120)).then((value) async {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('request')
-          .where('id', isEqualTo: docId)
-          .get();
-      final List<QueryDocumentSnapshot> requestList = snapshot.docs;
+  // Future<void> autoCancelRequest(String docId, String receiverId) async {
+  //   Future.delayed(const Duration(seconds: 120)).then((value) async {
+  //     QuerySnapshot snapshot = await FirebaseFirestore.instance
+  //         .collection('request')
+  //         .where('id', isEqualTo: docId)
+  //         .get();
+  //     final List<QueryDocumentSnapshot> requestList = snapshot.docs;
 
-      if (requestList.first.get('status') ==
-          Variables.orderStatusData[0].statusCode) {
-        await FirebaseFirestore.instance
-            .collection('request')
-            .doc(docId)
-            .update({
-          'status': Variables.orderStatusData[2].statusCode,
-        });
-        showToast('Request not accepted');
-        Navigator.pop(Get.context!);
-      } else if (requestList.first.get('status') ==
-          Variables.orderStatusData[1].statusCode) {
-        showToast('Request accepted');
-        Get.to(() => AcceptedPage(
-            reqDocId: docId,
-            receiverId: receiverId,
-            requestList: requestList.first));
-      } else if (requestList[0].get('status') ==
-          Variables.orderStatusData[2].statusCode) {
-        showToast('Request declined');
-        Navigator.pop(Get.context!);
-      } else {
-        showToast('Something wrong. Try again');
-        Navigator.pop(Get.context!);
-      }
-    });
-  }
+  //     if (requestList.first.get('status') ==
+  //         Variables.orderStatusData[0].statusCode) {
+  //       await FirebaseFirestore.instance
+  //           .collection('request')
+  //           .doc(docId)
+  //           .update({
+  //         'status': Variables.orderStatusData[2].statusCode,
+  //       });
+  //       showToast('Request not accepted');
+  //       Navigator.pop(Get.context!);
+  //     } else if (requestList.first.get('status') ==
+  //         Variables.orderStatusData[1].statusCode) {
+  //       showToast('Request accepted');
+  //       Get.to(() => AcceptedPage(
+  //           reqDocId: docId,
+  //           receiverId: receiverId,
+  //           requestList: requestList.first));
+  //     } else if (requestList[0].get('status') ==
+  //         Variables.orderStatusData[2].statusCode) {
+  //       showToast('Request declined');
+  //       Navigator.pop(Get.context!);
+  //     } else {
+  //       showToast('Something wrong. Try again');
+  //       Navigator.pop(Get.context!);
+  //     }
+  //   });
+  // }
 
   Future<void> confirmOrder(
       String reqDocId, String receiverId, ProviderData? providerData) async {

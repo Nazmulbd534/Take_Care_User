@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 import 'package:takecare_user/controller/data_controller.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/model/AddCardResponse.dart';
@@ -484,10 +484,11 @@ class ApiService {
   }
 
   /// Order
-  static Future<AppResponse?> placeOrder(String request_number,
-      {String coupon_code = '',
+  static Future<AppResponse?> placeOrder(
+      {required String request_number,
+      String coupon_code = '',
       String order_note = '',
-      ProviderData? providerData,
+      required String provider_id,
       GeocodingResult? result}) async {
     log("place order called");
     Map<String, String> jsonData = <String, String>{
@@ -498,7 +499,7 @@ class ApiService {
       "order_note": order_note,
       "booking_date": DateTime.now().millisecondsSinceEpoch.toString(),
       "booking_address": result!.formattedAddress!,
-      "provider_id": providerData!.id.toString(),
+      "provider_id": provider_id,
       "latitude": result.geometry.location.lat.toString(),
       "longitude": result.geometry.location.lng.toString()
     };
@@ -631,6 +632,26 @@ class ApiService {
           json.decode(response.body)["message"];
       return null;
     }
+  }
+
+  static Future<Map<String, dynamic>> getRequestItems(
+      String requestNumber) async {
+    var response = await client.post(
+      Uri.parse(BaseURL + "user/request/get-request-items"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      },
+      body: jsonEncode(<String, String>{
+        "request_number": requestNumber,
+      }),
+    );
+
+    log("Api Response : ${response.statusCode.toString()}",
+        name: "getRequestItems");
+
+    return jsonDecode(response.body);
   }
 
   static Future<ErrorResponse?> getSingleOrderHistory() async {

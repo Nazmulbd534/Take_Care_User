@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:map_location_picker/map_location_picker.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:takecare_user/model/LovedOnesResponse.dart';
 import 'package:takecare_user/model/SaveAddressResponse.dart';
 import 'package:takecare_user/pages/On%20Demand/order_information_page.dart';
@@ -102,30 +102,30 @@ class _ServiceRequestFormPageState extends State<ServiceRequestFormPage> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        resultGeo = (await Navigator.push(
-                          context,
-                          MaterialPageRoute<GeocodingResult>(
-                            builder: (cx) {
-                              return MapLocationPicker(
-                                  topCardColor: Colors.white70,
-                                  bottomCardColor: Colors.pinkAccent,
-                                  currentLatLng: Variables.currentPostion,
-                                  desiredAccuracy: LocationAccuracy.high,
-                                  apiKey:
-                                      "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                                  canPopOnNextButtonTaped: true,
-                                  onNext: (GeocodingResult? result) {
-                                    if (result != null) {
-                                      setState(() {
-                                        resultGeo = result;
-                                        _seekerAddress.text =
-                                            resultGeo!.formattedAddress!;
-                                      });
-                                    }
-                                  });
-                            },
-                          ),
-                        ))!;
+                        // resultGeo = (await Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute<GeocodingResult>(
+                        //     builder: (cx) {
+                        //       return MapLocationPicker(
+                        //           topCardColor: Colors.white70,
+                        //           bottomCardColor: Colors.pinkAccent,
+                        //           currentLatLng: Variables.currentPostion,
+                        //           desiredAccuracy: LocationAccuracy.high,
+                        //           apiKey:
+                        //               "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                        //           canPopOnNextButtonTaped: true,
+                        //           onNext: (GeocodingResult? result) {
+                        //             if (result != null) {
+                        //               setState(() {
+                        //                 resultGeo = result;
+                        //                 _seekerAddress.text =
+                        //                     resultGeo!.formattedAddress!;
+                        //               });
+                        //             }
+                        //           });
+                        //     },
+                        //   ),
+                        // ))!;
                       },
                       child: Icon(Icons.my_location_sharp,
                           size: size.width * .06, color: Colors.white),
@@ -353,13 +353,13 @@ class _ServiceRequestFormPageState extends State<ServiceRequestFormPage> {
 
                   Variables.serviceTime = _serviceDuration.text;
 
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (_) => OrderInformationPage(
-                            activity: Variables.longTimeServiceActivity,
-                            serviceHolderInfo: lovedOnes,
-                            serviceAddress: _seekerAddress.text,
-                            serviceTime: _serviceDuration.text,
-                          )));
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  //     builder: (_) => OrderInformationPage(
+                  //           activity: Variables.longTimeServiceActivity,
+                  //           serviceHolderInfo: lovedOnes,
+                  //           serviceAddress: _seekerAddress.text,
+                  //           serviceTime: _serviceDuration.text,
+                  //         )));
                 }
               },
               child: Container(

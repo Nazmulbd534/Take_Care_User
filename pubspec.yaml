@@ -38,7 +38,7 @@ dependencies:
   blurrycontainer: 1.0.2
   carousel_slider: ^4.0.0
   sms_autofill: ^2.2.0
-  geolocator: ^9.0.1
+  geolocator: ^9.0.2
   url_launcher: ^6.1.6
   change_app_package_name: ^1.1.0
   loading_animation_widget: ^1.2.0+3
@@ -52,13 +52,11 @@ dependencies:
   location: ^4.4.0
   flutter_close_app: ^1.0.0
   omni_datetime_picker: ^1.0.0
-  map_location_picker:
-    git:
-      url: https://github.com/Soilcsi/map_location_picker.git
   search_map_place_updated: ^0.0.4
   flutter_google_places: ^0.3.0
   google_maps_webservice: ^0.0.20-nullsafety.5
   geocoding: ^2.1.0
+  pusher_client: ^2.0.0
 
   # google_maps_flutter_platform_interface: ^2.2.1
  # google_maps_flutter_android: ^2.1.10

@@ -150,57 +150,57 @@ class _HomePageState extends State<HomePage> {
       await DataControllers.to.getProviderList("1", "1", "", "");
     } catch (e) {}
     onProgressBar(false);
-    checkEngaged();
+    //checkEngaged();
     //  await DataControllers.to.postUserServiceResponse(DataControllers.to.userLoginResponse.value.data!.user!.id.toString());
   }
 
   // DataControllers.to.getCategoriesResponse.value.data!.forEach((element) => _setData(element)).toList();
 
-  Future<void> checkEngaged() async {
-    await DataControllers.to.getSlider();
+  // Future<void> checkEngaged() async {
+  //   await DataControllers.to.getSlider();
 
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('request')
-        .where('sender_id',
-            isEqualTo: DataControllers
-                .to.userLoginResponse.value.data!.user!.phone
-                .toString())
-        .where('status', isEqualTo: Variables.orderStatusData[1].statusCode)
-        .get();
-    final List<QueryDocumentSnapshot> requests = snapshot.docs;
+  //   QuerySnapshot snapshot = await FirebaseFirestore.instance
+  //       .collection('request')
+  //       .where('sender_id',
+  //           isEqualTo: DataControllers
+  //               .to.userLoginResponse.value.data!.user!.phone
+  //               .toString())
+  //       .where('status', isEqualTo: Variables.orderStatusData[1].statusCode)
+  //       .get();
+  //   final List<QueryDocumentSnapshot> requests = snapshot.docs;
 
-    if (requests.isEmpty) {
-    } else {
-      if (requests.first.get('engage_end_time') != null &&
-          DateTime.fromMillisecondsSinceEpoch(
-                      requests.first.get('engage_end_time'))
-                  .difference(DateTime.now())
-                  .inMinutes >
-              2) {
-        await FirebaseFirestore.instance
-            .collection('request')
-            .doc(requests.first.get('id'))
-            .update({
-          'status': Variables.orderStatusData[2].statusCode,
-        });
-      } else {
-        if (DataControllers.to.getAvailableProviderList.value.data != null) {
-          ProviderData providerData = DataControllers
-              .to.getAvailableProviderList.value.data!.provider_data!
-              .firstWhere((element) =>
-                  element.phone == requests.first.get('receiver_id'));
-          Get.to(() => AcceptedPage(
-                reqDocId: requests.first.get('id'),
-                receiverId: requests.first.get('receiver_id'),
-                requestList: snapshot.docs.first,
-                providerData: providerData,
-              ));
-        } else {
-          log("Available provider data null\n");
-        }
-      }
-    }
-  }
+  //   if (requests.isEmpty) {
+  //   } else {
+  //     if (requests.first.get('engage_end_time') != null &&
+  //         DateTime.fromMillisecondsSinceEpoch(
+  //                     requests.first.get('engage_end_time'))
+  //                 .difference(DateTime.now())
+  //                 .inMinutes >
+  //             2) {
+  //       await FirebaseFirestore.instance
+  //           .collection('request')
+  //           .doc(requests.first.get('id'))
+  //           .update({
+  //         'status': Variables.orderStatusData[2].statusCode,
+  //       });
+  //     } else {
+  //       if (DataControllers.to.getAvailableProviderList.value.data != null) {
+  //         ProviderData providerData = DataControllers
+  //             .to.getAvailableProviderList.value.data!.provider_data!
+  //             .firstWhere((element) =>
+  //                 element.phone == requests.first.get('receiver_id'));
+  //         Get.to(() => AcceptedPage(
+  //               reqDocId: requests.first.get('id'),
+  //               receiverId: requests.first.get('receiver_id'),
+  //               requestList: snapshot.docs.first,
+  //               providerData: providerData,
+  //             ));
+  //       } else {
+  //         log("Available provider data null\n");
+  //       }
+  //     }
+  //   }
+  // }
 
   void _showUpdateAlert(BuildContext context) {
     showDialog(

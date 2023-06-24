@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:map_location_picker/map_location_picker.dart';
+import 'package:google_maps_webservice/geocoding.dart';
 import 'package:takecare_user/model/AvailableProviderResponse.dart';
 import 'package:takecare_user/model/provider/provider_data.dart';
 import 'package:takecare_user/pages/On%20Demand/map_page.dart';
@@ -9,9 +9,7 @@ import '../../public_variables/all_colors.dart';
 import '../../public_variables/size_config.dart';
 
 class CancelPage extends StatelessWidget {
-  final ProviderData providerInfo;
-
-  const CancelPage({Key? key, required this.providerInfo}) : super(key: key);
+  const CancelPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +40,19 @@ class CancelPage extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 40,
-              child: ClipOval(
-                  child: Image.network("${providerInfo.profilePhoto}")),
+              // child: ClipOval(
+              //     child: Image.network("${providerInfo.profilePhoto}")),
             ),
             SizedBox(
               height: dynamicSize(0.1),
             ),
+            // Text(
+            //   "${providerInfo.fullName}",
+            //   style: TextStyle(
+            //       fontSize: dynamicSize(0.06), color: AllColor.themeColor),
+            // ),
             Text(
-              "${providerInfo.fullName}",
-              style: TextStyle(
-                  fontSize: dynamicSize(0.06), color: AllColor.themeColor),
-            ),
-            Text(
-              "is on the way to accept the service. ",
+              " Declined the request.",
               style: TextStyle(
                   fontSize: dynamicSize(0.05), color: AllColor.themeColor),
             ),
@@ -75,38 +73,38 @@ class CancelPage extends StatelessWidget {
               onPressed: () async {
                 GeocodingResult resultGeo;
 
-                resultGeo = (await Navigator.push(
-                  context,
-                  MaterialPageRoute<GeocodingResult>(
-                    builder: (cx) {
-                      return MapLocationPicker(
-                          origin: Location(
-                              lat: Variables.currentPostion.latitude,
-                              lng: Variables.currentPostion.longitude),
-                          desiredAccuracy: LocationAccuracy.high,
-                          location: Location(
-                              lat: Variables.currentPostion.latitude,
-                              lng: Variables.currentPostion.longitude),
-                          apiKey: "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
-                          canPopOnNextButtonTaped: true,
-                          onNext: (GeocodingResult? result) {
-                            if (result != null) {
-                              resultGeo = result;
-                              Navigator.pop(cx, resultGeo);
-                            }
-                          });
-                    },
-                  ),
-                ))!;
-                if (resultGeo != null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (cp) => MapPage(
-                              result: resultGeo,
-                            )),
-                  );
-                }
+                // resultGeo = (await Navigator.push(
+                //   context,
+                //   MaterialPageRoute<GeocodingResult>(
+                //     builder: (cx) {
+                //       return MapLocationPicker(
+                //           origin: Location(
+                //               lat: Variables.currentPostion.latitude,
+                //               lng: Variables.currentPostion.longitude),
+                //           desiredAccuracy: LocationAccuracy.high,
+                //           location: Location(
+                //               lat: Variables.currentPostion.latitude,
+                //               lng: Variables.currentPostion.longitude),
+                //           apiKey: "AIzaSyB5x56y_2IlWhARk8ivDevq-srAkHYr9HY",
+                //           canPopOnNextButtonTaped: true,
+                //           onNext: (GeocodingResult? result) {
+                //             if (result != null) {
+                //               resultGeo = result;
+                //               Navigator.pop(cx, resultGeo);
+                //             }
+                //           });
+                //     },
+                //   ),
+                // ))!;
+                // if (resultGeo != null) {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (cp) => MapPage(
+                //               result: resultGeo,
+                //             )),
+                //   );
+                // }
               },
               child: Text(
                 "Request again",

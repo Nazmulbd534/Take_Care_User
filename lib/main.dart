@@ -9,6 +9,7 @@ import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/sign_in_page.dart';
 import 'package:takecare_user/pages/signup/signup.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
+import 'package:takecare_user/services/pusher_service.dart';
 import 'api_service/service.dart';
 import 'controller/data_controller.dart';
 import 'controllers/DataContollers.dart';
@@ -64,6 +65,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _fcmInit();
+    PusherService.connect();
   }
 
   Future<void> _fcmInit() async {
