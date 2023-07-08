@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:pusher_client/pusher_client.dart';
+import '../controllers/DataContollers.dart';
+import '../public_variables/variables.dart';
 
 class PusherService {
   static String appId = "1611970";
@@ -18,6 +20,10 @@ class PusherService {
     key,
     PusherOptions(
       cluster: cluster,
+      auth: PusherAuth("https://api.takecare.ltd/pusher/broadcasting/auth",
+          headers: {
+            "Authorization": bearerToken,
+          }),
     ),
     autoConnect: false,
     enableLogging: true,
@@ -26,8 +32,10 @@ class PusherService {
   static Future<void> connect() async {
     log("connect!", name: "PusherService");
     await pusher.connect();
-    channel = pusher.subscribe("takecare-channel");
+    channel = pusher.subscribe(
+        "private-takecare.${DataControllers.to.userLoginResponse.value.data!.user!.id.toString()}");
 
+    log(channel.name, name: "pusher test");
     pusher.onConnectionStateChange((state) {
       log("previousState: ${state!.previousState}, currentState: ${state.currentState}",
           name: "PusherService");

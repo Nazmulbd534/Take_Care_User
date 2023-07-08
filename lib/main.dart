@@ -65,7 +65,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _fcmInit();
-    PusherService.connect();
   }
 
   Future<void> _fcmInit() async {

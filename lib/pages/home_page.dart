@@ -27,6 +27,7 @@ import 'package:takecare_user/ui/common.dart';
 import 'package:takecare_user/widgets/loading_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../model/CategoriesResponse.dart';
+import '../services/pusher_service.dart';
 import 'On Demand/accepted_page.dart';
 import 'long_time_services/service_request_form_page.dart';
 import 'loved_ones_page.dart';
@@ -73,6 +74,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getAllService();
+    PusherService.connect();
   }
 
   static Future<String> get _enforcedVersion async {
