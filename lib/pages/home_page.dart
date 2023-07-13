@@ -29,6 +29,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../model/CategoriesResponse.dart';
 import '../services/pusher_service.dart';
 import 'On Demand/accepted_page.dart';
+import 'On Demand/service_runing_map_page.dart';
 import 'long_time_services/service_request_form_page.dart';
 import 'loved_ones_page.dart';
 import 'order_history/order_history_page.dart';
@@ -795,6 +796,17 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DestinationMapPage(
+                                    invoiceId: "TC00000013",
+                                  )));
+                    },
+                    child: Text("Debug"),
+                  )
                 ]),
               ),
             ),

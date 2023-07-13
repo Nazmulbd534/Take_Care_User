@@ -530,6 +530,24 @@ class ApiService {
     }
   }
 
+  static Future<Map<String, dynamic>> fetchOrderInformation(
+      String invoiceId) async {
+    var response = await client.post(
+      Uri.parse(BaseURL + 'user/order/single-order'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      },
+      body: jsonEncode(<String, String>{
+        'invoice_number': invoiceId,
+      }),
+    );
+
+    log(response.body, name: "fetchOrderInformation");
+    return jsonDecode(response.body);
+  }
+
   static Future<ErrorResponse?> providerOrder(String id) async {
     var response = await client.post(
       Uri.parse(BaseURL + 'user/order/provider-orders'),

@@ -30,7 +30,7 @@ class _RequestPageState extends State<RequestPage> {
     super.initState();
     //DataController.dc.autoCancelRequest(widget.docId, widget.receiverId);
 
-    PusherService.channel.bind('requestaccept-event', (event) {
+    PusherService.channel.bind('request-accept-event', (event) {
       log(event!.data.toString(), name: "PusherService");
       log(DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
           name: "PusherService");
