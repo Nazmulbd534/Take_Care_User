@@ -724,6 +724,19 @@ class ApiService {
     }
   }
 
+  static Future<void> changeOrderStatus(int orderid, int status) async {
+    var response = await client.post(
+      Uri.parse(BaseURL + 'user/order/change-order-status'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      },
+      body: jsonEncode(<String, dynamic>{"id": orderid, "status": status}),
+    );
+    return;
+  }
+
   static Future<ErrorResponse?> changeOrderStatusbySeeker() async {
     var response = await client.post(
       Uri.parse(BaseURL + 'user/order/change-order-status'),
