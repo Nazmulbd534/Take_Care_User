@@ -484,7 +484,7 @@ class ApiService {
   }
 
   /// Order
-  static Future<AppResponse?> placeOrder(
+  static Future<Map<String, dynamic>> placeOrder(
       {required String request_number,
       String coupon_code = '',
       String order_note = '',
@@ -517,17 +517,7 @@ class ApiService {
       body: jsonDataFormate,
     );
     log("Api Response : ${response.body}");
-    if (response.statusCode == 200) {
-      //  var jsonString = response.body;
-
-      return AppResponse.fromJson(jsonDecode(response.body));
-    } else {
-      DataControllers.to.appResponse.value.success =
-          json.decode(response.body)["success"];
-      DataControllers.to.appResponse.value.message =
-          json.decode(response.body)["message"];
-      return AppResponse.fromJson(jsonDecode(response.body));
-    }
+    return jsonDecode(response.body);
   }
 
   static Future<Map<String, dynamic>> fetchOrderInformation(
@@ -901,6 +891,7 @@ class ApiService {
         'available': available,
       }),*/
     );
+    log(response.request!.url.toString());
     log("token = \n $bearerToken \n status = $status \n available = $available \n latitude = $lattitude \n longitude = $longitude\n",
         name: "payload");
     print("Api Response -> Available Provider List : ${response.body}");

@@ -710,8 +710,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => DestinationMapPage(
-                                      invoiceId: jsonDecode(
-                                          data["data"]["invoice_number"]),
+                                      invoiceId: data["data"]["invoice_number"],
                                     )));
                         dc.loading(false);
                       },

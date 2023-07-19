@@ -508,11 +508,6 @@ class DataControllers extends GetxController {
         coupon_code: coupon ?? "",
         order_note: order_note ?? "");
 
-    if (response != null) {
-      appResponse.value = response;
-      // responseSuccess(true);
-    }
-
     isLoading(false);
     return response;
   }
