@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:takecare_user/controller/data_controller.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
@@ -484,7 +485,7 @@ class ApiService {
   }
 
   /// Order
-  static Future<AppResponse?> placeOrder(
+  static Future<String?> placeOrder(
       {required String request_number,
       String coupon_code = '',
       String order_note = '',
@@ -516,17 +517,19 @@ class ApiService {
       },
       body: jsonDataFormate,
     );
-    log("Api Response : ${response.body}");
+    log("Api Response : ${response.body}", name: "user reconfirm place order");
     if (response.statusCode == 200) {
       //  var jsonString = response.body;
-
-      return AppResponse.fromJson(jsonDecode(response.body));
+      log("Success here",name: "user reconfirm place order");
+      var data = jsonDecode(response.body);
+      log(data["data"]["invoice_number"], name: "final var test");
+      return data["data"]["invoice_number"];
     } else {
       DataControllers.to.appResponse.value.success =
           json.decode(response.body)["success"];
       DataControllers.to.appResponse.value.message =
           json.decode(response.body)["message"];
-      return AppResponse.fromJson(jsonDecode(response.body));
+      return "invoice not found";
     }
   }
 

@@ -1,6 +1,7 @@
 // ignore_for_file : prefer_collection_literals
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
@@ -497,11 +498,11 @@ class DataControllers extends GetxController {
     return newRequestResponse.value;
   }
 
-  Future pleaceOrder(String request_number, String provider_id,
+  Future<String?> pleaceOrder(String request_number, String provider_id,
       GeocodingResult result, String? coupon, String? order_note) async {
     isLoading(true);
 
-    var response = await ApiService.placeOrder(
+    String? response = await ApiService.placeOrder(
         request_number: request_number,
         provider_id: provider_id,
         result: result,
@@ -509,11 +510,13 @@ class DataControllers extends GetxController {
         order_note: order_note ?? "");
 
     if (response != null) {
-      appResponse.value = response;
+     
+      
       // responseSuccess(true);
     }
 
     isLoading(false);
+     log(response!, name: "inside data controller");
     return response;
   }
 

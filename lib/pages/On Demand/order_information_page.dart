@@ -695,24 +695,29 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                   Expanded(
                     child: InkWell(
                       onTap: () async {
+                        log("tapped",name: "user_map");
                         dc.loading(true);
-                        var data = await DataControllers.to.pleaceOrder(
-                            widget.requestNumber,
-                            widget.providerId,
-                            selectedLoc!,
-                            _couponController.text,
-                            _orderNoteController.text);
-
+                        String? data;
+                         data = await ApiService.placeOrder(
+                           request_number: widget.requestNumber,
+                           provider_id: widget.providerId,
+                           result: selectedLoc,
+                           coupon_code:  "",
+                          order_note:  "");
+                        
+                        log( data!, name: "user_map_raw");
                         // await dc.confirmOrder(widget.reqDocId!,
                         //     widget.receiverId!, widget.providerData);
-
+                        
+                        // ignore: use_build_context_synchronously
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => DestinationMapPage(
-                                      invoiceId: jsonDecode(
-                                          data["data"]["invoice_number"]),
-                                    )));
+                                      invoiceId: data!
+                                      ),
+                                        ),
+                                    );
                         dc.loading(false);
                       },
                       child: Container(
@@ -723,7 +728,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                         alignment: Alignment.center,
                         height: dynamicSize(0.15),
                         child: Text(
-                          "Accept this Order",
+                          "Accept this Order asd",
                           style: TextStyle(
                               fontSize: dynamicSize(0.05), color: Colors.white),
                         ),
