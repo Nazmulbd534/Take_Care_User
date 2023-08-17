@@ -1250,4 +1250,23 @@ class ApiService {
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }
+
+
+  static Future<Map<String, dynamic>> fetchRequestInformation(
+      String request_number) async {
+    var response = await client.post(
+      Uri.parse(BaseURL + 'user/request/get-request-items'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      },
+      body: jsonEncode(<String, String>{
+        'request_number': request_number,
+      }),
+    );
+
+    log(response.body, name: "fetchOrderInformation");
+    return jsonDecode(response.body);
+  }
 }

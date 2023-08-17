@@ -17,20 +17,31 @@ import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
 import 'package:takecare_user/services/pusher_service.dart';
 
+import '../../api_service/ApiService.dart';
+
 class RequestPage extends StatefulWidget {
-  const RequestPage({Key? key}) : super(key: key);
+  final String requestNumber;
+  const RequestPage({Key? key, required this.requestNumber}) : super(key: key);
 
   @override
   _RequestPageState createState() => _RequestPageState();
 }
 
 class _RequestPageState extends State<RequestPage> {
+   Map<String, dynamic>? details;
+
+   void loadInfo() async {
+     var data = await ApiService.fetchRequestInformation(widget.requestNumber);
+     setState(() {
+       details = data;
+     });
+   }
   @override
   void initState() {
     super.initState();
     //DataController.dc.autoCancelRequest(widget.docId, widget.receiverId);
-
-    PusherService.channel.bind('request-accept-event', (event) {
+    loadInfo();
+    PusherService.channel.bind('request-accept-event', (event)  {
       log(event!.data.toString(), name: "PusherService");
       log(DataControllers.to.userLoginResponse.value.data!.user!.id.toString(),
           name: "PusherService");
@@ -59,8 +70,8 @@ class _RequestPageState extends State<RequestPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: AllColor.blue_light,
-          body: SingleChildScrollView(
+          backgroundColor: AllColor.themeColor,
+          body: details == null ? const Center( child: CircularProgressIndicator( color: Colors.white,),) : SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -89,16 +100,16 @@ class _RequestPageState extends State<RequestPage> {
                     height: dynamicSize(0.2),
                   ),
                   CircleAvatar(
-                    radius: 40,
-                    // child: ClipOval(
-                    //     child: Image.network(
-                    //         "${widget.providerInfo.profilePhoto}")),
+                    radius: 50,
+                    backgroundColor: AllColor.white,
+                    backgroundImage: NetworkImage(details!["data"]["service_request"][0]["provider"]["profile_photo"])
+
                   ),
                   SizedBox(
-                    height: dynamicSize(0.1),
+                    height: dynamicSize(0.07),
                   ),
                   Text(
-                    "John Doe",
+                    details!["data"]["service_request"][0]["provider"]["full_name"],
                     style: TextStyle(
                         fontFamily: 'Muli',
                         fontWeight: FontWeight.w600,

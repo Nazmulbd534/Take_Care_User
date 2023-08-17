@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -21,6 +22,7 @@ import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/string_constant.dart';
 import 'dart:developer';
 import '../../public_variables/variables.dart';
+import '../../services/pusher_service.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key, required this.result}) : super(key: key);
@@ -49,9 +51,20 @@ class _MapPageState extends State<MapPage> {
 
   List<ProviderData> providerList = [];
 
+  String? _request_number;
+
   @override
   void initState() {
     super.initState();
+           PusherService.channel.bind('request-created-event', (event) {
+           log(event!.data.toString(),
+          name: "PusherService takecare-event dashboard");
+          var data = jsonDecode(event.data!);
+          setState(() {
+            _request_number = data["message"]["request_number"];
+          });
+          log("data here on map page is $data", name: "details");
+    });
     filter();
   }
 
@@ -507,7 +520,7 @@ class _MapPageState extends State<MapPage> {
                                           });
 
                                       Future.delayed(Duration(seconds: 2), () {
-                                        Get.to(RequestPage());
+                                        Get.to(RequestPage(requestNumber: _request_number!,));
                                       });
                                     },
                               color: AllColor.themeColor,
