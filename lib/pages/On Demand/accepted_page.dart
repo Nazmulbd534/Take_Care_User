@@ -10,10 +10,12 @@ import 'package:takecare_user/public_variables/variables.dart';
 class AcceptedPage extends StatefulWidget {
   String requestNumber;
   String providerId;
+  final Map<String, dynamic>? details;
   AcceptedPage({
     Key? key,
     required this.requestNumber,
     required this.providerId,
+    required this.details,
   }) : super(key: key);
 
   @override
@@ -59,11 +61,11 @@ class _AcceptedPageState extends State<AcceptedPage> {
                   height: dynamicSize(0.2),
                 ),
                 CircleAvatar(
-                  radius: 40,
-                  child: ClipOval(
-                    child: Image.asset("assets/images/imam.png"),
+                    radius: 50,
+                    backgroundColor: AllColor.white,
+                    backgroundImage: NetworkImage(widget.details!["data"]["service_request"][0]["provider"]["profile_photo"])
+
                   ),
-                ),
                 SizedBox(
                   height: dynamicSize(0.1),
                 ),
@@ -75,6 +77,14 @@ class _AcceptedPageState extends State<AcceptedPage> {
                 //       fontSize: dynamicSize(0.06),
                 //       color: Colors.white),
                 // ),
+                    Text(
+                    widget.details!["data"]["service_request"][0]["provider"]["full_name"],
+                    style: TextStyle(
+                        fontFamily: 'Muli',
+                        fontWeight: FontWeight.w600,
+                        fontSize: dynamicSize(0.06),
+                        color: Colors.white),
+                  ),
                 Text(
                   "Accepted the service request.",
                   style: TextStyle(

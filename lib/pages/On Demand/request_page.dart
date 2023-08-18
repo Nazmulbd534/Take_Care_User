@@ -57,10 +57,12 @@ class _RequestPageState extends State<RequestPage> {
               MaterialPageRoute(
                   builder: (context) => AcceptedPage(
                       requestNumber: data["message"]["request_number"],
-                      providerId: data["message"]["provider"])));
+                      providerId: data["message"]["provider"],
+                      details: details,
+                      ),),);
         } else if (data["message"]["status"] == "2") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CancelPage()));
+              context, MaterialPageRoute(builder: (context) => CancelPage(details: details,)));
         }
       }
     });
