@@ -34,6 +34,7 @@ class _AcceptedPageState extends State<AcceptedPage> {
         .then((value) => Get.offAll(() => OrderInformationPage(
               requestNumber: widget.requestNumber,
               providerId: widget.providerId,
+              details: widget.details,
             )));
   }
 

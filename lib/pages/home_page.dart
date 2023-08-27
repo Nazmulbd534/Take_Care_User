@@ -803,6 +803,7 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                               builder: (context) => DestinationMapPage(
                                     invoiceId: "TC00000013",
+                                    details: {},
                                   )));
                     },
                     child: Text("Debug"),
