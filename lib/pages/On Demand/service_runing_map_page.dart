@@ -30,10 +30,12 @@ bool _finished = false;
 class DestinationMapPage extends StatefulWidget {
   String invoiceId;
   final Map<String, dynamic>? details;
+  int orderID;
   DestinationMapPage({
     Key? key,
     required this.invoiceId,
     required this.details,
+    required this.orderID,
   }) : super(key: key);
 
   @override
@@ -56,6 +58,7 @@ class _DestinationMapPageState extends State<DestinationMapPage> {
     return Scaffold(
       body: orderInformation != null
           ? LiveMap(
+              orderID: widget.orderID,
               invoiceId: widget.invoiceId,
               details: widget.details,
             )
@@ -69,7 +72,12 @@ class _DestinationMapPageState extends State<DestinationMapPage> {
 class LiveMap extends StatefulWidget {
   String invoiceId;
   final Map<String, dynamic>? details;
-  LiveMap({super.key, required this.invoiceId, required this.details});
+  int orderID;
+  LiveMap(
+      {super.key,
+      required this.invoiceId,
+      required this.orderID,
+      required this.details});
 
   @override
   State<LiveMap> createState() => _LiveMapState();
@@ -151,7 +159,10 @@ class _LiveMapState extends State<LiveMap> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => LiveOrderStatus(details: widget.details),
+              builder: (context) => LiveOrderStatus(
+                  orderID: widget.orderID,
+                  invoiceID: widget.invoiceId,
+                  details: widget.details),
             ));
       }
     });
@@ -175,91 +186,119 @@ class _LiveMapState extends State<LiveMap> {
 
           return Scaffold(
             bottomSheet: Container(
-              height: 120,
+              height: 160,
               color: Colors.white,
               child: Card(
                 elevation: 0,
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
                     children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
+                      Row(
                         children: [
-                          Positioned(
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
-                              child: CachedNetworkImage(
-                                height: 50,
-                                width: 50,
-                                fit: BoxFit.cover,
-                                imageUrl: widget.details!["data"]
-                                                ["service_request"][0]
-                                            ["provider"]["profile_photo"] ==
-                                        null
-                                    ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
-                                    : widget.details!["data"]["service_request"]
-                                            [0]["provider"]["profile_photo"]
-                                        .toString(),
-                                placeholder: (context, url) =>
-                                    Image.asset('assets/images/baby.png'),
-                                errorWidget: (context, url, error) =>
-                                    Image.asset('assets/images/baby.png'),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: -7.0,
-                            child: Container(
-                                alignment: Alignment.center,
-                                height: dynamicSize(.05),
-                                width: dynamicSize(0.13),
-                                //color: Colors.red,
-                                decoration: BoxDecoration(
-                                  color: AllColor.white_yeo,
-                                  borderRadius: BorderRadius.circular(30),
+                          Stack(
+                            alignment: Alignment.center,
+                            clipBehavior: Clip.none,
+                            children: [
+                              Positioned(
+                                child: ClipRRect(
+                                  borderRadius:
+                                      const BorderRadius.all(Radius.circular(30)),
+                                  child: CachedNetworkImage(
+                                    height: 40,
+                                    width: 40,
+                                    fit: BoxFit.cover,
+                                    imageUrl: widget.details!["data"]
+                                                    ["service_request"][0]
+                                                ["provider"]["profile_photo"] ==
+                                            null
+                                        ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+                                        : widget.details!["data"]["service_request"]
+                                                [0]["provider"]["profile_photo"]
+                                            .toString(),
+                                    placeholder: (context, url) =>
+                                        Image.asset('assets/images/baby.png'),
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset('assets/images/baby.png'),
+                                  ),
                                 ),
-                                child: Text(
-                                  "${widget.details!["data"]["service_request"][0]["provider"]["latitude"] == null ? (0).toString() : (Geolocator.distanceBetween(double.parse(widget.details!["data"]["service_request"][0]["provider"]["latitude"]), double.parse(widget.details!["data"]["service_request"][0]["provider"]["longitude"]), Variables.currentPostion.latitude, Variables.currentPostion.longitude) / 1000).toStringAsFixed(1)} km",
-                                  style: const TextStyle(
-                                      fontSize: 10, color: Colors.green),
-                                )),
+                              ),
+                              Positioned(
+                                bottom: -7.0,
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    height: dynamicSize(.05),
+                                    width: dynamicSize(0.13),
+                                    //color: Colors.red,
+                                    decoration: BoxDecoration(
+                                      color: AllColor.white_yeo,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: Text(
+                                      "${widget.details!["data"]["service_request"][0]["provider"]["latitude"] == null ? (0).toString() : (Geolocator.distanceBetween(double.parse(widget.details!["data"]["service_request"][0]["provider"]["latitude"]), double.parse(widget.details!["data"]["service_request"][0]["provider"]["longitude"]), Variables.currentPostion.latitude, Variables.currentPostion.longitude) / 1000).toStringAsFixed(1)} km",
+                                      style: const TextStyle(
+                                          fontSize: 10, color: Colors.green),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  widget.details!["data"]["service_request"][0]
+                                      ["provider"]["full_name"],
+                                  style: TextStyle(
+                                      fontSize: dynamicSize(0.05),
+                                      color: AllColor.themeColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Row(
+                                    children: [
+                                      /*●*/
+                                      Text(widget.details!["data"]
+                                              ["service_request"][0]["provider"]
+                                          ["speciality"]["speciality_name"]),
+                                      const Text(" • 9 Patient Served"),
+                                    ],
+                                  ),
+                                ),
+                           
+                                
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              widget.details!["data"]["service_request"][0]
-                                  ["provider"]["full_name"],
-                              style: TextStyle(
-                                  fontSize: dynamicSize(0.05),
-                                  color: AllColor.themeColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                children: [
-                                  /*●*/
-                                  Text(widget.details!["data"]
-                                          ["service_request"][0]["provider"]
-                                      ["speciality"]["speciality_name"]),
-                                  const Text(" • 9 Patient Served"),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(
+                        height: 5.0,
                       ),
+                           Center(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                              30.0
+                                  ),
+                                  color: Colors.grey[200],
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                child: const TextField(
+                                  
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(Icons.chat,),
+                                    hintText: "Write message here"
+                                  ),
+                                ),
+                                 ),
+                              ),
                     ],
                   ),
                 ),

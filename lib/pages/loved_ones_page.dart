@@ -125,6 +125,7 @@ class _LovedOnesPageState extends State<LovedOnesPage> {
                               MaterialPageRoute(
                                   builder: (cp) => MapPage(
                                         result: results[0]!,
+                                        lovedOnesId: lovedOneResponse.data![index].id,
                                       )),
                             );
                           }

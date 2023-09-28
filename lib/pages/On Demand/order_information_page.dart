@@ -87,6 +87,8 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
         await ApiService.getRequestItems(widget.requestNumber);
   }
 
+  bool cardVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DataController>(builder: (dc) {
@@ -231,102 +233,105 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: dynamicSize(0.05)),
                             ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(onPressed: (){
+                              setState(() {
+                                cardVisible = !cardVisible;
+                              });
+                            }, icon: cardVisible ? const Icon(Icons.arrow_drop_up) : const Icon(Icons.arrow_drop_down)  )
                           ],
                         ),
-                        ListView.builder(
-                          itemCount: widget
-                              .details!["data"]["service_request"][0]
-                                  ["service_request_items"]
-                              .length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              decoration: const BoxDecoration(
-                                /* borderRadius: BorderRadius.circular(8.0),*/
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 1.0,
-                                    spreadRadius: 0.0,
-                                    offset: Offset(1.0,
-                                        1.0), // shadow direction: bottom right
-                                  )
-                                ],
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 0, top: 10, bottom: 10),
-                                    child: Card(
-                                      margin: const EdgeInsets.only(left: 0),
-                                      semanticContainer: true,
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(15),
-                                            topRight: Radius.circular(15)),
-                                      ),
-                                      elevation: 0,
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.fill,
-                                        width: 80,
-                                        height: 80,
-                                        imageUrl:
-                                            "${ApiService.BaseURL}${widget.details!["data"]["service_request"][0]["service_request_items"][index]["image_path"]}",
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                          "assets/images/image.png",
+                        Visibility(
+                          visible: cardVisible,
+                          child: ListView.builder(
+                            itemCount: widget
+                                .details!["data"]["service_request"][0]
+                                    ["service_request_items"]
+                                .length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  /* borderRadius: BorderRadius.circular(8.0),*/
+                                  color: Colors.white,
+                                
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 0, top: 10, bottom: 10),
+                                      child: Card(
+                                        margin: const EdgeInsets.only(left: 0),
+                                        semanticContainer: true,
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                              bottomRight: Radius.circular(15),
+                                              topRight: Radius.circular(15)),
+                                        ),
+                                        elevation: 0,
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.fill,
+                                          width: 80,
+                                          height: 80,
+                                          imageUrl:
+                                              "${ApiService.BaseURL}${widget.details!["data"]["service_request"][0]["service_request_items"][index]["image_path"]}",
+                                          errorWidget: (context, url, error) =>
+                                              Image.asset(
+                                            "assets/images/image.png",
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 10,
-                                              top: 10,
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 10,
+                                                top: 10,
+                                              ),
+                                              child: Text(
+                                                "${widget.details!["data"]["service_request"][0]["service_request_items"][index]["service"]["service_name"]}",
+                                                style: TextStyle(
+                                                    fontSize: dynamicSize(0.04),
+                                                    fontWeight: FontWeight.bold),
+                                              ),
                                             ),
-                                            child: Text(
-                                              "${widget.details!["data"]["service_request"][0]["service_request_items"][index]["service"]["service_name"]}",
-                                              style: TextStyle(
-                                                  fontSize: dynamicSize(0.04),
-                                                  fontWeight: FontWeight.bold),
+                                            SizedBox(
+                                              height: dynamicSize(0.01),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            height: dynamicSize(0.01),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              // showButtonDialog(context, index);
-                                            },
-                                            child: Text(
-                                              "Price - ${widget.details!["data"]["service_request"][0]["service_request_items"][index]["service"]["price"]} /-",
-                                              style: TextStyle(
-                                                  fontSize: dynamicSize(0.035),
-                                                  color: Colors.purple),
+                                            TextButton(
+                                              onPressed: () {
+                                                // showButtonDialog(context, index);
+                                              },
+                                              child: Text(
+                                                "Price - ${widget.details!["data"]["service_request"][0]["service_request_items"][index]["service"]["price"]} /-",
+                                                style: TextStyle(
+                                                    fontSize: dynamicSize(0.035),
+                                                    color: Colors.purple),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
                         // Padding(
                         //   padding: const EdgeInsets.only(top: 8.0),
@@ -1029,15 +1034,15 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                         );
                         log("tapped", name: "user_map");
                         dc.loading(true);
-                        String? data;
-                        data = await ApiService.placeOrder(
+
+                        var data = await ApiService.placeOrder(
                             request_number: widget.requestNumber,
                             provider_id: widget.providerId,
                             result: selectedLoc,
                             coupon_code: "",
                             order_note: "");
 
-                        log(data!, name: "user_map_raw");
+                        log(data.toString(), name: "user_map_raw");
                         // await dc.confirmOrder(widget.reqDocId!,
                         //     widget.receiverId!, widget.providerData);
 
@@ -1047,7 +1052,9 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DestinationMapPage(
-                                  invoiceId: data!, details: widget.details),
+                                  invoiceId: data["invoice_number"],
+                                  orderID: data["order_id"],
+                                  details: widget.details),
                             ),
                           );
                         });

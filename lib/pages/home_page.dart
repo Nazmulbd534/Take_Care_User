@@ -796,18 +796,18 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DestinationMapPage(
-                                    invoiceId: "TC00000013",
-                                    details: {},
-                                  )));
-                    },
-                    child: Text("Debug"),
-                  )
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //             builder: (context) => DestinationMapPage(
+                  //                   invoiceId: "TC00000013",
+                  //                   details: {},
+                  //                 )));
+                  //   },
+                  //   child: Text("Debug"),
+                  // )
                 ]),
               ),
             ),

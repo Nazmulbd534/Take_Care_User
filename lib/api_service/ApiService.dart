@@ -443,12 +443,16 @@ class ApiService {
   static Future<AppResponse?> newRequest(
       {String coupon_code = '',
       ProviderData? providerData,
-      GeocodingResult? result}) async {
+      GeocodingResult? result, int? lovedOnesId }) async {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(now);
     log("this is called", name: "test");
-    var jsonData = <String, String>{
+
+    var jsonData;
+
+    if(lovedOnesId == 0) {
+      jsonData = <String, String>{
       // "coupon_code": coupon_code,
       "booking_date": formatted,
       "provider_id": providerData!.id.toString(),
@@ -456,6 +460,17 @@ class ApiService {
       "longitude": result.geometry.location.lng.toString(),
       //   "foundSchedule": "a",
     };
+    } else {
+     jsonData =  <String, dynamic>{
+      // "coupon_code": coupon_code,
+      "booking_date": formatted,
+      "booking_for" : lovedOnesId,
+      "provider_id": providerData!.id.toString(),
+      "latitude": result!.geometry.location.lat.toString(),
+      "longitude": result.geometry.location.lng.toString(),
+      //   "foundSchedule": "a",
+    };
+    }
 
     log(jsonData.toString() + "\n token = " + bearerToken,
         name: "new-request payload");
@@ -485,7 +500,7 @@ class ApiService {
   }
 
   /// Order
-  static Future<String?> placeOrder(
+  static Future<Map<String, dynamic>> placeOrder(
       {required String request_number,
       String coupon_code = '',
       String order_note = '',
@@ -517,20 +532,11 @@ class ApiService {
       },
       body: jsonDataFormate,
     );
+
     log("Api Response : ${response.body}", name: "user reconfirm place order");
-    if (response.statusCode == 200) {
-      //  var jsonString = response.body;
-      log("Success here", name: "user reconfirm place order");
-      var data = jsonDecode(response.body);
-      log(data["data"]["invoice_number"], name: "final var test");
-      return data["data"]["invoice_number"];
-    } else {
-      DataControllers.to.appResponse.value.success =
-          json.decode(response.body)["success"];
-      DataControllers.to.appResponse.value.message =
-          json.decode(response.body)["message"];
-      return "invoice not found";
-    }
+    log("Success here", name: "user reconfirm place order");
+    var data = jsonDecode(response.body);
+    return data["data"];
   }
 
   static Future<Map<String, dynamic>> fetchOrderInformation(
@@ -548,6 +554,23 @@ class ApiService {
     );
 
     log(response.body, name: "fetchOrderInformation");
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> addRatingToUser(
+      String invoiceID, String rating) async {
+    var response = await client.post(
+      Uri.parse(BaseURL + '/user/order/rating/add-rating'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': bearerToken,
+      },
+      body: jsonEncode(
+          <String, String>{"invoice_number": invoiceID, "rating": rating}),
+    );
+
+    log(response.body, name: "addRatingToUser");
     return jsonDecode(response.body);
   }
 
@@ -737,6 +760,8 @@ class ApiService {
       },
       body: jsonEncode(<String, dynamic>{"id": orderid, "status": status}),
     );
+
+    log(response.body.toString(), name: "changeOrderStatus");
     return;
   }
 
@@ -1250,7 +1275,6 @@ class ApiService {
       return AppResponse.fromJson(jsonDecode(response.body));
     }
   }
-
 
   static Future<Map<String, dynamic>> fetchRequestInformation(
       String request_number) async {

@@ -25,7 +25,8 @@ import '../../public_variables/variables.dart';
 import '../../services/pusher_service.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key, required this.result}) : super(key: key);
+  int? lovedOnesId;
+  MapPage({Key? key, required this.result, this.lovedOnesId}) : super(key: key);
 
   final GeocodingResult result;
 
@@ -56,14 +57,14 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-           PusherService.channel.bind('request-created-event', (event) {
-           log(event!.data.toString(),
+    PusherService.channel.bind('request-created-event', (event) {
+      log(event!.data.toString(),
           name: "PusherService takecare-event dashboard");
-          var data = jsonDecode(event.data!);
-          setState(() {
-            _request_number = data["message"]["request_number"];
-          });
-          log("data here on map page is $data", name: "details");
+      var data = jsonDecode(event.data!);
+      setState(() {
+        _request_number = data["message"]["request_number"];
+      });
+      log("data here on map page is $data", name: "details");
     });
     filter();
   }
@@ -465,7 +466,9 @@ class _MapPageState extends State<MapPage> {
 
                                       await DataControllers.to.newRequest(
                                           providerList[requestIndex],
-                                          widget.result);
+                                          widget.result, 
+                                          widget.lovedOnesId ?? 0,
+                                          );
 
                                       log("reached here");
 
@@ -520,7 +523,9 @@ class _MapPageState extends State<MapPage> {
                                           });
 
                                       Future.delayed(Duration(seconds: 2), () {
-                                        Get.to(RequestPage(requestNumber: _request_number!,));
+                                        Get.to(RequestPage(
+                                          requestNumber: _request_number!,
+                                        ));
                                       });
                                     },
                               color: AllColor.themeColor,

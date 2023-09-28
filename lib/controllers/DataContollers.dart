@@ -484,10 +484,10 @@ class DataControllers extends GetxController {
 
   //Order List
 
-  Future newRequest(ProviderData providerData, GeocodingResult result) async {
+  Future newRequest(ProviderData providerData, GeocodingResult result, int lovedOnesId) async {
     isLoading(true);
     var response =
-        await ApiService.newRequest(providerData: providerData, result: result);
+        await ApiService.newRequest(providerData: providerData, result: result, lovedOnesId: lovedOnesId);
 
     if (response != null) {
       newRequestResponse.value = response;
@@ -498,27 +498,26 @@ class DataControllers extends GetxController {
     return newRequestResponse.value;
   }
 
-  Future<String?> pleaceOrder(String request_number, String provider_id,
-      GeocodingResult result, String? coupon, String? order_note) async {
-    isLoading(true);
+  // Future<String?> pleaceOrder(String request_number, String provider_id,
+  //     GeocodingResult result, String? coupon, String? order_note) async {
+  //   isLoading(true);
 
-    String? response = await ApiService.placeOrder(
-        request_number: request_number,
-        provider_id: provider_id,
-        result: result,
-        coupon_code: coupon ?? "",
-        order_note: order_note ?? "");
+  //   String? response = await ApiService.placeOrder(
+  //       request_number: request_number,
+  //       provider_id: provider_id,
+  //       result: result,
+  //       coupon_code: coupon ?? "",
+  //       order_note: order_note ?? "");
 
-    if (response != null) {
-     
-      
-      // responseSuccess(true);
-    }
+  //   if (response != null) {
 
-    isLoading(false);
-     log(response!, name: "inside data controller");
-    return response;
-  }
+  //     // responseSuccess(true);
+  //   }
+
+  //   isLoading(false);
+  //    log(response!, name: "inside data controller");
+  //   return response;
+  // }
 
   Future providerOrder(String id) async {
     isLoading(true);

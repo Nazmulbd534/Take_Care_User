@@ -5,6 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:takecare_user/api_service/ApiService.dart';
+import 'package:takecare_user/pages/On%20Demand/waiting_to_end_page.dart';
+import 'package:takecare_user/pages/On%20Demand/write_review_page.dart';
 import 'package:takecare_user/services/pusher_service.dart';
 
 import '../../public_variables/all_colors.dart';
@@ -12,8 +15,14 @@ import '../../public_variables/size_config.dart';
 import '../../public_variables/variables.dart';
 
 class LiveOrderStatus extends StatefulWidget {
+  final String invoiceID;
+  final int orderID;
   final Map<String, dynamic>? details;
-  const LiveOrderStatus({super.key, required this.details});
+  const LiveOrderStatus(
+      {super.key,
+      required this.invoiceID,
+      required this.orderID,
+      required this.details});
 
   @override
   State<LiveOrderStatus> createState() => _LiveOrderStatusState();
@@ -252,6 +261,8 @@ class _LiveOrderStatusState extends State<LiveOrderStatus> {
     );
   }
 
+  TextEditingController _reviewTextController = TextEditingController();
+
   Widget reviewPage() {
     return Scaffold(
       backgroundColor: AllColor.shado_color,
@@ -275,7 +286,37 @@ class _LiveOrderStatusState extends State<LiveOrderStatus> {
           child: Text("Pay Online"),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Give Rating"),
+                  content: Container(
+                    child: TextField(
+                      controller: _reviewTextController,
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        debugPrint(widget.details.toString());
+                        ApiService.addRatingToUser(
+                            widget.invoiceID, _reviewTextController.text);
+                        ApiService.changeOrderStatus(widget.orderID, 9);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WaitingToEndPage()));
+                      },
+                      child: Text("Submit"),
+                    )
+                  ],
+                );
+              },
+            );
+          },
           child: Text("Pay Cash"),
         )
       ],
