@@ -548,7 +548,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
     });
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => HomePage()),
     );
     return true;
   }
@@ -1233,7 +1233,7 @@ class _OnDemandPageState extends State<OnDemandPage> {
                 });
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),

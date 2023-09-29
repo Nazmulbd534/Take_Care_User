@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_close_app/flutter_close_app.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
 import 'package:takecare_user/controllers/DataContollers.dart';
 import 'package:takecare_user/controllers/language_controller.dart';
@@ -29,6 +31,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../model/CategoriesResponse.dart';
 import '../services/pusher_service.dart';
 import 'On Demand/accepted_page.dart';
+import 'On Demand/live_order_status.dart';
 import 'On Demand/service_runing_map_page.dart';
 import 'long_time_services/service_request_form_page.dart';
 import 'loved_ones_page.dart';
@@ -58,7 +61,12 @@ void _addOrRemoveSelectedCategory(String categoryName) {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  String? invoiceID;
+  int? orderID;
+  Map<String, dynamic>? details;
+
+  HomePage({Key? key, this.invoiceID, this.orderID, this.details})
+      : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -71,11 +79,219 @@ class _HomePageState extends State<HomePage> {
   String enforcedVersion = '';
   String storeVersion = '';
   bool scheduleLaterSelected = false;
+
+  int status = 6;
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer(
+    mode: StopWatchMode.countUp,
+  );
+
+  get details => null;
+
   @override
   void initState() {
     super.initState();
     getAllService();
-    PusherService.connect();
+    PusherService.connect().then((value) {
+      _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+      if (widget.orderID == null) return;
+      PusherService.channel.bind('order-update-event', (event) {
+        log("Order update Event" + event!.data.toString(),
+            name: "PusherService test1");
+        var dataJson = jsonDecode(event.data!);
+
+        setState(() {
+          status = dataJson["message"]["status"];
+        });
+
+        if (status == 7) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LiveOrderStatus(
+                      invoiceID: widget.invoiceID!,
+                      orderID: widget.orderID!,
+                      details: widget.details)));
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await _stopWatchTimer.dispose();
+  }
+
+  Widget timerPage() {
+    return Container(
+      height: 215,
+       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[200]!,
+            offset: Offset(0, -4), 
+            blurRadius: 4, 
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Card(
+              elevation: 0.0,
+              child: Column(
+                children: [
+                  Center(
+                    child: StreamBuilder<int>(
+                      stream: _stopWatchTimer.rawTime,
+                      initialData: 0,
+                      builder: (context, snap) {
+                        final value = snap.data!;
+                        final displayTime = StopWatchTimer.getDisplayTime(
+                          value,
+                          hours: true,
+                          hoursRightBreak: " : ",
+                          minuteRightBreak: " : ",
+                          second: false,
+                          milliSecond: false,
+                        );
+                        return Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: [
+                              Text(
+                                displayTime,
+                                style: const TextStyle(
+                                  fontSize: 43,
+                                  fontFamily: 'Helvetica',
+                                  fontWeight: FontWeight.bold,
+                                  color: AllColor.themeColor,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.04,
+                                  ),
+                                  const Text(
+                                    "Hour",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.07,
+                                  ),
+                                  const Text(
+                                    "Minute",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                              
+                               
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 120,
+                    color: Colors.white,
+                    child: Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(30)),
+                                    child: CachedNetworkImage(
+                                      height: 60,
+                                      width: 60,
+                                      fit: BoxFit.cover,
+                                      imageUrl: widget.details!["data"]
+                                                          ["service_request"][0]
+                                                      ["provider"]
+                                                  ["profile_photo"] ==
+                                              null
+                                          ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+                                          : widget.details!["data"]
+                                                  ["service_request"][0]
+                                                  ["provider"]["profile_photo"]
+                                              .toString(),
+                                      placeholder: (context, url) =>
+                                          Image.asset('assets/images/baby.png'),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset('assets/images/baby.png'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    widget.details!["data"]["service_request"]
+                                        [0]["provider"]["full_name"],
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.05),
+                                        color: AllColor.themeColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      children: const [
+                                        /*●*/
+                                        Text(
+                                          "Has started the service",
+                                          style: TextStyle(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   static Future<String> get _enforcedVersion async {
@@ -303,6 +519,14 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           key: _scaffoldKey,
           extendBody: true,
+          bottomSheet: widget.orderID != null
+              ? BottomSheet(
+                  onClosing: () {},
+                  builder: (context) {
+                    return timerPage();
+                  },
+                )
+              : null,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: AppBar(
@@ -413,6 +637,7 @@ class _HomePageState extends State<HomePage> {
                   controller: homepageScrollController,
                   child: Container(
                     // height: size.height * 2,
+                    height: widget.orderID == null ? null : 1300,
                     color: Colors.white,
                     child: ServiceCategoryListWidget(
                       lc: lc,

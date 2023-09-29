@@ -30,13 +30,11 @@ class LiveOrderStatus extends StatefulWidget {
 // [PusherService test1] Order update Event{"message":{"service_order_id":52,"provider":230,"status":5}}
 
 class _LiveOrderStatusState extends State<LiveOrderStatus> {
-  int status = 6;
-  final StopWatchTimer _stopWatchTimer = StopWatchTimer(
-    mode: StopWatchMode.countUp,
-  );
+  int status = 7;
 
   int total = 0;
   int price = 0;
+
   void countServices() {
     for (int i = 0;
         i <
@@ -55,211 +53,9 @@ class _LiveOrderStatusState extends State<LiveOrderStatus> {
   void initState() {
     super.initState();
     countServices();
-    _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-    PusherService.channel.bind('order-update-event', (event) {
-      log("Order update Event" + event!.data.toString(),
-          name: "PusherService test1");
-      var dataJson = jsonDecode(event.data!);
-
-      setState(() {
-        status = dataJson["message"]["status"];
-      });
-    });
   }
 
   final value = StopWatchTimer.getMilliSecFromMinute(60);
-
-  Widget timerPage() {
-    return Scaffold(
-      backgroundColor: AllColor.shado_color,
-      appBar: AppBar(
-        leading: const SizedBox(),
-        centerTitle: true,
-        backgroundColor: AllColor.themeColor,
-        title: const Text(
-          "Current Service",
-          style: TextStyle(
-            fontFamily: "Muli",
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 4.0,
-                child: Column(
-                  children: [
-                    Center(
-                      child: StreamBuilder<int>(
-                        stream: _stopWatchTimer.rawTime,
-                        initialData: 0,
-                        builder: (context, snap) {
-                          final value = snap.data!;
-                          final displayTime = StopWatchTimer.getDisplayTime(
-                            value,
-                            hours: true,
-                            hoursRightBreak: " : ",
-                            minuteRightBreak: " : ",
-                            secondRightBreak: " : ",
-                            milliSecond: false,
-                          );
-                          return Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              children: [
-                                Text(
-                                  displayTime,
-                                  style: const TextStyle(
-                                    fontSize: 43,
-                                    fontFamily: 'Helvetica',
-                                    fontWeight: FontWeight.bold,
-                                    color: AllColor.themeColor,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.04,
-                                    ),
-                                    const Text(
-                                      "Hour",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.07,
-                                    ),
-                                    const Text(
-                                      "Minute",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.07,
-                                    ),
-                                    const Text(
-                                      "Second",
-                                      style: TextStyle(
-                                        fontFamily: "Muli",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 120,
-                      color: Colors.white,
-                      child: Card(
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Positioned(
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(30)),
-                                      child: CachedNetworkImage(
-                                        height: 60,
-                                        width: 60,
-                                        fit: BoxFit.cover,
-                                        imageUrl: widget.details!["data"]
-                                                            ["service_request"]
-                                                        [0]["provider"]
-                                                    ["profile_photo"] ==
-                                                null
-                                            ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
-                                            : widget.details!["data"]
-                                                    ["service_request"][0]
-                                                    ["provider"]
-                                                    ["profile_photo"]
-                                                .toString(),
-                                        placeholder: (context, url) =>
-                                            Image.asset(
-                                                'assets/images/baby.png'),
-                                        errorWidget: (context, url, error) =>
-                                            Image.asset(
-                                                'assets/images/baby.png'),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      widget.details!["data"]["service_request"]
-                                          [0]["provider"]["full_name"],
-                                      style: TextStyle(
-                                          fontSize: dynamicSize(0.05),
-                                          color: AllColor.themeColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Row(
-                                        children: const [
-                                          /*●*/
-                                          Text(
-                                            "Has started the service",
-                                            style: TextStyle(),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   TextEditingController _reviewTextController = TextEditingController();
 
@@ -480,16 +276,10 @@ class _LiveOrderStatusState extends State<LiveOrderStatus> {
     );
   }
 
-  @override
-  void dispose() async {
-    super.dispose();
-    await _stopWatchTimer.dispose(); // Need to call dispose function.
-  }
-
   Widget getPage() {
     switch (status) {
       case 6:
-        return timerPage();
+      //return timerPage();
       case 7:
         return reviewPage();
       default:

@@ -540,7 +540,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
                                         child: Text(
-                                          '${widget.details!["data"]["service_request"][0]["seeker"]["full_name"]}',
+                                        widget.details!["data"]["service_request"][0]["booking_for"] == null ?  '${widget.details!["data"]["service_request"][0]["seeker"]["full_name"]}' : "${widget.details!["data"]["service_request"][0]["loved_one"]["name"]}",
                                           style: TextStyle(
                                               fontSize: dynamicSize(0.04),
                                               fontWeight: FontWeight.bold),
@@ -585,7 +585,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
                                         child: Text(
-                                          '${widget.details!["data"]["service_request"][0]["seeker"]["gender"]}',
+                                                widget.details!["data"]["service_request"][0]["booking_for"] == null ?  '${widget.details!["data"]["service_request"][0]["seeker"]["gender"]}' : "${widget.details!["data"]["service_request"][0]["loved_one"]["gender"]}",
                                           style: TextStyle(
                                               fontSize: dynamicSize(0.04),
                                               fontWeight: FontWeight.bold),
@@ -630,7 +630,7 @@ class _OrderInformationPageState extends State<OrderInformationPage> {
                                         padding:
                                             const EdgeInsets.only(top: 3.0),
                                         child: Text(
-                                          '${widget.details!["data"]["service_request"][0]["seeker"]["phone"]}',
+                                                widget.details!["data"]["service_request"][0]["booking_for"] == null ?  '${widget.details!["data"]["service_request"][0]["seeker"]["phone"]}' : "${widget.details!["data"]["service_request"][0]["loved_one"]["contact_no"]}",
                                           style: TextStyle(
                                               fontSize: dynamicSize(0.04),
                                               fontWeight: FontWeight.bold),

@@ -13,6 +13,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
 import 'package:takecare_user/pages/On%20Demand/live_order_status.dart';
+import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/size_config.dart';
 import 'package:takecare_user/public_variables/variables.dart';
@@ -159,7 +160,7 @@ class _LiveMapState extends State<LiveMap> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => LiveOrderStatus(
+              builder: (context) => HomePage(
                   orderID: widget.orderID,
                   invoiceID: widget.invoiceId,
                   details: widget.details),
@@ -202,8 +203,8 @@ class _LiveMapState extends State<LiveMap> {
                             children: [
                               Positioned(
                                 child: ClipRRect(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(30)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(30)),
                                   child: CachedNetworkImage(
                                     height: 40,
                                     width: 40,
@@ -213,8 +214,9 @@ class _LiveMapState extends State<LiveMap> {
                                                 ["provider"]["profile_photo"] ==
                                             null
                                         ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
-                                        : widget.details!["data"]["service_request"]
-                                                [0]["provider"]["profile_photo"]
+                                        : widget.details!["data"]
+                                                ["service_request"][0]
+                                                ["provider"]["profile_photo"]
                                             .toString(),
                                     placeholder: (context, url) =>
                                         Image.asset('assets/images/baby.png'),
@@ -270,8 +272,6 @@ class _LiveMapState extends State<LiveMap> {
                                     ],
                                   ),
                                 ),
-                           
-                                
                               ],
                             ),
                           ),
@@ -280,25 +280,23 @@ class _LiveMapState extends State<LiveMap> {
                       const SizedBox(
                         height: 5.0,
                       ),
-                           Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                              30.0
-                                  ),
-                                  color: Colors.grey[200],
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Colors.grey[200],
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: const TextField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.chat,
                                 ),
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                child: const TextField(
-                                  
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    prefixIcon: Icon(Icons.chat,),
-                                    hintText: "Write message here"
-                                  ),
-                                ),
-                                 ),
-                              ),
+                                hintText: "Write message here"),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

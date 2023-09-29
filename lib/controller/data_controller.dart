@@ -305,8 +305,8 @@ class DataController extends GetxController {
             print('Confirmation success');
           }
           showToast('Confirmation success');
-          Navigator.of(Get.context!).pushReplacement(
-              MaterialPageRoute(builder: (_) => const HomePage()));
+          Navigator.of(Get.context!)
+              .pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
         } else {
           showToast('Confirmation Failed');
           if (kDebugMode) {
