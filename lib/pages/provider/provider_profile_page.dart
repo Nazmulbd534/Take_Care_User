@@ -12,7 +12,7 @@ import 'package:takecare_user/widgets/image_view.dart';
 import 'package:takecare_user/widgets/video_player_page.dart';
 
 class ProviderProfilePage extends StatefulWidget {
-  ProviderData providerdata;
+  ProviderData? providerdata;
 
   ProviderProfilePage({Key? key, required this.providerdata}) : super(key: key);
 
@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                   width: 100,
                                   fit: BoxFit.cover,
                                   imageUrl:
-                                      '${widget.providerdata.profilePhoto}',
+                                      '${widget.providerdata!.profilePhoto}',
                                   errorWidget: (context, url, error) =>
                                       Image.asset('assets/images/baby.png'),
                                 ),
@@ -145,7 +145,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                         color: Colors.orangeAccent,
                                       ),
                                       Text(
-                                        ("${widget.providerdata.provider_rating}"),
+                                        ( widget.providerdata == null ? "no data" :  "${widget.providerdata!.provider_rating}"),
                                         style: TextStyle(
                                             fontFamily: 'Muli',
                                             fontWeight: FontWeight.w600,
@@ -172,7 +172,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.providerdata.fullName!,
+                           widget.providerdata == null ? "" :  widget.providerdata!.fullName!,
                             style: TextStyle(
                                 fontFamily: 'Muli',
                                 fontWeight: FontWeight.w600,
@@ -181,8 +181,8 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                           ),
                           Row(
                             children: [
-                              Text(widget
-                                  .providerdata.speciality!.specialityName!),
+                              Text( widget.providerdata!.speciality == null ? ""  : widget
+                                  .providerdata!.speciality!.specialityName!),
                               Text("${""}"),
                             ],
                           ),
@@ -221,7 +221,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                         ),
                         Positioned(
                           child: Text(
-                            ("${widget.providerdata.gender}"),
+                            (widget.providerdata == null ? "" : "${widget.providerdata!.gender}"),
                             style: TextStyle(
                                 fontFamily: 'Muli',
                                 fontWeight: FontWeight.w600,
@@ -262,7 +262,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                         ),
                         Positioned(
                           child: Text(
-                            ("${widget.providerdata.height} fit"),
+                            (widget.providerdata == null ? "" : "${widget.providerdata!.height} fit"),
                             style: TextStyle(
                                 fontSize: dynamicSize(0.04),
                                 color: Colors.green),
@@ -299,7 +299,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                         ),
                         Positioned(
                           child: Text(
-                            ("${widget.providerdata.wight} kg"),
+                            (widget.providerdata == null ? "" : "${widget.providerdata!.wight} kg"),
                             style: TextStyle(
                                 fontSize: dynamicSize(0.04),
                                 color: Colors.pink),
@@ -336,7 +336,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                         ),
                         Positioned(
                           child: Text(
-                            ("${widget.providerdata.height} yrs"),
+                            ( widget.providerdata == null ? "" :  " ${widget.providerdata!.height} yrs"),
                             style: TextStyle(
                                 fontSize: dynamicSize(0.04),
                                 color: Colors.pink),
@@ -375,10 +375,10 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        widget.providerdata.professionData?.first == null
+                        widget.providerdata!.professionData?.first == null
                             ? ""
                             : widget
-                                .providerdata.professionData!.first.license_no
+                                .providerdata!.professionData!.first.license_no
                                 .toString(),
                         style: TextStyle(
                             fontFamily: 'Muli',
@@ -411,9 +411,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                 child: Container(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    (widget.providerdata.academicInfo! == null)
+                                    (widget.providerdata!.academicInfo! == null)
                                         ? 'Loading....'
-                                        : ("${widget.providerdata.academicInfo!.first.major}"),
+                                        : ("${widget.providerdata!.academicInfo!.first.major}"),
                                     style: TextStyle(
                                         fontFamily: 'Muli',
                                         fontSize: dynamicSize(0.04),
@@ -441,9 +441,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                 child: Container(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    (widget.providerdata.academicInfo! == null)
+                                    (widget.providerdata!.academicInfo! == null)
                                         ? ''
-                                        : ("${widget.providerdata.academicInfo!.first.institute}"),
+                                        : ("${widget.providerdata!.academicInfo!.first.institute}"),
                                     style: TextStyle(
                                         fontFamily: 'Muli',
                                         fontSize: dynamicSize(0.04),
@@ -471,9 +471,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                 child: Container(
                                   alignment: Alignment.topLeft,
                                   child: Text(
-                                    (widget.providerdata.academicInfo! == null)
+                                    (widget.providerdata!.academicInfo! == null)
                                         ? ''
-                                        : ("${widget.providerdata.academicInfo!.first.passing_year}"),
+                                        : ("${widget.providerdata!.academicInfo!.first.passing_year}"),
                                     style: TextStyle(
                                         fontFamily: 'Muli',
                                         fontSize: dynamicSize(0.04),
@@ -512,9 +512,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        (widget.providerdata.speciality! == null)
+                        (widget.providerdata!.speciality! == null)
                             ? 'Loading....'
-                            : ("${widget.providerdata.speciality!.specialityName!}"),
+                            : ("${widget.providerdata!.speciality!.specialityName!}"),
                         style: TextStyle(
                             fontFamily: 'Muli',
                             fontSize: dynamicSize(0.04),
@@ -527,7 +527,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                         alignment: Alignment.topLeft,
                         child: Text(
-                            widget.providerdata.speciality?.description ??
+                            widget.providerdata!.speciality?.description ??
                                 "No description given")),
                     SizedBox(
                       height: dynamicSize(0.02),
@@ -558,9 +558,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        (widget.providerdata.professionData! == null)
+                        (widget.providerdata!.professionData! == null)
                             ? 'Loading....'
-                            : ("${widget.providerdata.professionData!.first.past_experience}"),
+                            : ("${widget.providerdata!.professionData!.first.past_experience}"),
                         style: TextStyle(
                             fontFamily: 'Muli',
                             fontSize: dynamicSize(0.04),
@@ -598,9 +598,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        (widget.providerdata.professionData! == null)
+                        (widget.providerdata!.professionData! == null)
                             ? 'Loading....'
-                            : ("${widget.providerdata.professionData!.first.personal_commitment.toString()}"),
+                            : ("${widget.providerdata!.professionData!.first.personal_commitment.toString()}"),
                         style: TextStyle(
                             fontFamily: 'Muli',
                             fontSize: dynamicSize(0.04),
@@ -644,9 +644,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                       height: 200,
                       child: ListView.builder(
                           itemCount:
-                              (widget.providerdata.user_documents! == null)
+                              (widget.providerdata!.user_documents! == null)
                                   ? 0
-                                  : widget.providerdata.user_documents!.length,
+                                  : widget.providerdata!.user_documents!.length,
                           itemBuilder: (context, index) => Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
@@ -658,7 +658,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                     children: [
                                       Text(
                                         widget.providerdata
-                                            .user_documents![index].title
+                                            !.user_documents![index].title
                                             .toString(),
                                         style: TextStyle(
                                             fontSize: dynamicSize(0.04)),
@@ -667,7 +667,7 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                         onPressed: () {
                                           if (widget
                                                   .providerdata
-                                                  .user_documents![index]
+                                                  !.user_documents![index]
                                                   .extension ==
                                               'pdf') {
                                             Navigator.push(
@@ -675,15 +675,15 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       PDFReaderPage(
-                                                          '${ApiService.MainURL}${widget.providerdata.user_documents![index].file}')),
+                                                          '${ApiService.MainURL}${widget.providerdata!.user_documents![index].file}')),
                                             );
                                           } else if (widget
-                                                      .providerdata
+                                                      .providerdata!
                                                       .user_documents![index]
                                                       .extension ==
                                                   'jpg' ||
                                               widget
-                                                      .providerdata
+                                                      .providerdata!
                                                       .user_documents![index]
                                                       .extension ==
                                                   'png') {
@@ -693,9 +693,9 @@ class _ProfilePageState extends State<ProviderProfilePage> {
                                                   builder: (context) =>
                                                       ImageView(
                                                         url:
-                                                            '${ApiService.MainURL}${widget.providerdata.user_documents![index].file}',
+                                                            '${ApiService.MainURL}${widget.providerdata!.user_documents![index].file}',
                                                         name: widget
-                                                            .providerdata
+                                                            .providerdata!
                                                             .fullName
                                                             .toString(),
                                                       )),
