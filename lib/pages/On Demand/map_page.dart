@@ -15,6 +15,7 @@ import 'package:takecare_user/pages/On%20Demand/on_demand_page.dart';
 import 'package:takecare_user/pages/On%20Demand/request_page.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/pages/long_time_services/map_picker_page.dart';
+import 'package:takecare_user/pages/provider/provider_profile.dart';
 import 'package:takecare_user/pages/provider/provider_profile_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
 import 'package:takecare_user/public_variables/notifications.dart';
@@ -324,14 +325,28 @@ class _MapPageState extends State<MapPage> {
                                                 ),
                                                 InkWell(
                                                   onTap: () {
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         ProviderProfilePage(
+                                                    //       providerdata:
+                                                    //           providerList[
+                                                    //               index],
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProviderProfilePage(
-                                                                  providerdata:
-                                                                      providerList[
-                                                                          index])),
+                                                        builder: (context) =>
+                                                            ProviderProfile(
+                                                          profile: providerList[
+                                                                  index]
+                                                              .toJson(),
+                                                        ),
+                                                      ),
                                                     );
                                                     // showToast("Provider Profile");
                                                   },
@@ -465,10 +480,10 @@ class _MapPageState extends State<MapPage> {
                                       });
 
                                       await DataControllers.to.newRequest(
-                                          providerList[requestIndex],
-                                          widget.result, 
-                                          widget.lovedOnesId ?? 0,
-                                          );
+                                        providerList[requestIndex],
+                                        widget.result,
+                                        widget.lovedOnesId ?? 0,
+                                      );
 
                                       log("reached here");
 
