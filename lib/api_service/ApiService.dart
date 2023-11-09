@@ -443,7 +443,8 @@ class ApiService {
   static Future<AppResponse?> newRequest(
       {String coupon_code = '',
       ProviderData? providerData,
-      GeocodingResult? result, int? lovedOnesId }) async {
+      GeocodingResult? result,
+      int? lovedOnesId}) async {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(now);
@@ -451,25 +452,25 @@ class ApiService {
 
     var jsonData;
 
-    if(lovedOnesId == 0) {
+    if (lovedOnesId == 0) {
       jsonData = <String, String>{
-      // "coupon_code": coupon_code,
-      "booking_date": formatted,
-      "provider_id": providerData!.id.toString(),
-      "latitude": result!.geometry.location.lat.toString(),
-      "longitude": result.geometry.location.lng.toString(),
-      //   "foundSchedule": "a",
-    };
+        // "coupon_code": coupon_code,
+        "booking_date": formatted,
+        "provider_id": providerData!.id.toString(),
+        "latitude": result!.geometry.location.lat.toString(),
+        "longitude": result.geometry.location.lng.toString(),
+        //   "foundSchedule": "a",
+      };
     } else {
-     jsonData =  <String, dynamic>{
-      // "coupon_code": coupon_code,
-      "booking_date": formatted,
-      "booking_for" : lovedOnesId,
-      "provider_id": providerData!.id.toString(),
-      "latitude": result!.geometry.location.lat.toString(),
-      "longitude": result.geometry.location.lng.toString(),
-      //   "foundSchedule": "a",
-    };
+      jsonData = <String, dynamic>{
+        // "coupon_code": coupon_code,
+        "booking_date": formatted,
+        "booking_for": lovedOnesId,
+        "provider_id": providerData!.id.toString(),
+        "latitude": result!.geometry.location.lat.toString(),
+        "longitude": result.geometry.location.lng.toString(),
+        //   "foundSchedule": "a",
+      };
     }
 
     log(jsonData.toString() + "\n token = " + bearerToken,

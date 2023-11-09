@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:async';
 import 'dart:developer';
 
@@ -111,10 +113,12 @@ class _OnDemandPageState extends State<OnDemandPage> {
 
   void showButtonDialog(BuildContext context, int index) {
     showModalBottomSheet(
+        backgroundColor: Colors.transparent,
         context: context,
         builder: (BuildContext bc) {
           return Container(
             height: dynamicSize(0.84),
+            color: Colors.transparent,
             child: Column(
               children: [
                 Align(
@@ -1292,176 +1296,171 @@ class _OnDemandPageState extends State<OnDemandPage> {
             bottom: PreferredSize(
               preferredSize: const Size(25, 35),
               child: GetBuilder<LanguageController>(builder: (lang) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.only(bottom: 10),
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedColor = 1;
-                            });
-                            showButtonListDialog(context);
-                          },
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 8.0, right: 4, top: 4, bottom: 4),
-                                  child: Icon(Icons.filter_alt_outlined,
-                                      color: (selectedColor == 1)
-                                          ? Colors.white
-                                          : Colors.black),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 4.0, right: 4, top: 4, bottom: 4),
-                                  child: Text(
-                                    lc.category.string,
-                                    style: TextStyle(
-                                        color: (selectedColor == 1)
-                                            ? Colors.white
-                                            : Colors.black),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 4.0, right: 8, top: 4, bottom: 4),
-                                  child: Icon(
-                                    Icons.arrow_drop_down,
-                                    color: (selectedColor == 1)
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // TODO : Uncomment to bring back category filter
+                      // InkWell(
+                      //   onTap: () {
+                      //     setState(9() {
+                      //       selectedColor = 1;
+                      //     });
+                      //     showButtonListDialog(context);
+                      //   },
+                      //   child: Container(
+                      //     child: Row(
+                      //       children: [
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left: 8.0, right: 4, top: 4, bottom: 4),
+                      //           child: Icon(Icons.filter_alt_outlined,
+                      //               color: (selectedColor == 1)
+                      //                   ? Colors.white
+                      //                   : Colors.black),
+                      //         ),
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left: 4.0, right: 4, top: 4, bottom: 4),
+                      //           child: Text(
+                      //             lc.category.string,
+                      //             style: TextStyle(
+                      //                 color: (selectedColor == 1)
+                      //                     ? Colors.white
+                      //                     : Colors.black),
+                      //           ),
+                      //         ),
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left: 4.0, right: 8, top: 4, bottom: 4),
+                      //           child: Icon(
+                      //             Icons.arrow_drop_down,
+                      //             color: (selectedColor == 1)
+                      //                 ? Colors.white
+                      //                 : Colors.black,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //       color: (selectedColor == 1)
+                      //           ? Colors.pinkAccent
+                      //           : AllColor.shado_color,
+                      //       borderRadius: BorderRadius.circular(30.0),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      // InkWell(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       selectedColor = 5;
+                      //       searchValue = false;
+                      //     });
+                      //   },
+                      //   child: Container(
+                      //     child: Row(
+                      //       children: [
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left: 10.0, right: 4, top: 4, bottom: 4),
+                      //           child: Icon(Icons.list_alt,
+                      //               color: (selectedColor == 5)
+                      //                   ? Colors.white
+                      //                   : Colors.black),
+                      //         ),
+                      //         Padding(
+                      //           padding: EdgeInsets.only(
+                      //               left: 4.0, right: 10, top: 4, bottom: 4),
+                      //           child: Text(lc.all.string,
+                      //               style: TextStyle(
+                      //                   color: (selectedColor == 5)
+                      //                       ? Colors.white
+                      //                       : Colors.black)),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     decoration: BoxDecoration(
+                      //       color: (selectedColor == 5)
+                      //           ? Colors.pinkAccent
+                      //           : AllColor.shado_color,
+                      //       borderRadius: BorderRadius.circular(30.0),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            selectedColor = 2;
+                          });
+                          /*     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const FeedBackPage()),
+                                );*/
+                        },
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 4, top: 4, bottom: 4),
+                                child: Icon(Icons.shopping_cart_outlined,
+                                    color: (selectedColor == 2)
                                         ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: (selectedColor == 1)
-                                  ? Colors.pinkAccent
-                                  : AllColor.shado_color,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
+                                        : Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 4.0, right: 10, top: 4, bottom: 4),
+                                child: Text(lc.takenbefore.string,
+                                    style: TextStyle(
+                                        color: (selectedColor == 2)
+                                            ? Colors.white
+                                            : Colors.black)),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: (selectedColor == 2)
+                                ? Colors.pinkAccent
+                                : AllColor.shado_color,
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        SizedBox(
-                          width: dynamicSize(0.03),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedColor = 5;
-                              searchValue = false;
-                            });
-                          },
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10.0, right: 4, top: 4, bottom: 4),
-                                  child: Icon(Icons.list_alt,
-                                      color: (selectedColor == 5)
-                                          ? Colors.white
-                                          : Colors.black),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 4.0, right: 10, top: 4, bottom: 4),
-                                  child: Text(lc.all.string,
-                                      style: TextStyle(
-                                          color: (selectedColor == 5)
-                                              ? Colors.white
-                                              : Colors.black)),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: (selectedColor == 5)
-                                  ? Colors.pinkAccent
-                                  : AllColor.shado_color,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
+                      ),
+                      SizedBox(
+                        width: dynamicSize(0.03),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 4, top: 4, bottom: 4),
+                                child: Icon(Icons.verified_outlined),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 4.0, right: 10, top: 4, bottom: 4),
+                                child: Text(lang.pop.string),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: AllColor.shado_color,
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        SizedBox(
-                          width: dynamicSize(0.03),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedColor = 2;
-                            });
-                            /*     Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const FeedBackPage()),
-                              );*/
-                          },
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10.0, right: 4, top: 4, bottom: 4),
-                                  child: Icon(Icons.shopping_cart_outlined,
-                                      color: (selectedColor == 2)
-                                          ? Colors.white
-                                          : Colors.black),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 4.0, right: 10, top: 4, bottom: 4),
-                                  child: Text(lc.takenbefore.string,
-                                      style: TextStyle(
-                                          color: (selectedColor == 2)
-                                              ? Colors.white
-                                              : Colors.black)),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: (selectedColor == 2)
-                                  ? Colors.pinkAccent
-                                  : AllColor.shado_color,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: dynamicSize(0.03),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10.0, right: 4, top: 4, bottom: 4),
-                                  child: Icon(Icons.verified_outlined),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 4.0, right: 10, top: 4, bottom: 4),
-                                  child: Text(lang.pop.string),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: AllColor.shado_color,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               }),

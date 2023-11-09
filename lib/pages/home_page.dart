@@ -125,12 +125,12 @@ class _HomePageState extends State<HomePage> {
   Widget timerPage() {
     return Container(
       height: 215,
-       decoration: BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
             color: Colors.grey[200]!,
-            offset: Offset(0, -4), 
-            blurRadius: 4, 
+            offset: Offset(0, -4),
+            blurRadius: 4,
           ),
         ],
       ),
@@ -199,8 +199,6 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: 16.0,
                                     ),
                                   ),
-                              
-                               
                                 ],
                               ),
                             ],
@@ -1222,7 +1220,7 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
             // cut here
             Padding(
               padding: const EdgeInsets.only(
-                right: 10.0,
+                right: 15.0,
                 left: 15.0,
               ),
               child: Container(
@@ -1233,7 +1231,8 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                   controller: widget.fixedScrollController,
                   //  physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
+                    crossAxisCount: 3,
+                  ),
                   itemCount: dataResponse.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: ((context, index) {
@@ -1471,11 +1470,15 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                                 ),
                                 Text(
                                   dataResponse[index].categoryName!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: "Muli",
                                     fontWeight: FontWeight.w600,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.034,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
@@ -1501,8 +1504,8 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                         Container(
                       //color: Colors.pinkAccent,
                       height: dynamicSize(0.38),
-                      width: dynamicSize(0.97),
-                      // width: MediaQuery.of(context).size.width/2,
+                      width: dynamicSize(0.99),
+                      //width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         // color: Colors.pinkAccent,
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -1684,11 +1687,14 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
                               Text(
                                 DataControllers.to.getLongCategoriesResponse
                                     .value.data![index].categoryName!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: "Muli",
                                   fontWeight: FontWeight.w600,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.034,
                                 ),
-                                maxLines: 3,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               )
                             ],
                           ),
