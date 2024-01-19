@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "user.takecare.ltd"
-        minSdkVersion 20
+        minSdkVersion 21
         compileSdkVersion 33
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
