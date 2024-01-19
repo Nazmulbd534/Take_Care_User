@@ -26,11 +26,15 @@ class _WaitingToEndPageState extends State<WaitingToEndPage> {
       setState(() {
         var status = dataJson["message"]["status"];
         if (status == 9) {
-          showDialog(
-              context: context,
-              builder: ((context) => AlertDialog(
-                    content: Text("Order end"),
-                  )));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (route) => false);
+          // showDialog(
+          //     context: context,
+          //     builder: ((context) => AlertDialog(
+          //           content: Text("Order end"),
+          //         )));
         }
       });
     });

@@ -81,10 +81,6 @@ class _HomePageState extends State<HomePage> {
   bool scheduleLaterSelected = false;
 
   int status = 6;
-  final StopWatchTimer _stopWatchTimer = StopWatchTimer(
-    mode: StopWatchMode.countUp,
-  );
-
   get details => null;
 
   @override
@@ -92,7 +88,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getAllService();
     PusherService.connect().then((value) {
-      _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+      //_stopWatchTimer.onExecute.add(StopWatchExecute.start);
       if (widget.orderID == null) return;
       PusherService.channel.bind('order-update-event', (event) {
         log("Order update Event" + event!.data.toString(),
@@ -119,177 +115,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() async {
     super.dispose();
-    await _stopWatchTimer.dispose();
-  }
-
-  Widget timerPage() {
-    return Container(
-      height: 215,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[200]!,
-            offset: Offset(0, -4),
-            blurRadius: 4,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: Card(
-              elevation: 0.0,
-              child: Column(
-                children: [
-                  Center(
-                    child: StreamBuilder<int>(
-                      stream: _stopWatchTimer.rawTime,
-                      initialData: 0,
-                      builder: (context, snap) {
-                        final value = snap.data!;
-                        final displayTime = StopWatchTimer.getDisplayTime(
-                          value,
-                          hours: true,
-                          hoursRightBreak: " : ",
-                          minuteRightBreak: " : ",
-                          second: false,
-                          milliSecond: false,
-                        );
-                        return Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            children: [
-                              Text(
-                                displayTime,
-                                style: const TextStyle(
-                                  fontSize: 43,
-                                  fontFamily: 'Helvetica',
-                                  fontWeight: FontWeight.bold,
-                                  color: AllColor.themeColor,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.04,
-                                  ),
-                                  const Text(
-                                    "Hour",
-                                    style: TextStyle(
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.07,
-                                  ),
-                                  const Text(
-                                    "Minute",
-                                    style: TextStyle(
-                                      fontFamily: "Muli",
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 120,
-                    color: Colors.white,
-                    child: Card(
-                      elevation: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              clipBehavior: Clip.none,
-                              children: [
-                                Positioned(
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                    child: CachedNetworkImage(
-                                      height: 60,
-                                      width: 60,
-                                      fit: BoxFit.cover,
-                                      imageUrl: widget.details!["data"]
-                                                          ["service_request"][0]
-                                                      ["provider"]
-                                                  ["profile_photo"] ==
-                                              null
-                                          ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
-                                          : widget.details!["data"]
-                                                  ["service_request"][0]
-                                                  ["provider"]["profile_photo"]
-                                              .toString(),
-                                      placeholder: (context, url) =>
-                                          Image.asset('assets/images/baby.png'),
-                                      errorWidget: (context, url, error) =>
-                                          Image.asset('assets/images/baby.png'),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    widget.details!["data"]["service_request"]
-                                        [0]["provider"]["full_name"],
-                                    style: TextStyle(
-                                        fontSize: dynamicSize(0.05),
-                                        color: AllColor.themeColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Row(
-                                      children: const [
-                                        /*●*/
-                                        Text(
-                                          "Has started the service",
-                                          style: TextStyle(),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    //await _stopWatchTimer.dispose();
   }
 
   static Future<String> get _enforcedVersion async {
@@ -521,7 +347,9 @@ class _HomePageState extends State<HomePage> {
               ? BottomSheet(
                   onClosing: () {},
                   builder: (context) {
-                    return timerPage();
+                    return TimerWidget(
+                      details: widget.details,
+                    );
                   },
                 )
               : null,
@@ -1711,6 +1539,197 @@ class _ServiceCategoryListWidgetState extends State<ServiceCategoryListWidget> {
           ],
         );
       },
+    );
+  }
+}
+
+class TimerWidget extends StatefulWidget {
+  Map<String, dynamic>? details;
+  TimerWidget({super.key, required this.details});
+
+  @override
+  State<TimerWidget> createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer(
+    mode: StopWatchMode.countUp,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 215,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[200]!,
+            offset: Offset(0, -4),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Card(
+              elevation: 0.0,
+              child: Column(
+                children: [
+                  Center(
+                    child: StreamBuilder<int>(
+                      stream: _stopWatchTimer.rawTime,
+                      initialData: 0,
+                      builder: (context, snap) {
+                        final value = snap.data!;
+                        final displayTime = StopWatchTimer.getDisplayTime(
+                          value,
+                          hours: true,
+                          hoursRightBreak: " : ",
+                          minuteRightBreak: " : ",
+                          second: false,
+                          milliSecond: false,
+                        );
+                        return Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: [
+                              Text(
+                                displayTime,
+                                style: const TextStyle(
+                                  fontSize: 43,
+                                  fontFamily: 'Helvetica',
+                                  fontWeight: FontWeight.bold,
+                                  color: AllColor.themeColor,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.04,
+                                  ),
+                                  const Text(
+                                    "Hour",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.07,
+                                  ),
+                                  const Text(
+                                    "Minute",
+                                    style: TextStyle(
+                                      fontFamily: "Muli",
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 120,
+                    color: Colors.white,
+                    child: Card(
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(30)),
+                                    child: CachedNetworkImage(
+                                      height: 60,
+                                      width: 60,
+                                      fit: BoxFit.cover,
+                                      imageUrl: widget.details!["data"]
+                                                          ["service_request"][0]
+                                                      ["provider"]
+                                                  ["profile_photo"] ==
+                                              null
+                                          ? 'https://thumbs.dreamstime.com/b/man-profile-cartoon-smiling-round-icon-vector-illustration-graphic-design-135443422.jpg'
+                                          : widget.details!["data"]
+                                                  ["service_request"][0]
+                                                  ["provider"]["profile_photo"]
+                                              .toString(),
+                                      placeholder: (context, url) =>
+                                          Image.asset('assets/images/baby.png'),
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset('assets/images/baby.png'),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    widget.details!["data"]["service_request"]
+                                        [0]["provider"]["full_name"],
+                                    style: TextStyle(
+                                        fontSize: dynamicSize(0.05),
+                                        color: AllColor.themeColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      children: const [
+                                        /*●*/
+                                        Text(
+                                          "Has started the service",
+                                          style: TextStyle(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

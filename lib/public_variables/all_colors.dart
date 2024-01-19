@@ -52,6 +52,7 @@ class AllColor {
   };
 
   static final theme = ThemeData(
+    useMaterial3: false,
     backgroundColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
     primarySwatch: const MaterialColor(0xffFF0054, AllColor.themeMapColor),
