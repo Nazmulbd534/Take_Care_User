@@ -264,7 +264,7 @@ class _MapPageState extends State<MapPage> {
                                                       child: ClipRRect(
                                                         borderRadius:
                                                             const BorderRadius
-                                                                    .all(
+                                                                .all(
                                                                 Radius.circular(
                                                                     30)),
                                                         child:
@@ -341,10 +341,10 @@ class _MapPageState extends State<MapPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ProviderProfile(
-                                                          profile: providerList[
-                                                                  index]
-                                                              .toJson(),
+                                                            ProviderProfilePage(
+                                                          providerdata:
+                                                              providerList[
+                                                                  index],
                                                         ),
                                                       ),
                                                     );

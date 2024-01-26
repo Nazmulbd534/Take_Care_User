@@ -187,6 +187,7 @@ class LanguageController extends GetxController {
         : "অর্ডার করতে লগইন করুন");
     mobileNumber(isEnglish.value ? 'Mobile Number*' : 'মোবাইল নম্বর*');
     password(isEnglish.value ? 'password*' : 'পাসওয়ার্ড*');
+
     forgotPassword(
         isEnglish.value ? 'Forgot Password?' : 'পাসওয়ার্ড ভুলে গেছেন?');
     name(isEnglish.value ? 'Name*' : 'নাম*');

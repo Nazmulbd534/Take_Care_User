@@ -123,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 Column(
                   children: [
-                    SizedBox(height: totalHeight * 0.25),
+                    SizedBox(height: totalHeight * 0.2),
                     Center(
                       child: Container(
                         width: totalWidth * 0.9,
@@ -326,6 +326,21 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(
                               height: totalHeight * 0.02,
                             ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Container(
+                                height: dynamicSize(0.14),
+                                child: BorderTextField(
+                                  labelText: language.age.string,
+                                  controller: DataControllers.to.age.value,
+                                  textInputType: TextInputType.number,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: totalHeight * 0.02,
+                            ),
 
                             /// Number
                             Padding(
@@ -488,6 +503,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     .to.password.value.text.isNotEmpty &&
                                 DataControllers.to.gender.value.isNotEmpty &&
                                 DataControllers.to.name.value.text.isNotEmpty &&
+                                DataControllers.to.age.value.text.isNotEmpty &&
                                 (Variables.base64Image.isNotEmpty &&
                                     Variables.base64Image != "") &&
                                 Variables.categoryCheckBoxValue) {
@@ -548,7 +564,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 GetBuilder<LanguageController>(
                   builder: (languageController) {
                     return Positioned(
-                      top: totalHeight * 0.225,
+                      top: totalHeight * 0.180,
                       left: totalWidth * 0.16,
                       child: AnimatedToggleButton(
                         values: [

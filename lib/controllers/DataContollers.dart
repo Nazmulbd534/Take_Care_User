@@ -33,6 +33,7 @@ class DataControllers extends GetxController {
   Rx<TextEditingController> forgetPasswordMobile = TextEditingController().obs;
   Rx<TextEditingController> password = TextEditingController().obs;
   Rx<TextEditingController> phoneNumber = TextEditingController().obs;
+  Rx<TextEditingController> age = TextEditingController().obs;
   RxBool isLoading = false.obs;
   Rx<RegisterResponse> regsiter = RegisterResponse().obs;
   Rx<UserLoginResponse> userLoginResponse = UserLoginResponse().obs;
@@ -484,10 +485,11 @@ class DataControllers extends GetxController {
 
   //Order List
 
-  Future newRequest(ProviderData providerData, GeocodingResult result, int lovedOnesId) async {
+  Future newRequest(ProviderData providerData, GeocodingResult result,
+      int lovedOnesId) async {
     isLoading(true);
-    var response =
-        await ApiService.newRequest(providerData: providerData, result: result, lovedOnesId: lovedOnesId);
+    var response = await ApiService.newRequest(
+        providerData: providerData, result: result, lovedOnesId: lovedOnesId);
 
     if (response != null) {
       newRequestResponse.value = response;
