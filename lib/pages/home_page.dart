@@ -100,17 +100,23 @@ class _HomePageState extends State<HomePage> {
         });
 
         if (status == 7) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LiveOrderStatus(
-                      invoiceID: widget.invoiceID!,
-                      orderID: widget.orderID!,
-                      details: widget.details)));
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => LiveOrderStatus(
+          //             invoiceID: widget.invoiceID!,
+          //             orderID: widget.orderID!,
+          //             details: widget.details)));
+
+          setState(() {
+            orderEnd = true;
+          });
         }
       });
     });
   }
+
+  bool orderEnd = false;
 
   @override
   void dispose() async {
@@ -343,16 +349,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           key: _scaffoldKey,
           extendBody: true,
-          bottomSheet: widget.orderID != null
-              ? BottomSheet(
-                  onClosing: () {},
-                  builder: (context) {
-                    return TimerWidget(
-                      details: widget.details,
-                    );
-                  },
-                )
-              : null,
+          bottomSheet: getBottomSheet(),
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(65),
             child: AppBar(
@@ -985,6 +982,201 @@ class _HomePageState extends State<HomePage> {
   void goToOtherHistory() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => OrderHistoryPage()));
+  }
+
+  getBottomSheet() {
+    if (orderEnd) {
+      int total = 0;
+      int price = 0;
+
+      for (int i = 0;
+          i <
+              widget
+                  .details!["data"]["service_request"][0]
+                      ["service_request_items"]
+                  .length;
+          i++) {
+        total++;
+        price += int.parse(widget.details!["data"]["service_request"][0]
+                ["service_request_items"][i]["service_price"]
+            .toString());
+      }
+
+      return BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return Container(
+            height: 210,
+            width: double.infinity,
+            margin: EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 40.0,
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                widget.details!["data"]["service_request"][0]
+                                    ["provider"]["profile_photo"]),
+                            radius: 50.0,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0.0,
+                          child: Container(
+                              width: dynamicSize(0.18),
+                              //color: Colors.red,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.orangeAccent,
+                                  ),
+                                  Text(
+                                    "5",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    "/5",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.details!["data"]["service_request"][0]
+                              ["provider"]["full_name"],
+                          style: TextStyle(
+                              fontSize: dynamicSize(0.05),
+                              color: AllColor.themeColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text("Has finished the service greatly."),
+                      ],
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "Give a feedback",
+                    style: TextStyle(
+                      color: AllColor.pink_button,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  width: double.maxFinite,
+                  color: const Color.fromARGB(33, 255, 204, 0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Services ($total)",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const Expanded(
+                          child: SizedBox(),
+                        ),
+                        Text(
+                          "Total: $price /-",
+                          style: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 40,
+                        color: Color.fromRGBO(52, 199, 89, 1),
+                        child: Center(
+                            child: Text(
+                          "Pay Online",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          ApiService.changeOrderStatus(widget.orderID!, 9);
+                          setState(() {
+                            orderEnd = false;
+                            widget.orderID = null;
+                          });
+                        },
+                        child: Container(
+                          height: 40,
+                          color: Color.fromRGBO(238, 238, 244, 1),
+                          child: Center(
+                              child: Text(
+                            "Pay Cash",
+                            style: TextStyle(color: Colors.black),
+                          )),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    if (widget.orderID != null) {
+      return BottomSheet(
+        onClosing: () {},
+        builder: (context) {
+          return TimerWidget(
+            details: widget.details,
+          );
+        },
+      );
+    }
   }
 }
 
