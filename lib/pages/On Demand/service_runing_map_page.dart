@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:takecare_user/api_service/ApiService.dart';
+import 'package:takecare_user/pages/On%20Demand/chat_page.dart';
 import 'package:takecare_user/pages/On%20Demand/live_order_status.dart';
 import 'package:takecare_user/pages/home_page.dart';
 import 'package:takecare_user/public_variables/all_colors.dart';
@@ -281,20 +282,36 @@ class _LiveMapState extends State<LiveMap> {
                         height: 5.0,
                       ),
                       Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            color: Colors.grey[200],
-                          ),
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: const TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.chat,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                        orderInformation: orderInformation!)));
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30.0),
+                                color: Colors.grey[200],
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    left: 15, right: 15, top: 15, bottom: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.chat,
+                                      color: AllColor.pink_button,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text("Write message here"),
+                                  ],
                                 ),
-                                hintText: "Write message here"),
-                          ),
+                              )),
                         ),
                       ),
                     ],

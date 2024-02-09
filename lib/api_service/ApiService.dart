@@ -54,6 +54,45 @@ class ApiService {
     }
   }
 
+  static Future<List> fetchMessages(int user1, int user2, int recvUser) async {
+    var response = await client.get(
+        Uri.parse(BaseURL + 'messages?user1=$user1&user2=$user2'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          'Authorization': bearerToken,
+        });
+
+    // log(response.body, name: "fetchMessages");
+    // log(BaseURL + 'messages?user1=$user1&user2=$user2');
+    // log(bearerToken);
+
+    var data = jsonDecode(response.body);
+    var x = data["data"]["data"];
+    return x;
+  }
+
+  static Future<void> sendMessages(int user1, int user2, String msg) async {
+    String roomId = "";
+    if (user1 > user2) {
+      roomId = "$user1$user2";
+    } else {
+      roomId = "$user2$user1";
+    }
+
+    var response = await client
+        .post(Uri.parse(BaseURL + 'messages/send'), headers: <String, String>{
+      'Authorization': bearerToken,
+    }, body: <String, String>{
+      "message": msg,
+      "receiver_id": user2.toString(),
+      "room_id": roomId
+    });
+
+    log(response.body, name: "sendMessages");
+    return;
+  }
+
   static Future<AllServiceResponse?> fetchServiceResponse() async {
     var response = await client
         .get(Uri.parse(BaseURL + 'service/all'), headers: <String, String>{
